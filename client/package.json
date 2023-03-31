@@ -15,5 +15,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:8080",
+  "devDependencies": {
+    "tailwindcss": "^3.3.1"
+  }
 }
