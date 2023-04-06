@@ -1,6 +1,6 @@
 package it.polito.wa2.g34.server.profile
 
-import jakarta.validator.Email
+import jakarta.validation.constraints.Email
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,20 +22,26 @@ class ProfileController(
     }
 
     @PostMapping("/profiles")
-    fun postProfile(@RequestBody newProfile: Profile): ProfileDTO?{
-        return if(getProfile(newProfile.email) == null)
-            profileService.postProfile(newProfile);
-        else
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+    fun postProfile(@RequestBody newProfile: ProfileDTO?): ProfileDTO?{
+        if (newProfile != null) {
+            return if(profileService.getProfile(newProfile.email) == null)
+                profileService.postProfile(newProfile);
+            else
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+        }else
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST)//PERSONALIZZARE
     }
 
-    @PutMapping("/profiles{email}")
-    fun putProfile(@RequestBody editedProfile: Profile, @PathVariable @Email email: String ): ProfileDTO?{
-        return if(getProfile(editedProfile.email) != null) {
-            editedProfile.email = email;
-            profileService.postProfile(editedProfile);
-        }
-        else throw ResponseStatusException(HttpStatus.NOT_FOUND)
+    @PutMapping("/profiles/{email}")
+    fun putProfile(@RequestBody editedProfile: ProfileDTO?, @PathVariable @Email email: String ): ProfileDTO?{
+        if (editedProfile != null) {
+            return if(profileService.getProfile(email) != null) {
+                editedProfile.email = email;
+                profileService.postProfile(editedProfile);
+            }
+            else throw ResponseStatusException(HttpStatus.NOT_FOUND)
+        }else
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST) //PERSONALIZZARE
     }
 
 }

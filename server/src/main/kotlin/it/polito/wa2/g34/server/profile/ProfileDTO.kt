@@ -13,3 +13,11 @@ fun Profile.toDTO(): ProfileDTO {
         age = this.age
     )
 }
+
+fun ProfileDTO.toEntity(): Profile {
+    return Profile(
+        email = this.email,
+        name = this.name,
+        age = this.age
+    )
+}
