@@ -1,52 +1,35 @@
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import Link from "next/link";
 import {ProfileDTO} from "@/utils/profiles";
+import ProfileForm from "@/components/ProfileForm";
 
 export default function Profiles() {
 
     let [searchEmail, setSearchEmail] = useState("");
 
-    let [newProfileForm, setNewProfileForm] = useState(ProfileDTO.empty());
+    const MemoizedProfileForm = useMemo(() => <ProfileForm profile={ProfileDTO.empty()} isReadOnly={false}
+                                                    submitText={"Crea Profilo"} onFormSubmit={(profile) => console.log(profile)}/>, []);
 
-    let setProfileField = (e) => {
-        setNewProfileForm({
-            ...newProfileForm,
-            [e.target.name]: e.target.value
-        })
-    }
+    return <div className="grid grid-cols-1 p-10">
 
-    return <>
+        <div className="flex justify-center flex-col pb-10">
+            <h1 className="self-center text-3xl"> Cerca un profilo esistente </h1>
 
-        <div>
-            <input type="email" name="searchEmail" value={searchEmail}
-                   onChange={(e) => setSearchEmail(e.target.value)}/>
-            <Link href={"/profiles/" + searchEmail}> Cerca </Link>
+            <div className="py-2 flex self-center justify-center">
+                <input className="rounded-xl" type="email" name="searchEmail" value={searchEmail}
+                       onChange={(e) => setSearchEmail(e.target.value)}/>
+                <Link className="block bg-gray-100 max-w-fit self-center py-2 px-1 mx-2 rounded-md"
+                      href={"/profiles/" + searchEmail}> Cerca il Profilo </Link>
+            </div>
+        </div>
+        <hr className="py-2"/>
+        <div className="flex flex-col justify-center align-center">
+            <h1 className="self-center text-3xl mb-3"> Crea nuovo profilo </h1>
+            <div className={"w-2/3 m-auto"}>
+
+            {MemoizedProfileForm}
+            </div>
         </div>
 
-        <div>
-            <h1> Crea nuovo profilo </h1>
-            <form>
-                <label htmlFor={"name"}> Nome </label>
-                <input type="text" name="name" value={newProfileForm.name} onChange={setProfileField}/>
-                <label htmlFor={"surname"}> Cognome </label>
-                <input type="text" name="surname" value={newProfileForm.surname} onChange={setProfileField}/>
-                <label htmlFor={"email"}> Email </label>
-                <input type="text" name="email" value={newProfileForm.email} onChange={setProfileField}/>
-                <label htmlFor={"password"}> Password </label>
-                <input type="password" name="password" value={newProfileForm.password} onChange={setProfileField}/>
-                <label htmlFor={"passwordConfirm"}> Conferma Password </label>
-                <input type="password" name="passwordConfirm" value={newProfileForm.passwordConfirm}
-                       onChange={setProfileField}/>
-                <label htmlFor={"role"}> Ruolo </label>
-                <select name="role" value={newProfileForm.role} onChange={setProfileField}>
-                    {Object.keys(roles).map((role) => {
-                            return <option key={role} value={role}> {roles[role]} </option>
-                        }
-                    )}
-                </select>
-                <button> Crea</button>
-            </form>
-        </div>
-
-    </>
+    </div>
 }
