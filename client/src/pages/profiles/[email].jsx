@@ -11,8 +11,15 @@ export default function Profile(props) {
     console.log(ProfileDTO.fromJson(props.profile))
     let profile = ProfileDTO.fromJson(props.profile)
 
-    return <ProfileForm profile={profile} isReadOnly={false}
-                        submitText={"Aggiorna Profilo"} onFormSubmit={(profile) => console.log(profile)}/>
+    return <div className={"p-10 m-10"}>
+        <div className={"w-full my-5 flex justify-center align-middle"}>
+            <h1 className={"text-3xl mx-auto block"}> Profilo di {profile.email} </h1>
+        </div>
+
+        <ProfileForm profile={profile} isMailReadOnly={true}
+                     submitText={"Aggiorna Profilo"} onFormSubmit={(profile) => console.log(profile)}/>
+
+    </div>
 
 
 }

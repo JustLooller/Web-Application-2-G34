@@ -51,7 +51,7 @@ const fields = [
     }
 ]
 
-export default function ProfileForm({profile, onFormSubmit, submitText, isReadOnly}) {
+export default function ProfileForm({profile, onFormSubmit, submitText, isMailReadOnly}) {
     const {register, handleSubmit, formState: {errors}} = useForm({values: profile, delayError: 1000, reValidateMode: "onChange", mode: "onTouched"});
 
 
@@ -63,7 +63,7 @@ export default function ProfileForm({profile, onFormSubmit, submitText, isReadOn
                            htmlFor={field.name}>
                         {field.label}
                     </label>
-                    <input id={field.name} type={field.type} disabled={isReadOnly}
+                    <input id={field.name} type={field.type} readOnly={isMailReadOnly && field.name === "email"}
                            className="appearance-none block w-full text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                            {...register(field.name, field.options)}/>
                     {errors[field.name] !== undefined &&
