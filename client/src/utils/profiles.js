@@ -6,16 +6,16 @@ export const roles = {
 
 
 export class ProfileDTO {
-    constructor(name, surname, email, role, gender) {
+    constructor(name, email, age) {
         this.name = name;
-        this.surname = surname;
         this.email = email;
-        this.role = role;
-        this.gender = gender;
+        // this.role = role;
+        // this.gender = gender;
+        this.age = age;
     }
 
     static empty() {
-        return new ProfileDTO("", "", "", "", "")
+        return new ProfileDTO("","", 0);
     }
 
     static fromJson(json) {
@@ -24,10 +24,10 @@ export class ProfileDTO {
         }
         let p = ProfileDTO.empty();
         p.name = json.name ?? "";
-        p.surname = json.surname ?? "";
         p.email = json.email ?? "";
-        p.role = json.role ?? "";
-        p.gender = json.gender ?? "";
+        p.age = json.age ?? 0;
+        // p.role = json.role ?? "";
+        // p.gender = json.gender ?? "";
         return p;
     }
 
@@ -50,25 +50,23 @@ export class ProfileDTO {
 
     async updateExistingProfile() {
         const URL = "/api/profiles/" + this.email;
-        const response = await fetch(URL, {
+        return await fetch(URL, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this)
         });
-        return response;
     }
 
     async insertNewProfile() {
         const URL = "/api/profiles/";
-        const response = await fetch(URL, {
+        return await fetch(URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this)
         });
-        return response;
     }
 }

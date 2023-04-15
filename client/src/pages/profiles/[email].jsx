@@ -13,11 +13,11 @@ export default function Profile(props) {
 
     return <div className={"p-10 m-10"}>
         <div className={"w-full my-5 flex justify-center align-middle"}>
-            <h1 className={"text-3xl mx-auto block"}> Profilo di {profile.email} </h1>
+            <h1 className={"text-3xl mx-auto block"}>{profile.email + "'s"} Profile</h1>
         </div>
 
         <ProfileForm profile={profile} isMailReadOnly={true}
-                     submitText={"Aggiorna Profilo"} onFormSubmit={(profile) => console.log(profile)}/>
+                     submitText={"Update Profile"} onFormSubmit={(profile) => profile.updateExistingProfile()}/>
 
     </div>
 
