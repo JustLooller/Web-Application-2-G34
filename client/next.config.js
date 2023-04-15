@@ -4,11 +4,12 @@ const nextConfig = {
   rewrites() {
     return [
       {
-        source: "/api",
-        destination: "http://localhost:8080/api/",
+        source: "/api/:path*",
+        destination: "http://localhost:8080/:path*", // Proxy to Backend
       },
     ];
-  }
+  },
+
 }
 
 module.exports = nextConfig

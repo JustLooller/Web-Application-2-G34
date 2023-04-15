@@ -1,4 +1,3 @@
-
 export const roles = {
     "user": "Utente",
     "admin": "Amministratore"
@@ -15,7 +14,7 @@ export class ProfileDTO {
     }
 
     static empty() {
-        return new ProfileDTO("","", 0);
+        return new ProfileDTO("", "", 0);
     }
 
     static fromJson(json) {
@@ -32,12 +31,15 @@ export class ProfileDTO {
     }
 
     static async fetchProfile(email) {
-        // const URL = "/api/profiles/" + email;
+        const fetchURL = new URL("http://localhost:3000/api/profiles/" + email);
+        //const URL = "/api/profiles/" + encodeURIComponent(email);
         console.log("fetchProfile: " + email);
-        const URL = "https://random-data-api.com/api/v2/users"
-        const response = await fetch(URL);
+        const response = await fetch(fetchURL, {
+            method: 'GET',
+        });
         if (!response.ok) {
             console.log("Error fetching profile: " + response.status)
+            console.log(await response.text())
             // throw new Error("Error fetching profile");
             return ProfileDTO.empty()
         }
@@ -49,8 +51,8 @@ export class ProfileDTO {
     }
 
     async updateExistingProfile() {
-        const URL = "/api/profiles/" + this.email;
-        return await fetch(URL, {
+        const fetchURL = new URL("http://localhost:3000/api/profiles/" + email);
+        return await fetch(fetchURL, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +62,7 @@ export class ProfileDTO {
     }
 
     async insertNewProfile() {
-        const URL = "/api/profiles/";
+        const URL = "/api/profiles";
         return await fetch(URL, {
             method: 'POST',
             headers: {
