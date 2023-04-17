@@ -57,7 +57,8 @@ export default function ProfileForm({profile, onFormSubmit, submitText, isMailRe
                            htmlFor={field.name}>
                         {field.label}
                     </label>
-                    <input id={field.name} inputMode={field.inputMode} type={field.type} readOnly={isMailReadOnly && field.name === "email"}
+                    <input id={field.name} inputMode={field.inputMode} type={field.type}
+                           readOnly={isMailReadOnly && field.name === "email"}
                            className="appearance-none block w-full text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                            {...register(field.name, field.options)}/>
                     {errors[field.name] !== undefined &&
@@ -67,7 +68,7 @@ export default function ProfileForm({profile, onFormSubmit, submitText, isMailRe
             }
             <div className={"w-full m-auto justify-center flex"}>
                 <input
-                    className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"}
+                    className="bg-gray-100 rounded-md shadow-md px-2 py-2 mr-10 mt-5 hover:bg-gray-200 active:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-400"
                     type="submit" value={submitText}/>
             </div>
         </form>

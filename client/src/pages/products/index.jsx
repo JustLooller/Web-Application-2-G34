@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Product from "@/components/product";
 import Link from "next/link";
 import {ProductDTO} from "@/utils/product";
@@ -7,22 +7,20 @@ export default function Index() {
     const [products, setProducts] = React.useState([]);
 
 
-    async function getServerSideProps() {
-        await ProductDTO.getAllProducts().then((res) => {
-            setProducts(res);
-        });
-    }
+    useEffect(() => {
+        async function getData(){
+            await ProductDTO.getAllProducts().then((res) => {
+                setProducts(res);
+            });
+        }
+    },[]);
 
     function filterProducts() {
         const productName = document.getElementById("product-search").value;
-        if (productName === "") {
-            getServerSideProps();
-        } else {
             const filteredProducts = products.filter((product) => {
                 return product.name.toLowerCase().startsWith(productName.toLowerCase());
             });
             setProducts(filteredProducts);
-        }
     }
 
     return (
