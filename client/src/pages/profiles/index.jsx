@@ -1,8 +1,8 @@
 import {useMemo, useState} from "react";
-import Link from "next/link";
-import {ProfileDTO} from "@/utils/profiles";
-import ProfileForm from "@/components/ProfileForm";
-import Header from "@/components/Header";
+import {ProfileDTO} from "../../utils/profiles";
+import ProfileForm from "../../components/ProfileForm";
+import Header from "../../components/Header";
+import {Link} from "react-router-dom";
 
 export default function Profiles() {
 
@@ -26,7 +26,7 @@ export default function Profiles() {
                         onChange={(e) => setSearchEmail(e.target.value)}/>
                     <Link
                         className="bg-gray-100 rounded-md shadow-md px-2 py-2 mr-10 mt-5 hover:bg-gray-200 active:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-400"
-                        href={"/profiles/" + searchEmail}> Search </Link>
+                        to={"/profiles/" + searchEmail}> Search </Link>
                 </div>
             </div>
             <hr className="py-2"/>

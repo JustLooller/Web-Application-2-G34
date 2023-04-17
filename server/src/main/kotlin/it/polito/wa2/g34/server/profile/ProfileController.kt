@@ -16,28 +16,28 @@ import org.springframework.web.server.ResponseStatusException
 class ProfileController(
     private val profileService: ProfileService
 ) {
-    @GetMapping("/profiles/{email}")
+    @GetMapping("/api/profiles/{email}")
     fun getProfile(@PathVariable @Email email: String ): ProfileDTO? {
         return profileService.getProfile(email)?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     }
 
-    @PostMapping("/profiles")
+    @PostMapping("/api/profiles")
     fun postProfile(@RequestBody newProfile: ProfileDTO?): ProfileDTO?{
         if (newProfile != null) {
             return if(profileService.getProfile(newProfile.email) == null)
-                profileService.postProfile(newProfile);
+                profileService.postProfile(newProfile)
             else
                 throw ResponseStatusException(HttpStatus.BAD_REQUEST)
         }else
             throw ResponseStatusException(HttpStatus.BAD_REQUEST)//PERSONALIZZARE
     }
 
-    @PutMapping("/profiles/{email}")
+    @PutMapping("/api/profiles/{email}")
     fun putProfile(@RequestBody editedProfile: ProfileDTO?, @PathVariable @Email email: String ): ProfileDTO?{
         if (editedProfile != null) {
             return if(profileService.getProfile(email) != null) {
-                editedProfile.email = email;
-                profileService.postProfile(editedProfile);
+                editedProfile.email = email
+                profileService.postProfile(editedProfile)
             }
             else throw ResponseStatusException(HttpStatus.NOT_FOUND)
         }else

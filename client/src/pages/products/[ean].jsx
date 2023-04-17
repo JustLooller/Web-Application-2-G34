@@ -1,8 +1,13 @@
 import React from "react";
-import Link from "next/link";
-import Header from "@/components/Header";
+import Header from "../../components/Header";
+import {useParams} from "react-router-dom";
 
 export default function SpecificProductPage() {
+
+    const {ean} = useParams();
+
+    console.log(ean);
+
     return (
         <React.Fragment>
             <Header/>
@@ -11,7 +16,7 @@ export default function SpecificProductPage() {
                     <p className="text-2xl font-bold">SSC Napoli</p>
                     <p className="text-xl">Bomba</p>
                 </div>
-                <img src="http://i.imgur.com/7Vbe8z9.jpg" alt="product-image" id="product-image" className="col-span-1"/>
+                <img src="http://i.imgur.com/7Vbe8z9.jpg" alt="product" id="product-image" className="col-span-1"/>
                 <div id="product-description" className="col-span-3">
                     <p>a</p>
                 </div>

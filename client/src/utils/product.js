@@ -23,7 +23,7 @@ export class ProductDTO {
         try {
             const response = await fetch(URL);
             const json = await response.json();
-            return Product.fromJson(json);
+            return ProductDTO.fromJson(json);
         } catch (error) {
             console.log(error);
         }

@@ -31,7 +31,7 @@ export class ProfileDTO {
     }
 
     static async fetchProfile(email) {
-        const fetchURL = new URL("http://localhost:3000/api/profiles/" + email);
+        const fetchURL = `/api/profiles/${email}`;
         //const URL = "/api/profiles/" + encodeURIComponent(email);
         console.log("fetchProfile: " + email);
         const response = await fetch(fetchURL, {
@@ -51,7 +51,7 @@ export class ProfileDTO {
     }
 
     async updateExistingProfile() {
-        const fetchURL = new URL("http://localhost:3000/api/profiles/" + email);
+        const fetchURL = `/api/profiles/${this.email}`;
         return await fetch(fetchURL, {
             method: 'PUT',
             headers: {
