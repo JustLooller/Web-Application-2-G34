@@ -18,8 +18,18 @@ export class ProductDTO {
         return new ProductDTO(json.ean, json.brand, json.model, json.description, json.image);
     }
 
+    static async getAllProducts(){
+        const URL = '/api/products';
+        try {
+            const response = await fetch(URL);
+            const json = await response.json();
+            return ProductDTO.fromJson(json)
+        } catch (error) {
+            console.log(error);
+        }
+    }
     static async getProductDetails(ean) {
-        const URL = 'http://localhost:3000/api/products/' + ean;
+        const URL = '/api/products/' + ean;
         try {
             const response = await fetch(URL);
             const json = await response.json();
