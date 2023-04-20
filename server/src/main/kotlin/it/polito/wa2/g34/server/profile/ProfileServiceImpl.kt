@@ -10,8 +10,8 @@ class ProfileServiceImpl(
         return profileRepository.findById(email).map { it.toDTO() }.orElse(null);
     }
 
-    override fun postProfile(newProfile: Profile) : ProfileDTO? {
-        return profileRepository.save(newProfile).toDTO();
+    override fun postProfile(newProfile: ProfileDTO) : ProfileDTO? {
+        return profileRepository.save(newProfile.toEntity()).toDTO();
     }
 
 }
