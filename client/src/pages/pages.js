@@ -34,7 +34,10 @@ const PAGES = [
         'path': '/profiles/:email',
         'element': <ProfileDetailPage/>,
         'errorElement': <ErrorPage />
-
+    },
+    {
+        'path': '/error/:message',
+        'element': <ErrorPage/>,
     }
 ]
 

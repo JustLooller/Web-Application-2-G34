@@ -52,23 +52,27 @@ export class ProfileDTO {
 
     async updateExistingProfile() {
         const fetchURL = `/api/profiles/${this.email}`;
-        return await fetch(fetchURL, {
+        return (await fetch(fetchURL, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this)
-        });
+        })).ok;
     }
 
+    /**
+     *
+     * @returns {Promise<boolean>} If the profile was successfully inserted
+     */
     async insertNewProfile() {
         const URL = "/api/profiles";
-        return await fetch(URL, {
+        return (await fetch(URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this)
-        });
+        })).ok;
     }
 }

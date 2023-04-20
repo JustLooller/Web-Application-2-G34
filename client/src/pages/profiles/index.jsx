@@ -1,21 +1,30 @@
-import {useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import {ProfileDTO} from "../../utils/profiles";
 import ProfileForm from "../../components/ProfileForm";
 import Header from "../../components/Header";
 import {Link} from "react-router-dom";
+const onFormSubmit = async (profile) => {
+    let inserted = await profile.insertNewProfile();
+    console.log(inserted);
+    if(inserted) {
+        window.location.replace("/profiles/" + profile.email);
+    } else {
+        window.location.replace("/error/" + "Profile already exists");
+    }
+}
 
 export default function Profiles() {
 
     let [searchEmail, setSearchEmail] = useState("");
 
+
     const MemoizedProfileForm = useMemo(() => <ProfileForm profile={ProfileDTO.empty()} isReadOnly={false}
                                                            submitText={"Create new Profile"}
-                                                           onFormSubmit={(profile) => profile.insertNewProfile()}/>, []);
+                                                           onFormSubmit={onFormSubmit}/>, []);
 
     return <>
         <Header/>
         <div className="grid grid-cols-1 p-10">
-
             <div className="flex justify-center flex-col pb-10">
                 <h1 className="self-center text-3xl"> Search </h1>
 

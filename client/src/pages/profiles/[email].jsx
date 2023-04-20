@@ -3,6 +3,12 @@ import ProfileForm from '../../components/ProfileForm';
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 
+const onFormSubmit = async (profile) => {
+    let edited = await profile.updateExistingProfile()
+    if(!edited) {
+        window.location.replace("/error/" + `Update failed`);
+    }
+}
 
 export default function Profile() {
 
@@ -31,7 +37,7 @@ export default function Profile() {
         </div>
 
         <ProfileForm profile={profile} isMailReadOnly={true}
-                     submitText={"Update Profile"} onFormSubmit={(profile) => profile.updateExistingProfile()}/>
+                     submitText={"Update Profile"} onFormSubmit={onFormSubmit}/>
 
     </div>
 

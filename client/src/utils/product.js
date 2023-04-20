@@ -19,7 +19,7 @@ export class ProductDTO {
     }
 
     static async getAllProducts(){
-        const URL = '/api/products';
+        const URL = '/api/products/';
         try {
             const response = await fetch(URL);
             const json = await response.json();
