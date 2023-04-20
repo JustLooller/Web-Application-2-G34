@@ -6,12 +6,12 @@ import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
 
 data class ProfileDTO(
-    @Email
+    @field:Email
     var email: String,
-    @Size(max = 100)
+    @field:Size(max = 100)
     var name: String,
-    @Min(value = 0, message = "The value must be positive")
-    @Max(value= 100, message = "The value must be under 100")
+    @field:Min(value = 0, message = "The value must be positive")
+    @field:Max(value= 100, message = "The value must be under 100")
     var age: Int
 )
 

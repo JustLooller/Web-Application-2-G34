@@ -1,5 +1,6 @@
 package it.polito.wa2.g34.server.profile
 
+import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController
 class ProfileController(
     private val profileService: ProfileService,
 ) {
-    @GetMapping("/api/profiles/{email}")
+    @GetMapping("/profiles/{email}")
     fun getProfile(@PathVariable @Email email: String): ProfileDTO? {
         return profileService.getProfile(email) ?: throw ProfileNotFoundException("Profile not found")
     }
 
-    @PostMapping("/api/profiles")
-    fun postProfile(@RequestBody newProfile: ProfileDTO?): ProfileDTO? {
+    @PostMapping("/profiles")
+    fun postProfile(@Valid @RequestBody newProfile: ProfileDTO?): ProfileDTO? {
         if (newProfile != null) {
             return if (profileService.getProfile(newProfile.email) == null)
                 profileService.postProfile(newProfile);
@@ -30,8 +31,8 @@ class ProfileController(
             throw ProfileDataException("No body data")
     }
 
-    @PutMapping("/api/profiles/{email}")
-    fun putProfile(@RequestBody editedProfile: ProfileDTO?, @PathVariable @Email email: String): ProfileDTO? {
+    @PutMapping("/profiles/{email}")
+    fun putProfile(@Valid @RequestBody editedProfile: ProfileDTO?, @PathVariable @Email email: String): ProfileDTO? {
         if (editedProfile != null) {
             return if (profileService.getProfile(email) != null) {
                 editedProfile.email = email;
@@ -42,5 +43,3 @@ class ProfileController(
     }
 
 }
-
-

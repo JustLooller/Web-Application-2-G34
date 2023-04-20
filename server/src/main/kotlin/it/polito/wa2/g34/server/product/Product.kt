@@ -6,11 +6,11 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "product")
-class Product {
+class Product (
     @Id
-    var ean: String=""
-    var brand: Int=0
-    var model: String = ""
-    var description: String = ""
+    var ean: String="",
+    var brand: Int=0,
+    var model: String = "",
+    var description: String = "",
     var image: String = ""
-}
+)

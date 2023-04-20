@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class ProfileAdvice : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(ConstraintViolationException::class)
-    fun mailInvalid(e: ConstraintViolationException): ProblemDetail {
+    fun handleConstraintViolation(e: ConstraintViolationException): ProblemDetail {
         val d = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST)
         d.title = "Wrong Input"
         d.detail = e.message
