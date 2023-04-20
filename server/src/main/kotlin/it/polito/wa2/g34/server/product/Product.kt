@@ -1,4 +1,4 @@
-package it.polito.wa2.g34.server
+package it.polito.wa2.g34.server.product
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

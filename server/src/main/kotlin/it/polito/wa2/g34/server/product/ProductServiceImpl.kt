@@ -1,4 +1,4 @@
-package it.polito.wa2.g34.server
+package it.polito.wa2.g34.server.product
 
 import org.springframework.stereotype.Service
 
