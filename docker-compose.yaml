@@ -4,9 +4,10 @@ version: '3.1'
 services:
 
   db:
+    container_name: wa2_g34_db
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: camurria
+      POSTGRES_PASSWORD: password
     ports:
       - 5432:5432
