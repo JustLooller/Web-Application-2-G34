@@ -103,8 +103,8 @@ COPY public.brand (id, name) FROM stdin;
 --
 
 COPY public.product (ean, brand, model, description, image) FROM stdin;
-0194252708002	1	Apple iPhone 13	Il tuo nuovo superpotere.\nIl nostro sistema a doppia fotocamera più evoluto di sempre. Migliora del 47% la qualità delle immagini riprese in notturna.	def
-0194253401070	1	IPHONE 14 PRO 128GB	Un modo magico e innovativo di interagire con iPhone. Una nuova, essenziale funzione per la sicurezza, pensata per salvare vite. Una straordinaria fotocamera da 48MP per dettagli da non credere. E dietro tutto questo, la potenza del più evoluto chip per smartphone.	abc
+0194252708002	1	Apple iPhone 13	Il tuo nuovo superpotere.\nIl nostro sistema a doppia fotocamera più evoluto di sempre. Migliora del 47% la qualità delle immagini riprese in notturna.	https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/refurb-iphone-13-pro-graphite-2023?wid=2000&hei=1897&fmt=jpeg&qlt=95&.v=1679072987081
+0194253401070	1	IPHONE 14 PRO 128GB	Un modo magico e innovativo di interagire con iPhone. Una nuova, essenziale funzione per la sicurezza, pensata per salvare vite. Una straordinaria fotocamera da 48MP per dettagli da non credere. E dietro tutto questo, la potenza del più evoluto chip per smartphone.	https://www.apple.com/newsroom/images/product/iphone/lifestyle/Apple-iPhone-14-iPhone-14-Plus-yellow-2up-230307_inline.jpg.large.jpg
 \.
 
 
