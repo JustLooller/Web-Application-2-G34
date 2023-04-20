@@ -1,6 +1,6 @@
 package it.polito.wa2.g34.server.profile
 
-import jakarta.validator.Email
+import jakarta.validation.constraints.Email
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
