@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController
 class ProductController(
     private val productService: ProductService
 ) {
-    @GetMapping("/products/")
+    @GetMapping("/api/products/")
     fun getAll(): List<ProductDTO> {
         return productService.getAll()
     }
 
-    @GetMapping("/products/{ean}")
+    @GetMapping("/api/products/{ean}")
     fun getProduct(@PathVariable @Size(min=13,max=13) ean: String ): ProductDTO? {
         return productService.getProduct(ean) ?: throw ProductNotFoundException("Product with ean: $ean not Found")
     }
