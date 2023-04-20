@@ -28,7 +28,7 @@ export default function SpecificProductPage() {
                     </div>
                     <div className="md:w-1/2 md:pl-6">
                         <h2 className="text-xl font-medium text-gray-500 mb-2">{data.brand}</h2>
-                        <h1 className="text-3xl font-bold mb-4">{data.name}</h1>
+                        <h1 className="text-3xl font-bold mb-4">{data.model}</h1>
                         <p className="text-lg font-light mb-4">{data.description}</p>
                         <p className="text-gray-600 text-sm mb-4">{`EAN: ${ean}`}</p>
                         {/* <button className="bg-gray-100 rounded-md shadow-md px-2 py-2 mr-10 mt-5 hover:bg-gray-200 active:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-400">
