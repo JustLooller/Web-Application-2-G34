@@ -1,4 +1,4 @@
-package it.polito.wa2.g34.server
+package it.polito.wa2.g34.server.product
 
 data class ProductDTO(
     var ean: String,
@@ -8,7 +8,7 @@ data class ProductDTO(
     var image: String
 )
 
-fun Product.toDTO(): ProductDTO{
+fun Product.toDTO(): ProductDTO {
     return ProductDTO(
         ean = this.ean,
         brand = this.brand,
