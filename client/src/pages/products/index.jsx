@@ -4,6 +4,9 @@ import {ProductDTO} from "../../utils/product";
 import {Link} from "react-router-dom";
 
 export default function Index() {
+    /**
+     * @type {[ProductDTO[], function(ProductDTO[]): void]}
+     */
     const [products, setProducts] = React.useState([]);
     const [productName, setProductName] = React.useState("");
 
@@ -12,6 +15,7 @@ export default function Index() {
         async function getData(){
             let res = await ProductDTO.getAllProducts();
             setProducts(res);
+            console.log(res)
         }
         getData()
     },[]);
@@ -31,7 +35,7 @@ export default function Index() {
                 </input>
             </div>
             <div title="grid-container" className="grid grid-cols-4 p-10 gap-x-3 gap-y-3 text-center">
-                {products.filter((it) => it.name.startsWith(productName)).map((product) => {
+                {products.filter((it) => it.model.startsWith(productName)).map((product) => {
                     return (
                         <Product key={product.ean} product={product}/>
                     )

@@ -23,9 +23,9 @@ export class ProductDTO {
         try {
             const response = await fetch(URL);
             const json = await response.json();
-            return ProductDTO.fromJson(json)
+            return json.map(ProductDTO.fromJson)
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
     static async getProductDetails(ean) {

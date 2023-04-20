@@ -4,12 +4,13 @@ import ProfileForm from "../../components/ProfileForm";
 import Header from "../../components/Header";
 import {Link} from "react-router-dom";
 const onFormSubmit = async (profile) => {
-    let inserted = await profile.insertNewProfile();
-    console.log(inserted);
-    if(inserted) {
+    try{
+        await profile.insertNewProfile();
         window.location.replace("/profiles/" + profile.email);
-    } else {
-        window.location.replace("/error/" + "Profile already exists");
+    }
+    catch (e) {
+        console.log();
+        window.location.replace("/error/" + e.message);
     }
 }
 

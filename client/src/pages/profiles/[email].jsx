@@ -4,9 +4,10 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 
 const onFormSubmit = async (profile) => {
-    let edited = await profile.updateExistingProfile()
-    if(!edited) {
-        window.location.replace("/error/" + `Update failed`);
+    try{
+        await profile.updateExistingProfile()
+    }catch (err) {
+        window.location.replace("/error/" + err.message);
     }
 }
 
@@ -33,7 +34,7 @@ export default function Profile() {
 
     return <div className={"p-10 m-10"}>
         <div className={"w-full my-5 flex justify-center align-middle"}>
-            <h1 className={"text-3xl mx-auto block"}>{email + "'s"} Profile</h1>
+            <h1 className={"text-3xl mx-auto block"}>{profile.name + "'s"} Profile</h1>
         </div>
 
         <ProfileForm profile={profile} isMailReadOnly={true}

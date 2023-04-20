@@ -36,7 +36,7 @@ const PAGES = [
         'errorElement': <ErrorPage />
     },
     {
-        'path': '/error/:message',
+        'path': '/error/:message?',
         'element': <ErrorPage/>,
     }
 ]

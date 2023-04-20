@@ -52,13 +52,19 @@ export class ProfileDTO {
 
     async updateExistingProfile() {
         const fetchURL = `/api/profiles/${this.email}`;
-        return (await fetch(fetchURL, {
+        let response =  await fetch(fetchURL, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this)
-        })).ok;
+        });
+        if (!response.ok) {
+            console.log("Error updating profile: " + response.status)
+            let respJson = await response.json()
+            console.error(respJson)
+            throw new Error(respJson.detail);
+        }
     }
 
     /**
@@ -67,12 +73,18 @@ export class ProfileDTO {
      */
     async insertNewProfile() {
         const URL = "/api/profiles";
-        return (await fetch(URL, {
+        let response = await fetch(URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(this)
-        })).ok;
+        });
+        if (!response.ok) {
+            console.log("Error inserting profile: " + response.status)
+            let respJson = await response.json()
+            console.error(respJson)
+            throw new Error(respJson.detail);
+        }
     }
 }
