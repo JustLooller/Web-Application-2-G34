@@ -15,7 +15,7 @@ export class ProductDTO {
         if (json instanceof String) {
             json = JSON.parse(json);
         }
-        return new ProductDTO(json.ean, json.brand, json.model, json.description, json.image);
+        return new ProductDTO(json.ean, json.brand.name, json.model, json.description, json.image);
     }
 
     static async getAllProducts(){
