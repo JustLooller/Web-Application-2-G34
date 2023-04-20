@@ -2,7 +2,7 @@ package it.polito.wa2.g34.server.product
 
 data class ProductDTO(
     var ean: String,
-    var brand: Int,
+    var brand: Brand,
     var model: String,
     var description: String,
     var image: String
