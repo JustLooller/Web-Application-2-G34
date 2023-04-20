@@ -1,4 +1,4 @@
-package it.polito.wa2.g34.server
+package it.polito.wa2.g34.server.product
 
 import jakarta.validation.constraints.Size
 import org.springframework.validation.annotation.Validated
@@ -18,6 +18,6 @@ class ProductController(
 
     @GetMapping("/api/products/{ean}")
     fun getProduct(@PathVariable @Size(min=13,max=13) ean: String ): ProductDTO? {
-        return productService.getProduct(ean)
+        return productService.getProduct(ean) ?: throw ProductNotFoundException("Product with ean: $ean not Found")
     }
 }
