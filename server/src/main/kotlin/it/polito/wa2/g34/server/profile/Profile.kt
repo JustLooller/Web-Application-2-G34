@@ -1,8 +1,6 @@
 package it.polito.wa2.g34.server.profile
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "profile")
@@ -11,4 +9,7 @@ class Profile(
     var email: String = "",
     var name: String = "",
     var age: Int = 0,
+
+    @Enumerated(EnumType.STRING)
+    var role: Role = Role.CUSTOMER
 )

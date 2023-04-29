@@ -17,3 +17,13 @@ fun Product.toDTO(): ProductDTO {
         image = this.image
     )
 }
+
+fun ProductDTO.toEntity() : Product {
+    return Product(
+        ean = this.ean,
+        brand = this.brand,
+        model = this.model,
+        description = this.description,
+        image = this.image
+    )
+}
