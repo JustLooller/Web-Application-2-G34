@@ -29,9 +29,4 @@ class Ticket (
         @ManyToOne
         var sale: Sale,
 
-        @OneToMany(mappedBy = "ticket")
-        var history: List<StateHistory>,
-
-        @OneToMany(mappedBy = "ticket")
-        var messages: List<Message>,
 )
