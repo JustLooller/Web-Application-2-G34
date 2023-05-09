@@ -42,9 +42,9 @@ class TicketServiceImpl(
             newState = State.IN_PROGRESS.toString(),
         )
         stateHistoryService.updateState(update);
-        val ticket = ticketRepository.findById(ticket.id).get();
-        ticket.expert = expertEntity;
-        return ticketRepository.save(ticket);
+        val ticket1 = ticketRepository.findById(ticket.id).get();
+        ticket1.expert = expertEntity;
+        return ticketRepository.save(ticket1);
     }
 
     override fun removeExpert(ticket: TicketDTO, requester: ProfileDTO): Ticket {
@@ -53,10 +53,10 @@ class TicketServiceImpl(
         if (!requesterId.isPresent) {
             throw ProfileNotFoundException("Requester with id ${requester.email} not found");
         }
-        val requester = requesterId.get();
-        if (requester.email != ticket.expert!!.email) {
+        val requester1 = requesterId.get();
+        if (requester1.email != ticket.expert!!.email) {
             throw ProfileNotFoundException("The requester is not the assigned expert")
-        } else if (requester.role != Role.MANAGER) {
+        } else if (requester1.role != Role.MANAGER) {
             throw ProfileNotFoundException("The requester is not a manager or the assigned expert")
         }
         ticket.expert = null;
