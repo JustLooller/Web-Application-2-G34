@@ -1,6 +1,7 @@
 package it.polito.wa2.g34.server.ticketing.service.impl
 
 import it.polito.wa2.g34.server.profile.*
+import it.polito.wa2.g34.server.sales.SaleService
 import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
 import it.polito.wa2.g34.server.ticketing.dto.UpdateTicketStatusDTO
 import it.polito.wa2.g34.server.ticketing.dto.toEntity
@@ -16,13 +17,14 @@ class TicketServiceImpl(
     private val ticketRepository: TicketRepository,
     private val profileRepository: ProfileRepository,
     private val stateHistoryService: StateHistoryService,
+    private val saleService: SaleService,
 ) : TicketService {
     override fun getTicket(ticketId: Long): Ticket? {
         return ticketRepository.findById(ticketId).orElse(null);
     }
 
     override fun createTicket(ticket: TicketDTO): Ticket {
-        return ticketRepository.save(ticket.toEntity());
+        return ticketRepository.save(ticket.toEntity(saleService));
     }
 
     override fun assignExpert(ticket: TicketDTO, expertId: String, managerId: String): Ticket {
@@ -42,7 +44,7 @@ class TicketServiceImpl(
             newState = State.IN_PROGRESS.toString(),
         )
         stateHistoryService.updateState(update);
-        val ticket1 = ticketRepository.findById(ticket.id).get();
+        val ticket1 = ticketRepository.findById(ticket.id!!).get();
         ticket1.expert = expertEntity;
         return ticketRepository.save(ticket1);
     }
@@ -60,7 +62,7 @@ class TicketServiceImpl(
             throw ProfileNotFoundException("The requester is not a manager or the assigned expert")
         }
         ticket.expert = null;
-        return ticketRepository.save(ticket.toEntity());
+        return ticketRepository.save(ticket.toEntity(saleService));
     }
 
 }

@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 
 data class TicketDTO(
-    var id: Long,
+    var id: Long? = null,
     var priority: String,
     var state: String,
     var creator: ProfileDTO,
@@ -26,10 +26,8 @@ data class TicketDTO(
     var sale_id: String,
 )
 
-@Autowired
-private lateinit var saleService: SaleService
 
-fun TicketDTO.toEntity() : Ticket {
+fun TicketDTO.toEntity(sale: SaleService) : Ticket {
     return Ticket(
         id=this.id,
         priority= Priority.valueOf(this.priority),
@@ -37,9 +35,11 @@ fun TicketDTO.toEntity() : Ticket {
         creator= this.creator.toEntity(),
         expert=this.expert?.toEntity(),
         product=this.product.toEntity(),
-        sale= saleService.getSaleByTicket(this).toEntity(),
+        sale= sale.getSaleByTicket(this).toEntity(),
     )
 }
+
+
 
 
 

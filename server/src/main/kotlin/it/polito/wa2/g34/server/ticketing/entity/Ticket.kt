@@ -9,7 +9,7 @@ import jakarta.persistence.*
 class Ticket (
         @Id
         @GeneratedValue (strategy = GenerationType.SEQUENCE)
-        var id : Long,
+        var id : Long? = null,
 
         @Enumerated(EnumType.STRING)
         var priority: Priority,

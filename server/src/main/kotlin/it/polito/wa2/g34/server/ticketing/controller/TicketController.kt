@@ -24,7 +24,7 @@ class TicketController(
     }
 
     @PostMapping("/api/ticket/")
-    fun createTicket(ticket: TicketDTO): TicketDTO {
+    fun createTicket(@RequestBody ticket: TicketDTO): TicketDTO {
         return ticketService.createTicket(ticket).toDTO()
     }
 

@@ -1,5 +1,6 @@
 package it.polito.wa2.g34.server.ticketing.service.impl
 
+import it.polito.wa2.g34.server.sales.SaleService
 import it.polito.wa2.g34.server.ticketing.dto.MessageDTO
 import it.polito.wa2.g34.server.ticketing.dto.toDTO
 import it.polito.wa2.g34.server.ticketing.dto.toEntity
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class MessageServiceImpl(
-    private val messageRepository : MessageRepository
+    private val messageRepository : MessageRepository,
+    private val saleService : SaleService
 ): MessageService {
 
     override fun getChatMessages(ticketId: Long): List<Message> {
@@ -18,6 +20,6 @@ class MessageServiceImpl(
     }
 
     override fun sendMessage(message: MessageDTO): Message {
-        return messageRepository.save(message.toEntity());
+        return messageRepository.save(message.toEntity(saleService));
     }
 }

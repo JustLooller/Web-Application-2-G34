@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import it.polito.wa2.g34.server.profile.ProfileDTO
 import it.polito.wa2.g34.server.profile.toDTO
 import it.polito.wa2.g34.server.profile.toEntity
+import it.polito.wa2.g34.server.sales.SaleService
 import it.polito.wa2.g34.server.ticketing.entity.Message
 import java.time.LocalDateTime
 
@@ -27,13 +28,13 @@ fun Message.toDTO() : MessageDTO{
     )
 }
 
-fun MessageDTO.toEntity() : Message {
+fun MessageDTO.toEntity(sale: SaleService) : Message {
     return Message(
         id=this.id,
         text = this.text,
         timestamp = this.timestamp,
         user = this.user.toEntity(),
         attachment = this.attachment,
-        ticket = this.ticket.toEntity(),
+        ticket = this.ticket.toEntity(sale),
     )
 }

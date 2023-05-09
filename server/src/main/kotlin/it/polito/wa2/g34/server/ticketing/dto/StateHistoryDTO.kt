@@ -4,6 +4,7 @@ import it.polito.wa2.g34.server.profile.Profile
 import it.polito.wa2.g34.server.profile.ProfileDTO
 import it.polito.wa2.g34.server.profile.toDTO
 import it.polito.wa2.g34.server.profile.toEntity
+import it.polito.wa2.g34.server.sales.SaleService
 import it.polito.wa2.g34.server.ticketing.entity.State
 import it.polito.wa2.g34.server.ticketing.entity.StateHistory
 import java.time.LocalDateTime
@@ -26,10 +27,10 @@ fun StateHistory.toDTO() : StateHistoryDTO {
     )
 }
 
-fun StateHistoryDTO.toEntity() : StateHistory {
+fun StateHistoryDTO.toEntity(sale: SaleService) : StateHistory {
     return StateHistory(
         id = this.id,
-        ticket = this.ticket.toEntity(),
+        ticket = this.ticket.toEntity(sale),
         timestamp = this.timestamp,
         status = State.valueOf(this.status),
         user = this.user.toEntity(),

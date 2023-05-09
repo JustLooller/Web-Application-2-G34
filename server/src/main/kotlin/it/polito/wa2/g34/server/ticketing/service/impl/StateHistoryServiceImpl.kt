@@ -1,6 +1,7 @@
 package it.polito.wa2.g34.server.ticketing.service.impl
 
 import it.polito.wa2.g34.server.profile.ProfileDTO
+import it.polito.wa2.g34.server.sales.SaleService
 import it.polito.wa2.g34.server.ticketing.dto.StateHistoryDTO
 import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
 import it.polito.wa2.g34.server.ticketing.dto.UpdateTicketStatusDTO
@@ -14,9 +15,10 @@ import org.springframework.stereotype.Service
 @Service
 class StateHistoryServiceImpl(
     private val stateHistoryRepository: StateHistoryRepository,
+    private val saleService: SaleService
 ): StateHistoryService {
     override fun getHistory(ticket: TicketDTO): List<StateHistory> {
-        return stateHistoryRepository.findByTicketId(ticket.id);
+        return stateHistoryRepository.findByTicketId(ticket.id!!);
     }
 
     override fun updateState(update: UpdateTicketStatusDTO) {
@@ -26,7 +28,7 @@ class StateHistoryServiceImpl(
             timestamp = LocalDateTime.now(),
             status = update.newState,
             user = update.requester,
-        ).toEntity();
+        ).toEntity(saleService);
         // TODO: controlli di cambio di stato ammissibili.
         stateHistoryRepository.save(newState);
     }

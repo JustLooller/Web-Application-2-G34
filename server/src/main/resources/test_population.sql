@@ -1,0 +1,4 @@
+INSERT INTO brand VALUES(1,'Apple');
+INSERT INTO profile(email, name, age) VALUES('mario@rossi.it', 'Mario Rossi', 25);
+INSERT INTO profile(email, name, age) VALUES('francesco@gialli.it', 'Francesco Gialli', 30);
+INSERT INTO product(ean, brand, model, description, image) VALUES('0194252708002',1, 'Apple iPhone 13','Il tuo nuovo superpotere.\nIl nostro sistema a doppia fotocamera più evoluto di sempre.Migliora del 47% la qualità delle immagini riprese in notturna.', 'https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/refurb-iphone-13-pro-graphite-2023?wid=2000&hei=1897&fmt=jpeg&qlt=95&.v=1679072987081')
