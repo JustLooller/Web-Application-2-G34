@@ -1,10 +1,9 @@
 package it.polito.wa2.g34.server.ticketing.service.impl
 
 import it.polito.wa2.g34.server.profile.*
-import it.polito.wa2.g34.server.sales.SaleService
+import it.polito.wa2.g34.server.ticketing.converters.EntityConverter
 import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
 import it.polito.wa2.g34.server.ticketing.dto.UpdateTicketStatusDTO
-import it.polito.wa2.g34.server.ticketing.dto.toEntity
 import it.polito.wa2.g34.server.ticketing.entity.State
 import it.polito.wa2.g34.server.ticketing.entity.Ticket
 import it.polito.wa2.g34.server.ticketing.repository.TicketRepository
@@ -17,14 +16,18 @@ class TicketServiceImpl(
     private val ticketRepository: TicketRepository,
     private val profileRepository: ProfileRepository,
     private val stateHistoryService: StateHistoryService,
-    private val saleService: SaleService,
+    private val entityConverter: EntityConverter,
 ) : TicketService {
+
+    fun TicketDTO.toEntity() : Ticket {
+        return entityConverter.ticketDTOtoEntity(this);
+    }
     override fun getTicket(ticketId: Long): Ticket? {
         return ticketRepository.findById(ticketId).orElse(null);
     }
 
     override fun createTicket(ticket: TicketDTO): Ticket {
-        return ticketRepository.save(ticket.toEntity(saleService));
+        return ticketRepository.save(ticket.toEntity());
     }
 
     override fun assignExpert(ticket: TicketDTO, expertId: String, managerId: String): Ticket {
@@ -39,8 +42,8 @@ class TicketServiceImpl(
         }
         val managerDTO = manager.get();
         val update = UpdateTicketStatusDTO(
-            ticket = ticket,
-            requester = managerDTO.toDTO(),
+            ticket_id = ticket.id!!,
+            requester_email = managerDTO.email,
             newState = State.IN_PROGRESS.toString(),
         )
         stateHistoryService.updateState(update);
@@ -56,13 +59,13 @@ class TicketServiceImpl(
             throw ProfileNotFoundException("Requester with id ${requester.email} not found");
         }
         val requester1 = requesterId.get();
-        if (requester1.email != ticket.expert!!.email) {
+        if (requester1.email != ticket.expert_mail!!) {
             throw ProfileNotFoundException("The requester is not the assigned expert")
         } else if (requester1.role != Role.MANAGER) {
             throw ProfileNotFoundException("The requester is not a manager or the assigned expert")
         }
-        ticket.expert = null;
-        return ticketRepository.save(ticket.toEntity(saleService));
+        ticket.expert_mail = null;
+        return ticketRepository.save(ticket.toEntity());
     }
 
 }
