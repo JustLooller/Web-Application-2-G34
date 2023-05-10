@@ -23,7 +23,7 @@ class EntityConverterImpl(
     override fun ticketDTOtoEntity(ticketDTO: TicketDTO): Ticket {
         return Ticket(
             id = ticketDTO.id,
-            priority = Priority.valueOf(ticketDTO.priority),
+            priority = if (ticketDTO.priority == null) null else Priority.valueOf(ticketDTO.priority!!),
             state = State.valueOf(ticketDTO.state),
             creator = profileService.getProfile(ticketDTO.creator_email)!!, // TODO: throw error in service if no profile found
             expert = ticketDTO.expert_mail?.let { profileService.getProfile(it) },

@@ -12,7 +12,7 @@ class Ticket (
         var id : Long? = null,
 
         @Enumerated(EnumType.STRING)
-        var priority: Priority,
+        var priority: Priority?,
 
         @Enumerated(EnumType.STRING)
         var state: State,

@@ -5,7 +5,7 @@ import it.polito.wa2.g34.server.ticketing.entity.Ticket
 
 data class TicketDTO(
     var id: Long? = null,
-    var priority: String,
+    var priority: String?,
     var state: String,
     var creator_email: String,
     var expert_mail: String?,
