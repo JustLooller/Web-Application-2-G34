@@ -471,14 +471,23 @@ class ServerApplicationTests {
             var product: ProductDTO,
             var sale_id: String,
         )
+        class testTicket(
+            var id: Long? = null,
+            var priority: String?,
+            var state: String,
+            var creator_email: String,
+            var expert_mail: String?,
+            var product_ean: String,
+            var sale_id: String,
+        )
         customerprofile.email = "abc"
-        val ticketToBeInserted = correctTicket(
+        val ticketToBeInserted = testTicket(
             null,
             null,
             State.OPEN.name,
-            customerprofile.toDTO(),
+            customerprofile.email,
             null,
-            product.toDTO(),
+            product.ean,
             sale.id!!
         )
 
