@@ -34,7 +34,7 @@ import java.time.LocalDateTime
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@Sql(scripts = ["file:src/main/resources/test_population.sql"])
+//@Sql(scripts = ["file:src/main/resources/test_population.sql"])
 class ServerApplicationTests {
     companion object {
         @Container
@@ -62,6 +62,8 @@ class ServerApplicationTests {
     lateinit var productRepository: ProductRepository
     @Autowired
     lateinit var saleRepository: SaleRepository
+    @Autowired
+    lateinit var brandRepository: BrandRepository
     
 
 
@@ -140,6 +142,19 @@ class ServerApplicationTests {
     @Test
     @DisplayName("PostTicket correct behaviour 2")
     fun postTicketCorrectBehaviour2() {
+        brandRepository.save(Brand(
+            0,
+            "Apple"
+        ))
+        val brand = brandRepository.findAll().first()
+        productRepository.save(Product(
+            "0194252708002",
+            brand,
+            "Apple iPhone 13",
+            "Il tuo nuovo superpotere.Il nostro sistema a doppia fotocamera più evoluto di sempre.Migliora del 47% la qualità delle immagini riprese in notturna.",
+            "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/refurb-iphone-13-pro-graphite-2023?wid=2000&hei=1897&fmt=jpeg&qlt=95&.v=1679072987081"
+
+        ))
         val product = productRepository.findAll().first()
         profileRepository.save(Profile("customer@gmail.com", "Perfect Customer", 25, Role.CUSTOMER))
         val customerprofile = profileRepository.findAll().last()
