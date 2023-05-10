@@ -1,6 +1,8 @@
 package it.polito.wa2.g34.server.ticketing.service.impl
 
 import it.polito.wa2.g34.server.profile.*
+import it.polito.wa2.g34.server.ticketing.advice.IllegalUpdateException
+import it.polito.wa2.g34.server.ticketing.advice.TicketBadRequestException
 import it.polito.wa2.g34.server.ticketing.converters.EntityConverter
 import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
 import it.polito.wa2.g34.server.ticketing.dto.UpdateTicketStatusDTO
@@ -26,8 +28,25 @@ class TicketServiceImpl(
         return ticketRepository.findById(ticketId).orElse(null);
     }
 
-    override fun createTicket(ticket: TicketDTO): Ticket {
-        return ticketRepository.save(ticket.toEntity());
+    override fun createTicket(ticketDTO: TicketDTO): Ticket {
+        if (ticketDTO.expert_mail != null) {
+            throw TicketBadRequestException("Cannot create a ticket with an expert assigned")
+        }
+        if (ticketDTO.priority != null) {
+            throw TicketBadRequestException("Cannot create a ticket with a priority assigned")
+        }
+        if (ticketDTO.state != State.OPEN.toString()) {
+            throw TicketBadRequestException("Cannot create a ticket with a state assigned")
+        }
+        val ticketEntity = ticketDTO.toEntity()
+        if (ticketEntity.creator.role != Role.CUSTOMER) {
+            throw TicketBadRequestException("Only customers can create tickets")
+        }
+        if (ticketEntity.sale.product.ean != ticketDTO.product_ean) {
+            throw TicketBadRequestException("The product ean must match the sale ean")
+        }
+
+        return ticketRepository.save(ticketEntity);
     }
 
     override fun assignExpert(ticket: TicketDTO, expertId: String, managerId: String): Ticket {
