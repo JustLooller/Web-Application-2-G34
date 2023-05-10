@@ -181,6 +181,7 @@ class ServerApplicationTests {
         val result = restTemplate.postForEntity("/api/ticket/", ticketToBeInserted.toDTO(),String::class.java)
         println(result.body)
         assertEquals(result.statusCode,HttpStatus.OK)
+        cleanDB()
     }
 
     /*@Test
@@ -219,5 +220,12 @@ class ServerApplicationTests {
     }
 
      */
+
+    fun cleanDB(){
+        profileRepository.deleteAll()
+        productRepository.deleteAll()
+        saleRepository.deleteAll()
+        brandRepository.deleteAll()
+    }
 
 }
