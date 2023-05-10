@@ -408,22 +408,22 @@ class ServerApplicationTests {
         val sale = saleRepository.findAll().first()
         profileRepository.save(Profile("exper@gmail.com", "Perfect Expert", 25, Role.EXPERT))
         val expertprofile = profileRepository.findAll().last()
-        class correctTicket(
+        class testTicket(
             var id: Long? = null,
             var priority: String?,
             var state: String,
-            var creator: ProfileDTO,
-            var expert: ProfileDTO?,
-            var product: ProductDTO,
+            var creator_email: String,
+            var expert_mail: String?,
+            var product_ean: String,
             var sale_id: String,
         )
-        val ticketToBeInserted = correctTicket(
+        val ticketToBeInserted = testTicket(
             null,
             null,
             State.OPEN.name,
-            customerprofile.toDTO(),
+            customerprofile.email,
             null,
-            product.toDTO(),
+            product.ean,
             sale.id!!
         )
 
@@ -434,8 +434,8 @@ class ServerApplicationTests {
     }
 
     @Test
-    @DisplayName("Ticket creater must have a valid Email")
-    fun ticketCreaterMustHaveAValidEmail() {
+    @DisplayName("Ticket creator must have a valid Email")
+    fun ticketCreatorMustHaveAValidEmail() {
         brandRepository.save(Brand(
             0,
             "Apple"
