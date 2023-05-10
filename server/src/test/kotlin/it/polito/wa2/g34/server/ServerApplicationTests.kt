@@ -606,7 +606,7 @@ class ServerApplicationTests {
         )
 
         restTemplate.postForEntity("/api/ticket/", ticketToBeInserted,String::class.java)
-        val ticket = ticketRepository.findAll().first()
+        val ticket = ticketRepository.findAll().last()
         val result = restTemplate.getForEntity("/api/ticket/${ticket.id}",String::class.java)
         println(result.body)
         ticketToBeInserted.id = ticket.id
