@@ -614,6 +614,15 @@ class ServerApplicationTests {
         cleanDB()
     }
 
+    @Test
+    @DisplayName("getTicket for not existing ticket must return not found")
+    fun getTicketforNotExistingTicketMustReturnNotFound() {
+        val result = restTemplate.getForEntity("/api/ticket/${(0..Long.MAX_VALUE).random()}",String::class.java)
+        println(result.body)
+        assertEquals(HttpStatus.NOT_FOUND,result.statusCode)
+        cleanDB()
+    }
+
 
     fun cleanDB(){
         this.ticketRepository.deleteAll()
