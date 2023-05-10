@@ -143,6 +143,51 @@ class ServerApplicationTests {
      */
 
     @Test
+    @DisplayName("Ticket must be create only in open status")
+    fun ticketMustBeCreateOnlyInOpenStatus() {
+        brandRepository.save(Brand(
+            0,
+            "Apple"
+        ))
+        val brand = brandRepository.findAll().first()
+        productRepository.save(Product(
+            "0194252708002",
+            brand,
+            "Apple iPhone 13",
+            "Il tuo nuovo superpotere.Il nostro sistema a doppia fotocamera più evoluto di sempre.Migliora del 47% la qualità delle immagini riprese in notturna.",
+            "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/refurb-iphone-13-pro-graphite-2023?wid=2000&hei=1897&fmt=jpeg&qlt=95&.v=1679072987081"
+
+        ))
+        val product = productRepository.findAll().first()
+        profileRepository.save(Profile("customer@gmail.com", "Perfect Customer", 25, Role.CUSTOMER))
+        val customerprofile = profileRepository.findAll().last()
+        saleRepository.save(Sale(
+            "",
+            product,
+            customerprofile,
+            LocalDateTime.now(),
+            LocalDateTime.now().plusYears(2)
+        ))
+        val sale = saleRepository.findAll().first()
+        profileRepository.save(Profile("exper@gmail.com", "Perfect Expert", 25, Role.EXPERT))
+        val expertprofile = profileRepository.findAll().last()
+        val ticketToBeInserted = Ticket(
+            null,
+            priority = Priority.LOW,
+            state = State.CLOSED,
+            creator = customerprofile,
+            expert =expertprofile,
+            product = product,
+            sale = sale
+        )
+
+        val result = restTemplate.postForEntity("/api/ticket/", ticketToBeInserted.toDTO(),String::class.java)
+        println(result.body)
+        assertEquals(result.statusCode,HttpStatus.BAD_REQUEST)
+        cleanDB()
+    }
+
+    @Test
     @DisplayName("PostTicket correct behaviour 2")
     fun postTicketCorrectBehaviour2() {
         brandRepository.save(Brand(
