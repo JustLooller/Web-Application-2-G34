@@ -1,14 +1,19 @@
 package it.polito.wa2.g34.server.ticketing.dto
 
 import it.polito.wa2.g34.server.ticketing.entity.Ticket
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.Size
 
 
 data class TicketDTO(
     var id: Long? = null,
     var priority: String?,
     var state: String,
+    @field:Email
     var creator_email: String,
+    @field:Email
     var expert_mail: String?,
+    @field:Size(min=13,max=13)
     var product_ean: String,
     var sale_id: String,
 )
