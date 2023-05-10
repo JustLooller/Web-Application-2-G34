@@ -14,12 +14,21 @@ class TicketAdvice : ResponseEntityExceptionHandler() {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.message!!)
     }
 
+    @ExceptionHandler(IllegalUpdateException::class)
     fun handleIllegalUpdateException(e : IllegalUpdateException) : ProblemDetail {
         return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.message!!)
     }
+
+    @ExceptionHandler(TicketBadRequestException::class)
+    fun handleTicketBadRequestException(e : TicketBadRequestException) : ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message!!)
+    }
+
+
 
 }
 
 
 class TicketNotFoundException(message : String) : Exception(message)
 class IllegalUpdateException(message : String) : Exception(message)
+class TicketBadRequestException(message : String) : Exception(message)

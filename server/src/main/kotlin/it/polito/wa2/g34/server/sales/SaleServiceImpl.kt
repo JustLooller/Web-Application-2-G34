@@ -14,8 +14,7 @@ class SaleServiceImpl(
         if (found.isPresent) {
             return found.get()
         } else {
-//            throw SaleNotFoundException()
-            TODO("throw SaleNotFoundException()")
+            throw SaleNotFoundException(sale_id)
         }
     }
     override fun getSaleByTicket(ticket: TicketDTO): Sale {
