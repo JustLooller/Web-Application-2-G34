@@ -10,6 +10,7 @@ import it.polito.wa2.g34.server.ticketing.dto.toDTO
 import it.polito.wa2.g34.server.ticketing.entity.Priority
 import it.polito.wa2.g34.server.ticketing.entity.State
 import it.polito.wa2.g34.server.ticketing.entity.Ticket
+import it.polito.wa2.g34.server.ticketing.repository.TicketRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -64,6 +65,8 @@ class ServerApplicationTests {
     lateinit var saleRepository: SaleRepository
     @Autowired
     lateinit var brandRepository: BrandRepository
+    @Autowired
+    lateinit var ticketRepository: TicketRepository
     
 
 
@@ -222,10 +225,11 @@ class ServerApplicationTests {
      */
 
     fun cleanDB(){
-        profileRepository.deleteAll()
-        productRepository.deleteAll()
-        saleRepository.deleteAll()
-        brandRepository.deleteAll()
+        this.ticketRepository.deleteAll()
+        this.saleRepository.deleteAll()
+        this.profileRepository.deleteAll()
+        this.productRepository.deleteAll()
+        this.brandRepository.deleteAll()
     }
 
 }
