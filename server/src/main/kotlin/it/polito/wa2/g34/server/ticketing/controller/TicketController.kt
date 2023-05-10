@@ -2,6 +2,7 @@ package it.polito.wa2.g34.server.ticketing.controller
 
 import it.polito.wa2.g34.server.ticketing.advice.TicketNotFoundException
 import it.polito.wa2.g34.server.ticketing.dto.*
+import it.polito.wa2.g34.server.ticketing.entity.Priority
 import it.polito.wa2.g34.server.ticketing.entity.State
 import it.polito.wa2.g34.server.ticketing.service.MessageService
 import it.polito.wa2.g34.server.ticketing.service.StateHistoryService
@@ -28,14 +29,16 @@ class TicketController(
         return ticketService.createTicket(ticket).toDTO()
     }
 
-    @PutMapping("/api/ticket/{id}/start/{expert_id}")
+    @PutMapping("/api/ticket/{id}/start/{expert_id}") // ?priority=LOW (LOW = default)
     fun updateTicketState(
         @PathVariable("id") id: Long,
         @PathVariable("expert_id") @Email expertId: String,
-        @Valid @RequestBody updateTicketStatusDTO: UpdateTicketStatusDTO
+        @Valid @RequestBody updateTicketStatusDTO: UpdateTicketStatusDTO,
+        @RequestParam(name = "priority", defaultValue = "LOW") priority: Priority
     ): TicketDTO {
         updateTicketStatusDTO.newState = State.IN_PROGRESS.toString();
         val ticket = ticketService.getTicket(id) ?: throw TicketNotFoundException("Ticket with id: $id not Found")
+        ticket.priority = priority
         return ticketService.assignExpert(ticket.toDTO(), expertId, updateTicketStatusDTO.requester_email).toDTO()
     }
 
