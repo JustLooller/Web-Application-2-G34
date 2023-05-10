@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
+    kotlin("plugin.serialization") version "1.8.21"
 }
 
 group = "it.polito.WA2.G34"
@@ -34,6 +35,8 @@ dependencies {
 
     testImplementation ("org.testcontainers:junit-jupiter:1.16.3")
     testImplementation("org.testcontainers:postgresql:1.16.3")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 }
 
 tasks.withType<KotlinCompile> {

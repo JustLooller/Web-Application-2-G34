@@ -16,7 +16,7 @@ data class TicketDTO(
 fun Ticket.toDTO(): TicketDTO {
     return TicketDTO(
         id=this.id,
-        priority = this.priority.toString(),
+        priority = if(this.priority == null) null else this.priority!!.name,
         state = this.state.toString(),
         creator_email = this.creator.email,
         expert_mail = this.expert?.email,
