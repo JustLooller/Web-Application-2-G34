@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 class TicketController(
     private val ticketService: TicketService,
     private val stateHistoryService: StateHistoryService,
-    private val messageService: MessageService
+    private val messageService: MessageService,
 ) {
     @GetMapping("/api/ticket/{id}")
     fun getTicket(@PathVariable("id") id: Long): TicketDTO {
@@ -36,7 +36,7 @@ class TicketController(
     ): TicketDTO {
         updateTicketStatusDTO.newState = State.IN_PROGRESS.toString();
         val ticket = ticketService.getTicket(id) ?: throw TicketNotFoundException("Ticket with id: $id not Found")
-        return ticketService.assignExpert(ticket.toDTO(), expertId, updateTicketStatusDTO.requester.email).toDTO()
+        return ticketService.assignExpert(ticket.toDTO(), expertId, updateTicketStatusDTO.requester_email).toDTO()
     }
 
     @PutMapping("/api/ticket/{id}/stop")

@@ -10,7 +10,7 @@ class ProductServiceImpl(
     override fun getAll() : List<ProductDTO>{
         return productRepository.findAll().map { it.toDTO() };
     }
-    override fun getProduct(ean: String) : ProductDTO? {
-        return productRepository.findById(ean).map { it.toDTO() }.orElse(null);
+    override fun getProduct(ean: String) : Product? {
+        return productRepository.findById(ean).orElse(null);
     }
 }

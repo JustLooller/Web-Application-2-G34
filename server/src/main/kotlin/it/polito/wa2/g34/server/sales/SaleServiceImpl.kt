@@ -9,13 +9,16 @@ class SaleServiceImpl(
 ) : SaleService{
 
 
-    override fun getSaleByTicket(ticket: TicketDTO): SaleDTO {
-        var found = saleRepository.findById(ticket.sale_id);
+    override fun getSale(sale_id: String): Sale {
+        var found = saleRepository.findById(sale_id);
         if (found.isPresent) {
-            return found.get().toDTO()
+            return found.get()
         } else {
 //            throw SaleNotFoundException()
             TODO("throw SaleNotFoundException()")
         }
+    }
+    override fun getSaleByTicket(ticket: TicketDTO): Sale {
+        return getSale(ticket.sale_id);
     }
 }
