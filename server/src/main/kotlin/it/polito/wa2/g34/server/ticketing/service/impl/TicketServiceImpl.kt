@@ -68,6 +68,7 @@ class TicketServiceImpl(
         stateHistoryService.updateState(update);
         val ticket1 = ticketRepository.findById(ticket.id!!).get();
         ticket1.expert = expertEntity;
+        ticket1.state = State.IN_PROGRESS
         return ticketRepository.save(ticket1);
     }
 

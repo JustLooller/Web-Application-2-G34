@@ -5,22 +5,31 @@ import it.polito.wa2.g34.server.profile.*
 import it.polito.wa2.g34.server.sales.Sale
 import it.polito.wa2.g34.server.sales.SaleRepository
 import it.polito.wa2.g34.server.sales.toDTO
+import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
+import it.polito.wa2.g34.server.ticketing.dto.UpdateTicketStatusDTO
 import it.polito.wa2.g34.server.ticketing.dto.toDTO
 import it.polito.wa2.g34.server.ticketing.entity.Priority
 import it.polito.wa2.g34.server.ticketing.entity.State
+import it.polito.wa2.g34.server.ticketing.repository.StateHistoryRepository
 import it.polito.wa2.g34.server.ticketing.repository.TicketRepository
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
@@ -65,6 +74,8 @@ class ServerApplicationTests {
     lateinit var brandRepository: BrandRepository
     @Autowired
     lateinit var ticketRepository: TicketRepository
+    @Autowired
+    lateinit var stateHistoryRepository: StateHistoryRepository
 
     @Test
     @DisplayName("Ticket must be created only in open status")
@@ -623,8 +634,203 @@ class ServerApplicationTests {
         cleanDB()
     }
 
+    @Test
+    @DisplayName("Put Ticket start correct behaviour")
+    fun putTicketStartCorrectBehaviour() {
+        brandRepository.save(Brand(
+            0,
+            "Apple"
+        ))
+        val brand = brandRepository.findAll().first()
+        productRepository.save(Product(
+            "0194252708002",
+            brand,
+            "Apple iPhone 13",
+            "Il tuo nuovo superpotere.Il nostro sistema a doppia fotocamera più evoluto di sempre.Migliora del 47% la qualità delle immagini riprese in notturna.",
+            "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/refurb-iphone-13-pro-graphite-2023?wid=2000&hei=1897&fmt=jpeg&qlt=95&.v=1679072987081"
+
+        ))
+        val product = productRepository.findAll().first()
+        profileRepository.save(Profile("customer@gmail.com", "Perfect Customer", 25, Role.CUSTOMER))
+        val customerprofile = profileRepository.findAll().last()
+        saleRepository.save(Sale(
+            "",
+            product,
+            customerprofile,
+            LocalDateTime.now(),
+            LocalDateTime.now().plusYears(2)
+        ))
+        val sale = saleRepository.findAll().first()
+        profileRepository.save(Profile("exper@gmail.com", "Perfect Expert", 25, Role.EXPERT))
+        val expertprofile = profileRepository.findAll().last()
+        profileRepository.save(Profile("manager@gmail.com", "Perfect Manager", 25, Role.MANAGER))
+        val managerProfile = profileRepository.findAll().last()
+        @Serializable
+        data class testTicket(
+            var id: Long? = null,
+            var priority: String?,
+            var state: String,
+            var creator_email: String,
+            var expert_mail: String?,
+            var product_ean: String,
+            var sale_id: String,
+        )
+        val ticketToBeInserted = testTicket(
+            null,
+            null,
+            State.OPEN.name,
+            customerprofile.email,
+            null,
+            product.ean,
+            sale.id!!
+        )
+
+        restTemplate.postForEntity("/api/ticket/", ticketToBeInserted,String::class.java)
+        val ticket = ticketRepository.findAll().last()
+        val putResult = restTemplate.put("/api/ticket/${ticket.id}/start/${expertprofile.email}",UpdateTicketStatusDTO(ticket.id!!,managerProfile.email,null), ticketToBeInserted,String::class.java)
+        val result = restTemplate.getForEntity("/api/ticket/${ticket.id}",String::class.java)
+        println(result.body)
+        ticketToBeInserted.id = ticket.id
+        ticketToBeInserted.state = State.IN_PROGRESS.name
+        ticketToBeInserted.expert_mail = expertprofile.email
+        assertEquals(Json.encodeToString(ticketToBeInserted),result.body)
+        cleanDB()
+    }
+
+    @Test
+    @DisplayName("Put Ticket priority must not be null after start")
+    fun PutTicketPriorityMustNotBeNullAfterStart() {
+        brandRepository.save(Brand(
+            0,
+            "Apple"
+        ))
+        val brand = brandRepository.findAll().first()
+        productRepository.save(Product(
+            "0194252708002",
+            brand,
+            "Apple iPhone 13",
+            "Il tuo nuovo superpotere.Il nostro sistema a doppia fotocamera più evoluto di sempre.Migliora del 47% la qualità delle immagini riprese in notturna.",
+            "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/refurb-iphone-13-pro-graphite-2023?wid=2000&hei=1897&fmt=jpeg&qlt=95&.v=1679072987081"
+
+        ))
+        val product = productRepository.findAll().first()
+        profileRepository.save(Profile("customer@gmail.com", "Perfect Customer", 25, Role.CUSTOMER))
+        val customerprofile = profileRepository.findAll().last()
+        saleRepository.save(Sale(
+            "",
+            product,
+            customerprofile,
+            LocalDateTime.now(),
+            LocalDateTime.now().plusYears(2)
+        ))
+        val sale = saleRepository.findAll().first()
+        profileRepository.save(Profile("exper@gmail.com", "Perfect Expert", 25, Role.EXPERT))
+        val expertprofile = profileRepository.findAll().last()
+        profileRepository.save(Profile("manager@gmail.com", "Perfect Manager", 25, Role.MANAGER))
+        val managerProfile = profileRepository.findAll().last()
+        @Serializable
+        data class testTicket(
+            var id: Long? = null,
+            var priority: String?,
+            var state: String,
+            var creator_email: String,
+            var expert_mail: String?,
+            var product_ean: String,
+            var sale_id: String,
+        )
+        val ticketToBeInserted = testTicket(
+            null,
+            null,
+            State.OPEN.name,
+            customerprofile.email,
+            null,
+            product.ean,
+            sale.id!!
+        )
+
+        restTemplate.postForEntity("/api/ticket/", ticketToBeInserted,String::class.java)
+        val ticket = ticketRepository.findAll().last()
+        val putResult = restTemplate.put("/api/ticket/${ticket.id}/start/${expertprofile.email}",UpdateTicketStatusDTO(ticket.id!!,managerProfile.email,null), ticketToBeInserted,String::class.java)
+        val result = restTemplate.getForEntity("/api/ticket/${ticket.id}",String::class.java)
+        println(result.body)
+        ticketToBeInserted.id = ticket.id
+        ticketToBeInserted.state = State.IN_PROGRESS.name
+        ticketToBeInserted.expert_mail = expertprofile.email
+        assertNotNull(Json.decodeFromString<TicketDTO>(result.body!!).priority)
+        cleanDB()
+    }
+
+    @Test
+    @DisplayName("Put Ticket must be called only with OPEN and REOPEN status")
+    fun PutTicketMustBeCalledOnlyWithOPENAndREOPENStatus() {
+        brandRepository.save(Brand(
+            0,
+            "Apple"
+        ))
+        val brand = brandRepository.findAll().first()
+        productRepository.save(Product(
+            "0194252708002",
+            brand,
+            "Apple iPhone 13",
+            "Il tuo nuovo superpotere.Il nostro sistema a doppia fotocamera più evoluto di sempre.Migliora del 47% la qualità delle immagini riprese in notturna.",
+            "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/refurb-iphone-13-pro-graphite-2023?wid=2000&hei=1897&fmt=jpeg&qlt=95&.v=1679072987081"
+
+        ))
+        val product = productRepository.findAll().first()
+        profileRepository.save(Profile("customer@gmail.com", "Perfect Customer", 25, Role.CUSTOMER))
+        val customerprofile = profileRepository.findAll().last()
+        saleRepository.save(Sale(
+            "",
+            product,
+            customerprofile,
+            LocalDateTime.now(),
+            LocalDateTime.now().plusYears(2)
+        ))
+        val sale = saleRepository.findAll().first()
+        profileRepository.save(Profile("exper@gmail.com", "Perfect Expert", 25, Role.EXPERT))
+        val expertprofile = profileRepository.findAll().last()
+        profileRepository.save(Profile("manager@gmail.com", "Perfect Manager", 25, Role.MANAGER))
+        val managerProfile = profileRepository.findAll().last()
+        @Serializable
+        data class testTicket(
+            var id: Long? = null,
+            var priority: String?,
+            var state: String,
+            var creator_email: String,
+            var expert_mail: String?,
+            var product_ean: String,
+            var sale_id: String,
+        )
+        val ticketToBeInserted = testTicket(
+            null,
+            null,
+            State.OPEN.name,
+            customerprofile.email,
+            null,
+            product.ean,
+            sale.id!!
+        )
+
+        restTemplate.postForEntity("/api/ticket/", ticketToBeInserted,String::class.java)
+        val ticket = ticketRepository.findAll().last()
+        restTemplate.put("/api/ticket/${ticket.id}/start/${expertprofile.email}",UpdateTicketStatusDTO(ticket.id!!,managerProfile.email,null), ticketToBeInserted,String::class.java)
+
+        val result : ResponseEntity<String> = restTemplate.exchange(
+            "/api/ticket/${ticket.id}/start/${expertprofile.email}",
+            HttpMethod.PUT,
+            HttpEntity(UpdateTicketStatusDTO(ticket.id!!,managerProfile.email,null)),
+            ticketToBeInserted,
+            String::class.java,
+            arrayOf("")
+        )
+        println(result.statusCode.toString())
+        assertEquals(HttpStatus.FORBIDDEN.value(), result.statusCode.value())
+        cleanDB()
+    }
+
 
     fun cleanDB(){
+        this.stateHistoryRepository.deleteAll()
         this.ticketRepository.deleteAll()
         this.saleRepository.deleteAll()
         this.profileRepository.deleteAll()

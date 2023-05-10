@@ -6,5 +6,5 @@ data class UpdateTicketStatusDTO(
     var ticket_id: Long,
     var requester_email: String,
     @JsonIgnore
-    var newState: String
+    var newState: String?
 )

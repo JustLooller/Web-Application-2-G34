@@ -34,13 +34,13 @@ class StateHistoryServiceImpl(
             id = null,
             ticket_id = update.ticket_id,
             timestamp = LocalDateTime.now(),
-            status = update.newState,
+            status = update.newState!!,
             user_mail = update.requester_email,
         ).toEntity();
         val ticket = ticketRepository.findById(update.ticket_id)
             .orElseThrow { throw TicketNotFoundException("Invalid ticket id provided"); }
 
-        val validUpdateState = when (State.valueOf(update.newState)) {
+        val validUpdateState = when (State.valueOf(update.newState!!)) {
             State.OPEN -> ticket.state == State.IN_PROGRESS;
             State.IN_PROGRESS -> ticket.state == State.OPEN || ticket.state == State.REOPENED;
             State.RESOLVED -> ticket.state == State.IN_PROGRESS || ticket.state == State.REOPENED || ticket.state == State.OPEN;

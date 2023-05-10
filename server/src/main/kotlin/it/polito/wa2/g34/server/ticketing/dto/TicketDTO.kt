@@ -3,8 +3,9 @@ package it.polito.wa2.g34.server.ticketing.dto
 import it.polito.wa2.g34.server.ticketing.entity.Ticket
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Size
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class TicketDTO(
     var id: Long? = null,
     var priority: String?,
