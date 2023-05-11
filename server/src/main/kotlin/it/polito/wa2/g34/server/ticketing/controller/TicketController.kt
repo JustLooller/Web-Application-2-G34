@@ -36,38 +36,44 @@ class TicketController(
         @Valid @RequestBody updateTicketStatusDTO: UpdateTicketStatusDTO,
         @RequestParam(name = "priority", defaultValue = "LOW") priority: Priority
     ): TicketDTO {
-        updateTicketStatusDTO.newState = State.IN_PROGRESS.toString();
         val ticket = ticketService.getTicket(id) ?: throw TicketNotFoundException("Ticket with id: $id not Found")
+        updateTicketStatusDTO.newState = State.IN_PROGRESS.toString();
         ticket.priority = priority
+        updateTicketStatusDTO.ticket_id = id
         return ticketService.assignExpert(ticket.toDTO(), expertId, updateTicketStatusDTO.requester_email).toDTO()
     }
 
     @PutMapping("/api/ticket/{id}/stop")
     fun stopTicket(@PathVariable("id") id: Long, @Valid @RequestBody updateTicketStatusDTO: UpdateTicketStatusDTO) {
         updateTicketStatusDTO.newState = State.OPEN.toString();
+        updateTicketStatusDTO.ticket_id = id
         stateHistoryService.updateState(updateTicketStatusDTO);
     }
 
     @PutMapping("/api/ticket/{id}/close")
     fun closeTicket(@PathVariable("id") id: Long, @Valid @RequestBody updateTicketStatusDTO: UpdateTicketStatusDTO) {
         updateTicketStatusDTO.newState = State.CLOSED.toString();
+        updateTicketStatusDTO.ticket_id = id
         stateHistoryService.updateState(updateTicketStatusDTO);
     }
 
     @PutMapping("/api/ticket/{id}/reopen")
     fun reopenTicket(@PathVariable("id") id: Long, @Valid @RequestBody updateTicketStatusDTO: UpdateTicketStatusDTO) {
         updateTicketStatusDTO.newState = State.REOPENED.toString();
+        updateTicketStatusDTO.ticket_id = id
         stateHistoryService.updateState(updateTicketStatusDTO);
     }
 
     @PutMapping("/api/ticket/{id}/resolve")
     fun resolveTicket(@PathVariable("id") id: Long, @Valid @RequestBody updateTicketStatusDTO: UpdateTicketStatusDTO) {
         updateTicketStatusDTO.newState = State.RESOLVED.toString();
+        updateTicketStatusDTO.ticket_id = id
         stateHistoryService.updateState(updateTicketStatusDTO);
     }
 
     @PostMapping("/api/ticket/{id}/message")
     fun addMessageToTicket(@PathVariable("id") id: Long, @Valid @RequestBody messageDTO: MessageDTO) {
+        messageDTO.ticket_id = id
         messageService.sendMessage(messageDTO)
     }
 

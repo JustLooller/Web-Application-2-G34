@@ -1911,13 +1911,13 @@ class ServerApplicationTests {
             LocalDateTime.now(),
             customerprofile.email,
             "res/photo.png",
-            200
+            0 // ignored
+
         )
-
-
-        val result = restTemplate.postForEntity("/api/ticket/${ticket.id}/message", messageToBeInserted,String::class.java)
+        val randomTicketId = 200;
+        val result = restTemplate.postForEntity("/api/ticket/${randomTicketId}/message", messageToBeInserted,String::class.java)
         println(result.body)
-        assertEquals(HttpStatus.BAD_REQUEST,result.statusCode)
+        assertEquals(HttpStatus.NOT_FOUND,result.statusCode)
         cleanDB()
     }
 

@@ -1,5 +1,6 @@
 package it.polito.wa2.g34.server.ticketing.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import it.polito.wa2.g34.server.ticketing.entity.Message
 import java.time.LocalDateTime
 
@@ -9,6 +10,7 @@ data class MessageDTO(
     var timestamp: LocalDateTime,
     var user_mail: String,
     var attachment: String?,
+    @JsonIgnore
     var ticket_id: Long,
 )
 
