@@ -21,13 +21,13 @@ class MessageServiceImpl(
     }
 
     override fun getChatMessages(ticketId: Long): List<Message> {
+        ticketService.getTicket(ticketId); // assert ticket exists
         return messageRepository.findAllByTicketId(ticketId);
     }
 
     override fun sendMessage(message: MessageDTO): Message {
         // Check user is the owner or the expert of the ticket
         val ticket = ticketService.getTicket(message.ticket_id)
-            ?: throw TicketNotFoundException("Ticket ${message.ticket_id} not found");
         if (ticket.creator.email != message.user_mail && ticket.expert?.email != message.user_mail) {
             throw TicketBadRequestException("User is not the owner or the expert of the ticket");
         }

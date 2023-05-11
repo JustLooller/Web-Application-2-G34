@@ -6,7 +6,7 @@ import it.polito.wa2.g34.server.ticketing.entity.Ticket
 
 interface TicketService {
 
-    fun getTicket(ticketId: Long): Ticket?;
+    fun getTicket(ticketId: Long): Ticket;
 
     fun createTicket(ticket: TicketDTO): Ticket;
 

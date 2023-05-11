@@ -21,7 +21,7 @@ class TicketController(
 ) {
     @GetMapping("/api/ticket/{id}")
     fun getTicket(@PathVariable("id") id: Long): TicketDTO {
-        return ticketService.getTicket(id)?.toDTO() ?: throw TicketNotFoundException("Ticket with id: $id not Found")
+        return ticketService.getTicket(id).toDTO()
     }
 
     @PostMapping("/api/ticket/")
@@ -36,10 +36,8 @@ class TicketController(
         @Valid @RequestBody updateTicketStatusDTO: UpdateTicketStatusDTO,
         @RequestParam(name = "priority", defaultValue = "LOW") priority: Priority
     ): TicketDTO {
-        val ticket = ticketService.getTicket(id) ?: throw TicketNotFoundException("Ticket with id: $id not Found")
-        updateTicketStatusDTO.newState = State.IN_PROGRESS.toString();
+        val ticket = ticketService.getTicket(id)
         ticket.priority = priority
-        updateTicketStatusDTO.ticket_id = id
         return ticketService.assignExpert(ticket.toDTO(), expertId, updateTicketStatusDTO.requester_email).toDTO()
     }
 
@@ -80,13 +78,12 @@ class TicketController(
 
     @GetMapping("/api/ticket/{id}/messages")
     fun getMessagesFromTicket(@PathVariable("id") id: Long): List<MessageDTO> {
-        ticketService.getTicket(id) ?: throw TicketNotFoundException("Ticket with id: $id not Found")
         return messageService.getChatMessages(id).map { it.toDTO() }
     }
 
     @GetMapping("/api/ticket/{id}/history")
     fun getHistoryFromTicket(@PathVariable("id") id: Long): List<StateHistoryDTO> {
-        val ticket = ticketService.getTicket(id) ?: throw TicketNotFoundException("Ticket with id: $id not Found")
+        val ticket = ticketService.getTicket(id)
         return stateHistoryService.getHistory(ticket.toDTO()).map { it.toDTO() }
     }
 }

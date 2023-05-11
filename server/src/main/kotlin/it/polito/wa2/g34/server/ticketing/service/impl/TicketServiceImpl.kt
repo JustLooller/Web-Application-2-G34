@@ -1,8 +1,8 @@
 package it.polito.wa2.g34.server.ticketing.service.impl
 
 import it.polito.wa2.g34.server.profile.*
-import it.polito.wa2.g34.server.ticketing.advice.IllegalUpdateException
 import it.polito.wa2.g34.server.ticketing.advice.TicketBadRequestException
+import it.polito.wa2.g34.server.ticketing.advice.TicketNotFoundException
 import it.polito.wa2.g34.server.ticketing.converters.EntityConverter
 import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
 import it.polito.wa2.g34.server.ticketing.dto.UpdateTicketStatusDTO
@@ -24,8 +24,8 @@ class TicketServiceImpl(
     fun TicketDTO.toEntity() : Ticket {
         return entityConverter.ticketDTOtoEntity(this);
     }
-    override fun getTicket(ticketId: Long): Ticket? {
-        return ticketRepository.findById(ticketId).orElse(null);
+    override fun getTicket(ticketId: Long): Ticket {
+        return ticketRepository.findById(ticketId).orElseThrow { TicketNotFoundException("Ticket $ticketId not found") };
     }
 
     override fun createTicket(ticketDTO: TicketDTO): Ticket {
@@ -49,15 +49,15 @@ class TicketServiceImpl(
         return ticketRepository.save(ticketEntity);
     }
 
-    override fun assignExpert(ticket: TicketDTO, expertId: String, managerId: String): Ticket {
-        val expert = profileRepository.findById(expertId);
+    override fun assignExpert(ticket: TicketDTO, expertMail: String, managerMail: String): Ticket {
+        val expert = profileRepository.findById(expertMail);
         if (!expert.isPresent || expert.get().role != Role.EXPERT) {
-            throw ProfileNotFoundException("No expert with id $expertId exists");
+            throw ProfileNotFoundException("No expert with id $expertMail exists");
         }
         val expertEntity = expert.get();
-        val manager = profileRepository.findById(managerId);
+        val manager = profileRepository.findById(managerMail);
         if (!manager.isPresent || manager.get().role != Role.MANAGER) {
-            throw ProfileNotFoundException("Manager with id $managerId not found");
+            throw ProfileNotFoundException("Manager with id $managerMail not found");
         }
         val managerDTO = manager.get();
         val update = UpdateTicketStatusDTO(
