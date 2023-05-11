@@ -8,6 +8,7 @@ import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
 import it.polito.wa2.g34.server.ticketing.dto.UpdateTicketStatusDTO
 import it.polito.wa2.g34.server.ticketing.entity.State
 import it.polito.wa2.g34.server.ticketing.entity.StateHistory
+import it.polito.wa2.g34.server.ticketing.entity.Ticket
 import it.polito.wa2.g34.server.ticketing.repository.StateHistoryRepository
 import it.polito.wa2.g34.server.ticketing.repository.TicketRepository
 import it.polito.wa2.g34.server.ticketing.service.StateHistoryService
@@ -50,6 +51,22 @@ class StateHistoryServiceImpl(
         if (!validUpdateState) {
             throw IllegalUpdateException("Invalid state update for ticket ${update.ticket_id} (from ${ticket.state} to ${update.newState})");
         }
+
+        // TODO(Post validation actions and checks )
+        ticket.state = State.valueOf(update.newState!!);
+        when (ticket.state) {
+            State.OPEN -> {
+            };
+            State.IN_PROGRESS -> {};
+            State.RESOLVED -> {};
+            State.REOPENED -> {};
+            State.CLOSED -> {
+                ticket.priority = null;
+                ticket.expert = null;
+            };
+        }
+
+        ticketRepository.save(ticket);
         stateHistoryRepository.save(newState);
     }
 }

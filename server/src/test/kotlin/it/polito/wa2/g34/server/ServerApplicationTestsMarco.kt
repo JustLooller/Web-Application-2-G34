@@ -203,6 +203,7 @@ class ServerApplicationTestsMarco {
         restTemplate.postForEntity("/api/ticket/", ticketToBeInserted,String::class.java)
 
         val ticket = ticketRepository.findAll().last()
+        println(ticket)
         restTemplate.put("/api/ticket/${ticket.id}/stop",UpdateTicketStatusDTO(ticket.id!!,customerprofile.email,null), ticketToBeInserted,String::class.java)
         val result : ResponseEntity<String> = restTemplate.exchange(
             "/api/ticket/${ticket.id}/reopen",
@@ -212,7 +213,7 @@ class ServerApplicationTestsMarco {
             String::class.java,
             arrayOf("")
         )
-        println(result.statusCode.toString())
+        println(result.body)
         assertEquals(HttpStatus.FORBIDDEN.value(), result.statusCode.value())
     }
     @Test
@@ -275,6 +276,7 @@ class ServerApplicationTestsMarco {
         println(result.body)
         ticketToBeInserted.id = ticket.id
         ticketToBeInserted.state = State.CLOSED.name
+        // sembra che fallisce perché riceve correttamente come creator il customer ma si aspetta manager, non capisco perchè ticketToBeInserted.creator_email = managerProfile.email
         assertEquals(Json.encodeToString(ticketToBeInserted),result.body)
         cleanDB()
     }

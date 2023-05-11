@@ -5,6 +5,7 @@ import it.polito.wa2.g34.server.profile.ProfileService
 import it.polito.wa2.g34.server.sales.Sale
 import it.polito.wa2.g34.server.sales.SaleDTO
 import it.polito.wa2.g34.server.sales.SaleService
+import it.polito.wa2.g34.server.ticketing.advice.TicketBadRequestException
 import it.polito.wa2.g34.server.ticketing.dto.MessageDTO
 import it.polito.wa2.g34.server.ticketing.dto.StateHistoryDTO
 import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
@@ -33,13 +34,17 @@ class EntityConverterImpl(
     }
 
     override fun messageDTOtoEntity(messageDTO: MessageDTO): Message {
-        return Message(
-            id = messageDTO.id,
-            text = messageDTO.text,
-            attachment = messageDTO.attachment,
-            user = profileService.getProfile(messageDTO.user_mail)!!,
-            ticket = ticketService.getTicket(messageDTO.ticket_id)!!,
-        )
+        try {
+            return Message(
+                id = messageDTO.id,
+                text = messageDTO.text,
+                attachment = messageDTO.attachment,
+                user = profileService.getProfile(messageDTO.user_mail)!!,
+                ticket = ticketService.getTicket(messageDTO.ticket_id)!!,
+            )
+        } catch (e: Exception) {
+            throw TicketBadRequestException("Invalid message")
+        }
     }
 
     override fun stateHistoryDTOtoEntity(stateHistoryDTO: StateHistoryDTO): StateHistory {
