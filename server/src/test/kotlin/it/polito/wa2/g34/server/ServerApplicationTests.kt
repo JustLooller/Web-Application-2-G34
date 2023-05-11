@@ -687,12 +687,13 @@ class ServerApplicationTests {
 
         restTemplate.postForEntity("/api/ticket/", ticketToBeInserted,String::class.java)
         val ticket = ticketRepository.findAll().last()
-        val putResult = restTemplate.put("/api/ticket/${ticket.id}/start/${expertprofile.email}",UpdateTicketStatusDTO(ticket.id!!,managerProfile.email,null), ticketToBeInserted,String::class.java)
+        restTemplate.put("/api/ticket/${ticket.id}/start/${expertprofile.email}?priority=${Priority.HIGH.name}",UpdateTicketStatusDTO(ticket.id!!,managerProfile.email,null), ticketToBeInserted, String::class.java)
         val result = restTemplate.getForEntity("/api/ticket/${ticket.id}",String::class.java)
         println(result.body)
         ticketToBeInserted.id = ticket.id
         ticketToBeInserted.state = State.IN_PROGRESS.name
         ticketToBeInserted.expert_mail = expertprofile.email
+        ticketToBeInserted.priority = Priority.HIGH.name
         assertEquals(Json.encodeToString(ticketToBeInserted),result.body)
         cleanDB()
     }
@@ -750,7 +751,7 @@ class ServerApplicationTests {
 
         restTemplate.postForEntity("/api/ticket/", ticketToBeInserted,String::class.java)
         val ticket = ticketRepository.findAll().last()
-        val putResult = restTemplate.put("/api/ticket/${ticket.id}/start/${expertprofile.email}",UpdateTicketStatusDTO(ticket.id!!,managerProfile.email,null), ticketToBeInserted,String::class.java)
+        restTemplate.put("/api/ticket/${ticket.id}/start/${expertprofile.email}",UpdateTicketStatusDTO(ticket.id!!,managerProfile.email,null), ticketToBeInserted,String::class.java)
         val result = restTemplate.getForEntity("/api/ticket/${ticket.id}",String::class.java)
         println(result.body)
         ticketToBeInserted.id = ticket.id
