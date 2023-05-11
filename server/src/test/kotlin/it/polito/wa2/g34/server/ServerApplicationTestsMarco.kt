@@ -3,23 +3,18 @@ import it.polito.wa2.g34.server.product.*
 import it.polito.wa2.g34.server.profile.*
 import it.polito.wa2.g34.server.sales.Sale
 import it.polito.wa2.g34.server.sales.SaleRepository
-import it.polito.wa2.g34.server.sales.toDTO
 import it.polito.wa2.g34.server.ticketing.dto.MessageDTO
-import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
 import it.polito.wa2.g34.server.ticketing.dto.UpdateTicketStatusDTO
-import it.polito.wa2.g34.server.ticketing.dto.toDTO
 import it.polito.wa2.g34.server.ticketing.entity.Priority
 import it.polito.wa2.g34.server.ticketing.entity.State
 import it.polito.wa2.g34.server.ticketing.repository.MessageRepository
 import it.polito.wa2.g34.server.ticketing.repository.StateHistoryRepository
 import it.polito.wa2.g34.server.ticketing.repository.TicketRepository
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.FixMethodOrder
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.runners.MethodSorters
@@ -88,7 +83,7 @@ class ServerApplicationTestsMarco {
     lateinit var messageRepository: MessageRepository
 
     @Autowired
-    lateinit var historyRepository: StateHistoryRepository
+    lateinit var stateHistoryRepository: StateHistoryRepository
 
     @Test
     @DisplayName("Stop a Ticket correctly")
@@ -1518,7 +1513,7 @@ class ServerApplicationTestsMarco {
 
     fun cleanDB(){
         this.messageRepository.deleteAll()
-        this.historyRepository.deleteAll()
+        this.stateHistoryRepository.deleteAll()
         this.ticketRepository.deleteAll()
         this.saleRepository.deleteAll()
         this.profileRepository.deleteAll()
