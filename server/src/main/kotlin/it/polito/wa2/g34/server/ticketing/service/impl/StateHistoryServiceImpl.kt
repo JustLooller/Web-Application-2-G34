@@ -56,10 +56,15 @@ class StateHistoryServiceImpl(
         ticket.state = State.valueOf(update.newState!!);
         when (ticket.state) {
             State.OPEN -> {
+                ticket.priority = null;
+                ticket.expert = null;
             };
             State.IN_PROGRESS -> {};
             State.RESOLVED -> {};
-            State.REOPENED -> {};
+            State.REOPENED -> {
+                ticket.priority = null;
+                ticket.expert = null;
+            };
             State.CLOSED -> {
                 ticket.priority = null;
                 ticket.expert = null;

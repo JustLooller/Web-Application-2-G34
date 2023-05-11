@@ -74,6 +74,7 @@ class TicketController(
 
     @GetMapping("/api/ticket/{id}/messages")
     fun getMessagesFromTicket(@PathVariable("id") id: Long): List<MessageDTO> {
+        ticketService.getTicket(id) ?: throw TicketNotFoundException("Ticket with id: $id not Found")
         return messageService.getChatMessages(id).map { it.toDTO() }
     }
 

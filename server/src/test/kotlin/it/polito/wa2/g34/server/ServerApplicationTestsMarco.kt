@@ -1174,7 +1174,6 @@ class ServerApplicationTestsMarco {
         cleanDB()
     }
 
-    /* DA VALUTARE
     @Test
     @DisplayName("Message must be created by the creator of a ticket or by the assigned expert")
     fun postMessageFromDifferentAccount() {
@@ -1248,7 +1247,7 @@ class ServerApplicationTestsMarco {
         println(result.body)
         assertEquals(HttpStatus.BAD_REQUEST,result.statusCode)
         cleanDB()
-    } */
+    } 
 
 
     @Test
