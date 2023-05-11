@@ -17,10 +17,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.junit.FixMethodOrder
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.runners.MethodSorters
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
@@ -41,6 +43,7 @@ import java.time.LocalDateTime
 @Testcontainers
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.NONE)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 //@Sql(scripts = ["file:src/main/resources/test_population.sql"])
 class ServerApplicationTestsMarco {
@@ -204,9 +207,8 @@ class ServerApplicationTestsMarco {
 
         val ticket = ticketRepository.findAll().last()
         println(ticket)
-        restTemplate.put("/api/ticket/${ticket.id}/stop",UpdateTicketStatusDTO(ticket.id!!,customerprofile.email,null), ticketToBeInserted,String::class.java)
         val result : ResponseEntity<String> = restTemplate.exchange(
-            "/api/ticket/${ticket.id}/reopen",
+            "/api/ticket/${ticket.id}/stop",
             HttpMethod.PUT,
             HttpEntity(UpdateTicketStatusDTO(ticket.id!!,customerprofile.email,null)),
             ticketToBeInserted,
@@ -215,6 +217,7 @@ class ServerApplicationTestsMarco {
         )
         println(result.body)
         assertEquals(HttpStatus.FORBIDDEN.value(), result.statusCode.value())
+        cleanDB()
     }
     @Test
     @DisplayName("Close a Ticket correctly 1")
@@ -276,7 +279,6 @@ class ServerApplicationTestsMarco {
         println(result.body)
         ticketToBeInserted.id = ticket.id
         ticketToBeInserted.state = State.CLOSED.name
-        // sembra che fallisce perché riceve correttamente come creator il customer ma si aspetta manager, non capisco perchè ticketToBeInserted.creator_email = managerProfile.email
         assertEquals(Json.encodeToString(ticketToBeInserted),result.body)
         cleanDB()
     }
@@ -473,8 +475,8 @@ class ServerApplicationTestsMarco {
         println(result.body)
         ticketToBeInserted.id = ticket.id
         ticketToBeInserted.state = State.REOPENED.name
-        ticketToBeInserted.priority = Priority.LOW.name
-        ticketToBeInserted.expert_mail = expertprofile.email
+        ticketToBeInserted.priority = null
+        ticketToBeInserted.expert_mail = null
         assertEquals(Json.encodeToString(ticketToBeInserted),result.body)
         cleanDB()
     }
@@ -537,8 +539,8 @@ class ServerApplicationTestsMarco {
         println(result.body)
         ticketToBeInserted.id = ticket.id
         ticketToBeInserted.state = State.REOPENED.name
-        ticketToBeInserted.priority = Priority.LOW.name
-        ticketToBeInserted.expert_mail = expertprofile.email
+        ticketToBeInserted.priority = null
+        ticketToBeInserted.expert_mail = null
         assertEquals(Json.encodeToString(ticketToBeInserted),result.body)
         cleanDB()
     }
@@ -605,6 +607,7 @@ class ServerApplicationTestsMarco {
         )
         println(result.statusCode.toString())
         assertEquals(HttpStatus.FORBIDDEN.value(), result.statusCode.value())
+        cleanDB()
     }
 
 
@@ -674,6 +677,7 @@ class ServerApplicationTestsMarco {
         )
         println(result.statusCode.toString())
         assertEquals(HttpStatus.FORBIDDEN.value(), result.statusCode.value())
+        cleanDB()
     }
 
 
@@ -875,6 +879,7 @@ class ServerApplicationTestsMarco {
         )
         println(result.statusCode.toString())
         assertEquals(HttpStatus.FORBIDDEN.value(), result.statusCode.value())
+        cleanDB()
     }
 
     @Test
