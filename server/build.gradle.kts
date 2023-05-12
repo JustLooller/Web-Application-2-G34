@@ -52,8 +52,11 @@ tasks.withType<Test> {
 }
 
 jib {
+    to {
+        image = "app"
+    }
     container {
         jvmFlags = listOf("-Xms512m", "-Xmx512m")
-        ports = listOf("9000")
+        ports = listOf("8080")
     }
 }
