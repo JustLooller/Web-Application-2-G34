@@ -1,5 +1,10 @@
 # Web-Application-2-G34
 
+## JIB Image Creation and Deployment
+1. `cd ./server`
+2. `./gradlew jibDockerBuild`
+3. `cd ../ && docker-compose up -d`
+
 ## Frontend build
 1. `cd ./client`
 2. `npm install`

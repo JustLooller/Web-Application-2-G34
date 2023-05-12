@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 @Entity
 class StateHistory(
         @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-        var id: Long,
+        var id: Long? = null,
 
         @ManyToOne
         var ticket: Ticket,

@@ -9,8 +9,10 @@ import jakarta.persistence.*
 class Ticket (
         @Id
         @GeneratedValue (strategy = GenerationType.SEQUENCE)
-        var id : Long,
-        var priority: Int,
+        var id : Long? = null,
+
+        @Enumerated(EnumType.STRING)
+        var priority: Priority?,
 
         @Enumerated(EnumType.STRING)
         var state: State,
@@ -19,7 +21,7 @@ class Ticket (
         var creator: Profile,
 
         @ManyToOne
-        var expert: Profile,
+        var expert: Profile?,
 
         @ManyToOne
         var product: Product,
@@ -27,9 +29,4 @@ class Ticket (
         @ManyToOne
         var sale: Sale,
 
-        @OneToMany(mappedBy = "ticket")
-        var history: List<StateHistory>,
-
-        @OneToMany(mappedBy = "ticket")
-        var messages: List<Message>,
 )

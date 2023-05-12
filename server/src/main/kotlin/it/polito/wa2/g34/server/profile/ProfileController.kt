@@ -17,7 +17,7 @@ class ProfileController(
 ) {
     @GetMapping("/profiles/{email}")
     fun getProfile(@PathVariable @Email email: String): ProfileDTO? {
-        return profileService.getProfile(email) ?: throw ProfileNotFoundException("Profile not found")
+        return profileService.getProfile(email)?.toDTO() ?: throw ProfileNotFoundException("Profile not found")
     }
 
     @PostMapping("/profiles")
@@ -36,7 +36,7 @@ class ProfileController(
         if (editedProfile != null) {
             return if (profileService.getProfile(email) != null) {
                 editedProfile.email = email;
-                profileService.postProfile(editedProfile);
+                profileService.postProfile(editedProfile)?.toDTO();
             } else throw ProfileNotFoundException("Profile not found")
         } else
             throw ProfileDataException("No body data")

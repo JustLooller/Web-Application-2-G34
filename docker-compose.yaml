@@ -2,12 +2,28 @@
 version: '3.1'
 
 services:
-
+  app:
+    image: 'app'
+    build:
+      context: .
+    container_name: wa2_g34_app
+    depends_on:
+      - db
+    environment:
+        - spring.datasource.url=jdbc:postgresql://db:5432/postgres
+        - spring.datasource.username=postgres
+        - spring.datasource.password=password
+        - spring.jpa.hibernate.ddl-auto=validate
+    ports:
+      - 8080:8080
   db:
-    container_name: wa2_g34_db
+    container_name: db
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: password
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
     ports:
       - 5432:5432
+    volumes:
+      - ./server/res/dump.sql:/docker-entrypoint-initdb.d/dump.sql

@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service
 class ProfileServiceImpl(
     private val profileRepository: ProfileRepository
 ): ProfileService {
-    override fun getProfile(email: String) : ProfileDTO? {
-        return profileRepository.findById(email).map { it.toDTO() }.orElse(null);
+    override fun getProfile(email: String) : Profile? {
+        return profileRepository.findById(email).orElse(null);
     }
 
-    override fun postProfile(newProfile: ProfileDTO) : ProfileDTO? {
-        return profileRepository.save(newProfile.toEntity()).toDTO();
+    override fun postProfile(newProfile: ProfileDTO) : Profile? {
+        return profileRepository.save(newProfile.toEntity());
     }
 
 }
