@@ -13,7 +13,7 @@ services:
         - spring.datasource.url=jdbc:postgresql://db:5432/postgres
         - spring.datasource.username=postgres
         - spring.datasource.password=password
-        - spring.jpa.hibernate.ddl-auto=none
+        - spring.jpa.hibernate.ddl-auto=validate
     ports:
       - 8080:8080
   db:
@@ -26,5 +26,4 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./postgres-data:/var/lib/postgresql
       - ./server/res/dump.sql:/docker-entrypoint-initdb.d/dump.sql
