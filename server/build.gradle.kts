@@ -21,6 +21,7 @@ repositories {
 dependencyManagement {
     imports {
         mavenBom("org.testcontainers:testcontainers-bom:1.16.3")
+        mavenBom ("org.springframework.security:spring-security-bom:6.0.3")
     }
 }
 
@@ -38,6 +39,10 @@ dependencies {
     testImplementation("org.testcontainers:postgresql:1.16.3")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.0.6")
+
+
+
 }
 
 tasks.withType<KotlinCompile> {

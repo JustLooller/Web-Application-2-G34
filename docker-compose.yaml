@@ -15,7 +15,7 @@ services:
         - spring.datasource.password=password
         - spring.jpa.hibernate.ddl-auto=validate
     ports:
-      - 8080:8080
+      - 8081:8081
   db:
     container_name: db
     image: postgres
