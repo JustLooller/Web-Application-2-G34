@@ -39,15 +39,15 @@ class SecurityConfig {
     @Bean
     fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
         val converter = JwtAuthenticationConverter()
-        converter.setJwtGrantedAuthoritiesConverter{
-                jwt: Jwt -> jwt
-            .getClaim<Map<String,List<String>>>("realm_access")["roles"]!!.toList()
-            .map{
-                print("Request with ROLE_$it role\n");
-                GrantedAuthority{"ROLE_$it"}
-            }
+        converter.setJwtGrantedAuthoritiesConverter{ jwt: Jwt ->
+            val resourceAccess = jwt.getClaimAsMap("realm_access")
+            val roles = resourceAccess["roles"].let { it as List<String> }.map{"ROLE_${it}"}
+            roles.map {GrantedAuthority { it } }
         }
+        converter.setPrincipalClaimName("name")
         return converter
+
     }
 }
+
 
