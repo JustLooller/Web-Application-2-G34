@@ -1,5 +1,6 @@
 package it.polito.wa2.g34.server.security
 
+import it.polito.wa2.g34.server.profile.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -18,27 +19,35 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(/*prePostEnabled=true,*/ securedEnabled = false)
+@EnableMethodSecurity(prePostEnabled=true, securedEnabled = true)
 class SecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
-        http.authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/api/login*").permitAll()
-            .anyRequest().authenticated()
+        http.authorizeHttpRequests()
+            .requestMatchers(HttpMethod.PUT, "/api/ticket/*/start/*").hasRole(Role.MANAGER.name)
+            .requestMatchers(HttpMethod.PUT, "/api/ticket/*/stop").hasRole(Role.EXPERT.name)
+            .requestMatchers(HttpMethod.PUT, "/api/ticket/*/resolve").hasAnyRole(Role.EXPERT.name, Role.CUSTOMER.name)
+            .requestMatchers(HttpMethod.POST, "/api/ticket/*/message").hasAnyRole(Role.EXPERT.name, Role.CUSTOMER.name)
+            .requestMatchers(HttpMethod.POST, "/api/ticket/").hasRole(Role.CUSTOMER.name)
+            .requestMatchers(HttpMethod.POST, "/api/ticket/*/reopen").hasRole(Role.CUSTOMER.name)
+            .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+            .anyRequest().authenticated();
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()
     }
-}
-
-@Bean
-fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
-    val converter = JwtAuthenticationConverter()
-    converter.setJwtGrantedAuthoritiesConverter{
-            jwt: Jwt -> jwt
-        .getClaim<Map<String,Map<String,List<String>>>>("resource_access")["account"]!!["roles"]!!.toList()
-        .map{GrantedAuthority{it}}
+    @Bean
+    fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
+        val converter = JwtAuthenticationConverter()
+        converter.setJwtGrantedAuthoritiesConverter{
+                jwt: Jwt -> jwt
+            .getClaim<Map<String,List<String>>>("realm_access")["roles"]!!.toList()
+            .map{
+                print("Request with ROLE_$it role\n");
+                GrantedAuthority{"ROLE_$it"}
+            }
+        }
+        return converter
     }
-    return converter
-
 }
 

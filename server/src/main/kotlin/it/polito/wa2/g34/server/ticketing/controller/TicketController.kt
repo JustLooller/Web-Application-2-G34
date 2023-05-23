@@ -9,6 +9,7 @@ import it.polito.wa2.g34.server.ticketing.service.StateHistoryService
 import it.polito.wa2.g34.server.ticketing.service.TicketService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -28,7 +29,6 @@ class TicketController(
     fun createTicket(@Valid @RequestBody ticket: TicketDTO): TicketDTO {
         return ticketService.createTicket(ticket).toDTO()
     }
-
     @PutMapping("/api/ticket/{id}/start/{expert_id}") // ?priority=LOW (LOW = default)
     fun updateTicketState(
         @PathVariable("id") id: Long,
