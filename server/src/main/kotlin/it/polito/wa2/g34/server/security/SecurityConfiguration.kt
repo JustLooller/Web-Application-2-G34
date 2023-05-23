@@ -2,6 +2,7 @@ package it.polito.wa2.g34.server.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -17,12 +18,13 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled=true, securedEnabled = true)
+@EnableMethodSecurity(/*prePostEnabled=true,*/ securedEnabled = false)
 class SecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
-        http.authorizeHttpRequests().anyRequest().authenticated()
+        http.authorizeHttpRequests().requestMatchers(HttpMethod.POST,"/api/login*").permitAll()
+            .anyRequest().authenticated()
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()
     }
