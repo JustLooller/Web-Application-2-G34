@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(/*prePostEnabled=true,*/ securedEnabled = false)
+@EnableMethodSecurity(prePostEnabled=true, securedEnabled = true)
 class SecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
@@ -33,12 +33,12 @@ class SecurityConfig {
 @Bean
 fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
     val converter = JwtAuthenticationConverter()
-    converter.setJwtGrantedAuthoritiesConverter{
-            jwt: Jwt -> jwt
-        .getClaim<Map<String,Map<String,List<String>>>>("resource_access")["account"]!!["roles"]!!.toList()
-        .map{GrantedAuthority{it}}
+    converter.setJwtGrantedAuthoritiesConverter{ jwt: Jwt ->
+        val resourceAccess = jwt.getClaimAsMap("realm_access")
+        val roles = resourceAccess["roles"].let { it as List<String> }.map{"ROLE_${it}"}
+        roles.map {GrantedAuthority { it } }
     }
+    converter.setPrincipalClaimName("name")
     return converter
 
 }
-
