@@ -8,12 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.Jwt
-import org.springframework.security.oauth2.jwt.JwtDecoder
-import org.springframework.security.oauth2.jwt.JwtDecoders
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter
 import org.springframework.security.web.SecurityFilterChain
 
@@ -44,7 +39,7 @@ class SecurityConfig {
             val roles = resourceAccess["roles"].let { it as List<String> }.map{"ROLE_${it}"}
             roles.map {GrantedAuthority { it } }
         }
-        converter.setPrincipalClaimName("name")
+        converter.setPrincipalClaimName("email")
         return converter
 
     }

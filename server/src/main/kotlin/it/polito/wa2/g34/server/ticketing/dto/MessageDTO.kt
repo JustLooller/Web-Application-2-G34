@@ -5,9 +5,11 @@ import it.polito.wa2.g34.server.ticketing.entity.Message
 import java.time.LocalDateTime
 
 data class MessageDTO(
+    @JsonIgnore
     var id: Long,
     var text: String,
-    var timestamp: LocalDateTime,
+    @JsonIgnore
+    var timestamp: LocalDateTime = LocalDateTime.now(),
     var user_mail: String,
     var attachment: String?,
     @JsonIgnore
