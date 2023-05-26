@@ -30,7 +30,7 @@ class SecurityController() {
     @Autowired
     lateinit var env: Environment
 
-    @PostMapping("/api/login")
+    @PostMapping("/api/login", produces = ["application/json"])
     fun postProfile(@Valid @RequestBody userLoginData: UserLoginData?): String? {
 
         val issuerUri = env.getProperty("spring.security.oauth2.resourceserver.jwt.issuer-uri")
