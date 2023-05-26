@@ -34,6 +34,8 @@ class SecurityController() {
     fun postProfile(@Valid @RequestBody userLoginData: UserLoginData?): String? {
 
         val issuerUri = env.getProperty("spring.security.oauth2.resourceserver.jwt.issuer-uri")
+        val clientId = env.getProperty("keykloak.client.id")
+        val clientSecret = env.getProperty("keykloak.client.secret")
 
         val restTemplate = RestTemplate()
         val headers = HttpHeaders()
@@ -42,7 +44,8 @@ class SecurityController() {
         val requestData = LinkedMultiValueMap<String, String>()
         requestData.add("username", userLoginData!!.username)
         requestData.add("password", userLoginData!!.password)
-        requestData.add("client_id", "springweb-app")
+        requestData.add("client_id", clientId)
+        requestData.add("client_secret", clientSecret)
         requestData.add("grant_type", "password")
 
         val requestEntity = HttpEntity(requestData, headers)
