@@ -9,17 +9,21 @@ services:
     container_name: wa2_g34_app
     depends_on:
       - db
+      - auth
     environment:
         - spring.datasource.url=jdbc:postgresql://db:5432/postgres
         - spring.datasource.username=postgres
         - spring.datasource.password=password
         - spring.jpa.hibernate.ddl-auto=validate
+        - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://auth:8080/realms/WA2_G34
     ports:
-      - 8080:8080
+      - 8081:8081
   db:
     container_name: db
     image: postgres
     restart: always
+    depends_on:
+      - auth
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
@@ -27,3 +31,17 @@ services:
       - 5432:5432
     volumes:
       - ./server/res/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+
+  auth:
+    container_name: auth
+    image: quay.io/keycloak/keycloak:21.1.1
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+      - ./server/res/realm.json:/opt/keycloak/data/import/realm.json
