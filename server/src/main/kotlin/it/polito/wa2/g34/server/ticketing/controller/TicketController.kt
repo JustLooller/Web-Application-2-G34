@@ -1,5 +1,7 @@
 package it.polito.wa2.g34.server.ticketing.controller
 
+ import io.micrometer.observation.annotation.Observed
+import it.polito.wa2.g34.server.observability.LogInfo
 import it.polito.wa2.g34.server.ticketing.dto.*
 import it.polito.wa2.g34.server.ticketing.entity.Priority
 import it.polito.wa2.g34.server.ticketing.entity.State
@@ -8,6 +10,7 @@ import it.polito.wa2.g34.server.ticketing.service.StateHistoryService
 import it.polito.wa2.g34.server.ticketing.service.TicketService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
+import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -16,14 +19,18 @@ import java.time.LocalDateTime
 
 @RestController
 @Validated
+@Observed
+@LogInfo
 class TicketController(
     private val ticketService: TicketService,
     private val stateHistoryService: StateHistoryService,
     private val messageService: MessageService,
 ) {
 
+    private val logger = LoggerFactory.getLogger(TicketController::class.java);
     @GetMapping("/api/ticket/{id}")
     fun getTicket(@PathVariable("id") id: Long): TicketDTO {
+        logger.debug("(MANUAL LOG) Getting ticket with id $id")
         return ticketService.getTicket(id).toDTO()
     }
 

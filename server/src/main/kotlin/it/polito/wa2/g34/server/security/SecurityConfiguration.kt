@@ -27,6 +27,7 @@ class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/ticket/").hasRole(Role.CUSTOMER.name)
             .requestMatchers(HttpMethod.POST, "/api/ticket/*/reopen").hasRole(Role.CUSTOMER.name)
             .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+            .requestMatchers("/actuator/**").permitAll()
             .anyRequest().authenticated();
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()

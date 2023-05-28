@@ -1,6 +1,7 @@
 spring:
   application:
-    name: springboot-keycloak
+    name: ServiceNow-G34
+    observer_host: dietpi
   security:
     oauth2:
       resourceserver:
@@ -10,5 +11,26 @@ spring:
 
 logging:
   level:
-    org.springframework.security: DEBUG
+    org.springframework.security: WARN
+    it.polito.wa2.g34.server: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
 
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # sampling all in dev, reduce it in prod to save loading
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+  zipkin:
+    tracing:
+      endpoint: "http://${spring.application.observer_host:-localhost}:9411/api/v2/spans"

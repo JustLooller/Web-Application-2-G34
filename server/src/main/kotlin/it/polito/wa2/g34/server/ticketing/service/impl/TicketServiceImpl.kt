@@ -1,5 +1,6 @@
 package it.polito.wa2.g34.server.ticketing.service.impl
 
+import io.micrometer.observation.annotation.Observed
 import it.polito.wa2.g34.server.profile.*
 import it.polito.wa2.g34.server.ticketing.advice.TicketBadRequestException
 import it.polito.wa2.g34.server.ticketing.advice.TicketNotFoundException
@@ -14,6 +15,7 @@ import it.polito.wa2.g34.server.ticketing.service.TicketService
 import org.springframework.stereotype.Service
 
 @Service
+@Observed
 class TicketServiceImpl(
     private val ticketRepository: TicketRepository,
     private val profileRepository: ProfileRepository,

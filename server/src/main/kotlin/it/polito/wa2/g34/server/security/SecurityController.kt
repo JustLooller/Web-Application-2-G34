@@ -1,15 +1,9 @@
 package it.polito.wa2.g34.server.security
 
-import it.polito.wa2.g34.server.ticketing.service.TicketService
-import jakarta.servlet.Filter
+import io.micrometer.observation.annotation.Observed
+import it.polito.wa2.g34.server.observability.LogInfo
 import jakarta.validation.Valid
-import jakarta.validation.constraints.Email
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.Size
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.env.Environment
 import org.springframework.http.*
 import org.springframework.util.LinkedMultiValueMap
@@ -26,6 +20,8 @@ data class UserLoginData(
 
 @RestController
 @Validated
+@Observed
+@LogInfo
 class SecurityController() {
     @Autowired
     lateinit var env: Environment
