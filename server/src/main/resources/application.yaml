@@ -1,7 +1,7 @@
 spring:
   application:
     name: ServiceNow-G34
-    observer_host: dietpi
+    observer_host: host.docker.internal
   security:
     oauth2:
       resourceserver:
@@ -33,4 +33,4 @@ management:
             requests: true
   zipkin:
     tracing:
-      endpoint: "http://${spring.application.observer_host:-localhost}:9411/api/v2/spans"
+      endpoint: "http://${spring.application.observer_host}:9411/api/v2/spans"

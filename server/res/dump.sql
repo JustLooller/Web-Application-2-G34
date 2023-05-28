@@ -138,5 +138,7 @@ INSERT INTO product (ean, brand, model, description, image) VALUES ('01942527080
 INSERT INTO product (ean, brand, model, description, image) VALUES ('0194253401070', 1, 'IPHONE 14 PRO 128GB', 'Un modo magico e innovativo di interagire con iPhone. Una nuova, essenziale funzione per la sicurezza, pensata per salvare vite. Una straordinaria fotocamera da 48MP per dettagli da non credere. E dietro tutto questo, la potenza del più evoluto chip per smartphone.', 'https://www.apple.com/newsroom/images/product/iphone/lifestyle/Apple-iPhone-14-iPhone-14-Plus-yellow-2up-230307_inline.jpg.large.jpg');
 INSERT INTO profile (email, name, age, role) VALUES ('giacomo.demattia@mail.com', 'Giacomo Demattia', 22, null);
 INSERT INTO profile (email, name, age, role) VALUES ('marco.chessa@mail.com', 'Marco Chessa', 24, null);
-
-
+INSERT INTO profile (email, name, age, role) VALUES ('customeruser@gmail.com', 'Customer User', 24, 'CUSTOMER');
+INSERT INTO profile (email, name, age, role) VALUES ('expertuser@gmail.com', 'Expert User', 24, 'EXPERT');
+INSERT INTO profile (email, name, age, role) VALUES ('manageruser@gmail.com', 'Manager User', 24, 'MANAGER');
+INSERT INTO sale (id, warranty_end, warranty_start, buyer_email, product_ean) VALUES ('1', '2026-10-10 00:00:00', '2021-10-10 00:00:00', 'customeruser@gmail.com', '0194252708002');
