@@ -3,6 +3,7 @@ package it.polito.wa2.g34.server.security
 import io.micrometer.observation.annotation.Observed
 import it.polito.wa2.g34.server.observability.LogInfo
 import jakarta.validation.Valid
+import org.keycloak.admin.client.CreatedResponseUtil
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.CredentialRepresentation
 import org.keycloak.representations.idm.UserRepresentation
@@ -80,9 +81,25 @@ class SecurityController() {
         credentialRepresentation.isTemporary = false;
         userRepresentation.credentials = listOf(credentialRepresentation);
 
-        return keycloak.realm("WA2_G34")
+        // user creation
+        val createResponse = keycloak.realm("WA2_G34")
             .users()
-            .create(userRepresentation).toString();
+            .create(userRepresentation)
+
+        // user id retrieving
+        val userId = CreatedResponseUtil.getCreatedId(createResponse)
+
+        // get realm roles
+        val customerRealmRole = keycloak.realm("WA2_G34").roles().get("CUSTOMER").toRepresentation()
+
+        keycloak.realm("WA2_G34")
+            .users()
+            .get(userId)
+            .roles()
+            .realmLevel()
+            .add(listOf(customerRealmRole))
+
+        return ""
 
         //return ""
 
