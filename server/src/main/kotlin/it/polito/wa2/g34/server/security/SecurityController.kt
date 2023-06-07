@@ -3,6 +3,7 @@ package it.polito.wa2.g34.server.security
 import io.micrometer.observation.annotation.Observed
 import it.polito.wa2.g34.server.observability.LogInfo
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Email
 import org.keycloak.admin.client.CreatedResponseUtil
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.CredentialRepresentation
@@ -21,6 +22,14 @@ import java.util.*
 data class UserLoginData(
     var username: String,
     var password: String
+)
+
+data class UserSignUpData(
+    @field:Email
+    var username: String,
+    var password: String,
+    var fullName: String,
+    var age: Int
 )
 
 @RestController
@@ -66,7 +75,7 @@ class SecurityController() {
     }
 
     @PostMapping("/api/signup", produces = ["application/json"])
-    fun postSignUp(): String? {
+    fun postSignUp(@Valid @RequestBody userSignUpData: UserSignUpData?): String? {
 
         val userRepresentation = UserRepresentation()
         val credentialRepresentation = CredentialRepresentation()
