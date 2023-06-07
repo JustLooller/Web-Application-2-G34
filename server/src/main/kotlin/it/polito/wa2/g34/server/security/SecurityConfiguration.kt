@@ -28,6 +28,7 @@ class SecurityConfig {
         http.csrf().disable()
         http.authorizeHttpRequests()
             .requestMatchers(HttpMethod.PUT, "/api/ticket/*/start/*").hasRole(Role.MANAGER.name)
+            .requestMatchers(HttpMethod.POST, "/api/createExpert").hasRole(Role.MANAGER.name)
             .requestMatchers(HttpMethod.PUT, "/api/ticket/*/stop").hasRole(Role.EXPERT.name)
             .requestMatchers(HttpMethod.PUT, "/api/ticket/*/resolve").hasAnyRole(Role.EXPERT.name, Role.CUSTOMER.name)
             .requestMatchers(HttpMethod.POST, "/api/ticket/*/message").hasAnyRole(Role.EXPERT.name, Role.CUSTOMER.name)
@@ -55,10 +56,9 @@ class SecurityConfig {
 
     @Bean
     fun keycloak(): Keycloak {
-        val clientId = env.getProperty("keykloak.client.id")
-        val clientSecret = env.getProperty("keykloak.client.secret")
+        val serverUrl = env.getProperty("keykloak.client.url")
         return KeycloakBuilder.builder()
-            .serverUrl("http://localhost:8080/")
+            .serverUrl(serverUrl)
             .realm("master")
             .username("admin")
             .password("admin")
