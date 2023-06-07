@@ -1,5 +1,7 @@
 package it.polito.wa2.g34.server.ticketing.service.impl
 
+import io.micrometer.observation.annotation.Observed
+import it.polito.wa2.g34.server.observability.LogInfo
 import it.polito.wa2.g34.server.ticketing.advice.TicketBadRequestException
 import it.polito.wa2.g34.server.ticketing.advice.TicketNotFoundException
 import it.polito.wa2.g34.server.ticketing.converters.EntityConverter
@@ -11,6 +13,7 @@ import it.polito.wa2.g34.server.ticketing.service.TicketService
 import org.springframework.stereotype.Service
 
 @Service
+@Observed
 class MessageServiceImpl(
     private val messageRepository: MessageRepository,
     private val ticketService: TicketService,
@@ -25,6 +28,7 @@ class MessageServiceImpl(
         return messageRepository.findAllByTicketId(ticketId);
     }
 
+    @LogInfo
     override fun sendMessage(message: MessageDTO): Message {
         // Check user is the owner or the expert of the ticket
         val ticket = ticketService.getTicket(message.ticket_id)
