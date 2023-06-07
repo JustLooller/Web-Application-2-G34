@@ -26,7 +26,7 @@ data class UserLoginData(
 
 data class UserSignUpData(
     @field:Email
-    var username: String,
+    var email: String,
     var password: String,
     var fullName: String,
     var age: Int
@@ -80,14 +80,13 @@ class SecurityController() {
         val userRepresentation = UserRepresentation()
         val credentialRepresentation = CredentialRepresentation()
 
-        userRepresentation.email = "pippo@topolino.it"
-        userRepresentation.username = "pippo@topolino.it"
+        userRepresentation.email = userSignUpData!!.email
+        userRepresentation.username = userSignUpData!!.email
         userRepresentation.isEnabled = true
-        userRepresentation.realmRoles = listOf("CUSTOMER")
 
-        credentialRepresentation.type = CredentialRepresentation.PASSWORD;
-        credentialRepresentation.value = "password";
-        credentialRepresentation.isTemporary = false;
+        credentialRepresentation.type = CredentialRepresentation.PASSWORD
+        credentialRepresentation.value = userSignUpData.password
+        credentialRepresentation.isTemporary = false
         userRepresentation.credentials = listOf(credentialRepresentation);
 
         // user creation
