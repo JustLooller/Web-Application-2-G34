@@ -20,6 +20,7 @@ services:
         - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://auth:8080/realms/WA2_G34
         - keykloak.client.id=springweb-app
         - keykloak.client.secret=wBQqSrSQleTgwQXpf04tG0phNSYP0Ps4
+        - keykloak.client.url=http://auth:8080/
     ports:
       - 8081:8081
   db:

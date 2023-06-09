@@ -56,6 +56,8 @@ dependencies {
     // send logs by log Appender through URL
     implementation("com.github.loki4j:loki-logback-appender:1.4.0-rc2")
 
+    implementation("org.keycloak:keycloak-admin-client:21.0.1")
+
 
 
 }
