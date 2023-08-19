@@ -21,6 +21,7 @@ management:
   tracing:
     sampling:
       probability: 1.0 # sampling all in dev, reduce it in prod to save loading
+    enabled: false
   endpoints:
     web:
       exposure:

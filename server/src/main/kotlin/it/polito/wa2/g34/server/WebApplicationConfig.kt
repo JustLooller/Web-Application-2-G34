@@ -6,6 +6,7 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
+import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -16,6 +17,9 @@ class WebApplicationConfig : WebMvcConfigurer {
         registry.addViewController("/notFound").setViewName("forward:/index.html")
     }
 
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/**")
+    }
 
     @Bean
     fun containerCustomizer(): WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
