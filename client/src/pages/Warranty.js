@@ -11,6 +11,8 @@ function Warranty() {
 
     const [warranties, setWarranties] = useState([]);
 
+    const [associationError, setAssociationError] = useState("");
+
     //test useContext
     //const {authentication, setAuthentication} = useContext(Authentication);
     const authentication = JSON.parse(localStorage.getItem("authentication"))
@@ -36,13 +38,13 @@ function Warranty() {
             headers: {Authorization: `Bearer ${authentication.access_token}`}
         };
         console.log("config: " + config.headers.Authorization)
-        try{
-            const response = await axios.post('http://localhost:8081/api/sale/'+ event.target.warrantyId.value,null,config)
-            console.log(response)
-        }
-        catch (e) {
-            console.log(e.)
-        }
+        const response = await axios.post('http://localhost:8081/api/sale/'+ event.target.warrantyId.value,null,config)
+            .then((response)=>{
+                console.log(response.data)
+            })
+            .catch((error)=>{
+                setAssociationError(error.response.data.detail)
+            })
 
     }
 
@@ -77,6 +79,11 @@ function Warranty() {
                             <Form.Label>Associate your warranty</Form.Label>
                             <Form.Control name="warrantyId" required type="text" placeholder="Enter your warranty identifier"/>
                         </Form.Group>
+                        {associationError != "" &&
+                            <Alert key={'danger'} variant={'danger'} className="my-2">
+                                {associationError}
+                            </Alert>
+                        }
                         <Button variant="primary" type="submit">
                             Associate Warranty
                         </Button>
