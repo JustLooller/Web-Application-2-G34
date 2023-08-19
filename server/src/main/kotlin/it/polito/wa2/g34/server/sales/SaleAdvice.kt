@@ -14,8 +14,15 @@ class SaleAdvice : ResponseEntityExceptionHandler() {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message!!)
     }
 
+    @ExceptionHandler(SaleAlreadyAssociatedException::class)
+    fun handleSaleNotFoundException(e : SaleAlreadyAssociatedException) : ProblemDetail {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.message!!)
+    }
+
 
 }
 
 
 class SaleNotFoundException(saleId: String, message : String? = null) : Exception("Sale with id $saleId not found. ${message ?: ""}")
+
+class SaleAlreadyAssociatedException(saleId: String, message : String? = null) : Exception("Sale with id $saleId already associated. ${message ?: ""}")

@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 data class SaleDTO(
     var id : String,
     var product_ean : String,
-    var buyer_mail: String,
+    var buyer_mail: String?,
     var warranty_start: LocalDateTime,
     var warranty_end: LocalDateTime,
 )
@@ -17,7 +17,7 @@ fun Sale.toDTO(): SaleDTO{
     return SaleDTO(
         id=this.id,
         product_ean=this.product.ean,
-        buyer_mail=this.buyer.email,
+        buyer_mail= this.buyer?.email,
         warranty_start= warranty_start,
         warranty_end=this.warranty_end,
     )
