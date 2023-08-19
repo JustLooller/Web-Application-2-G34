@@ -1,4 +1,3 @@
-import './App.css';
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import Home from "./pages/Home";
 import {AuthProvider} from "./hooks/auth";
