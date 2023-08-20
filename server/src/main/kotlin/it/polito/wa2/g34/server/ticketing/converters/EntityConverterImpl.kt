@@ -61,7 +61,7 @@ class EntityConverterImpl(
         return Sale(
             id = saleDTO.id,
             product = productService.getProduct(saleDTO.product_ean)!!,
-            buyer = profileService.getProfile(saleDTO.buyer_mail)!!,
+            buyer = if(saleDTO.buyer_mail == null) null else profileService.getProfile(saleDTO.buyer_mail!!),
             warranty_start = saleDTO.warranty_start,
             warranty_end = saleDTO.warranty_end,
         )

@@ -26,7 +26,7 @@ class SecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
-        http.cors()
+        //http.cors().disable()
         http.authorizeHttpRequests()
             .requestMatchers(HttpMethod.PUT, "/api/ticket/*/start/*").hasRole(Role.MANAGER.name)
             .requestMatchers(HttpMethod.POST, "/api/createExpert").hasRole(Role.MANAGER.name)
@@ -38,6 +38,7 @@ class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/signup").permitAll()
             .requestMatchers("/actuator/**").permitAll()
+            .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
             .anyRequest().authenticated();
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())
         return http.build()
