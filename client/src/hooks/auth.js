@@ -3,44 +3,22 @@ import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-export const Role = {
-    CUSTOMER: "CUSTOMER",
-    EXPERT: "EXPERT",
-    MANAGER: "MANAGER",
-}
-
-export class Profile {
-
-    /**
-     *
-     * @param {string} name
-     * @param {string} email
-     * @param {string} role
-     */
-    constructor(name, email, role) {
-        this.name = name;
-        this.email = email;
-        this.role = role;
-    }
-
-    static fromJson(json) {
-        return new Profile(json.name, json.email, json.role);
-    }
-
-}
+import {Profile, Token, Role} from '../models'
 
 const AuthContext = React.createContext()
 
 export const AuthProvider = ({children}) => {
-    const [token, setToken] = useState(localStorage.getItem("token"));
+    const [token, setToken] = useState(Token.fromJson(localStorage.getItem("token") || "{}"));
     /** Profile */
-    const [profile, setProfile] = useState(Profile.fromJson(JSON.parse(localStorage.getItem("profile")|| "{}")));
+    const [profile, setProfile] = useState(Profile.fromJson(JSON.parse(localStorage.getItem("profile") || "{}")));
 
     useEffect(() => {
-        if (token) {
-            axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-            localStorage.setItem('token', token);
-            const decoded = jwt_decode(token);
+        const succesfulLoggedIn = token !== undefined && token !== null && token.isExpired() === false;
+
+        if (succesfulLoggedIn) {
+            axios.defaults.headers.common["Authorization"] = "Bearer " + token.access_token;
+            localStorage.setItem('token', token.stringify());
+            const decoded = jwt_decode(token.access_token);
             const decoded_profile = new Profile(decoded.name, decoded.email);
             const decoded_roles = Array.from(decoded.realm_access.roles)
             if (decoded_roles.includes(Role.CUSTOMER))
@@ -61,10 +39,21 @@ export const AuthProvider = ({children}) => {
     }, [token]);
 
 
-    const login = (email, password) => {
-        API.Security.login(email, password).then((token_response) => {
-            setToken(token_response)
-        })
+    /**
+     *
+     * @param {string} email
+     * @param {string} password
+     * @returns {Promise<boolean>}
+     */
+    const login = async (email, password) => {
+        try {
+            const token_response = await API.Security.login(email, password)
+            setToken(token_response);
+        } catch (e) {
+            console.error("Error on login", e)
+            return false;
+        }
+        return true;
     }
 
     const logout = () => {
@@ -77,7 +66,12 @@ export const AuthProvider = ({children}) => {
     </AuthContext.Provider>)
 }
 
+/**
+ *
+ * @returns {{logout: () => void, profile: Profile, login: (username, password) => Promise<boolean>}}
+ */
 export function useAuth() {
+
     const {profile, login, logout} = useContext(AuthContext)
     return {profile, login, logout}
 }

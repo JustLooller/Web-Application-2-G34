@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController
 class ProfileController(
     private val profileService: ProfileService,
 ) {
-    @GetMapping("/profiles/{email}")
+    @GetMapping("/api/profiles/{email}")
     fun getProfile(@PathVariable @Email email: String): ProfileDTO? {
         return profileService.getProfile(email)?.toDTO() ?: throw ProfileNotFoundException("Profile not found")
     }
 
-    @PostMapping("/profiles")
+    @PostMapping("/api/profiles")
     fun postProfile(@Valid @RequestBody newProfile: ProfileDTO?): ProfileDTO? {
         if (newProfile != null) {
             return if (profileService.getProfile(newProfile.email) == null)
@@ -31,7 +31,7 @@ class ProfileController(
             throw ProfileDataException("No body data")
     }
 
-    @PutMapping("/profiles/{email}")
+    @PutMapping("/api/profiles/{email}")
     fun putProfile(@Valid @RequestBody editedProfile: ProfileDTO?, @PathVariable @Email email: String): ProfileDTO? {
         if (editedProfile != null) {
             return if (profileService.getProfile(email) != null) {
