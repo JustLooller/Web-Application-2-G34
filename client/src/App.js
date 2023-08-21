@@ -1,38 +1,30 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Container, Button, Form, Row, Col, Alert} from "react-bootstrap";
-import React, {createContext, useState} from "react";
-import logo from './logo.svg'
-import axios from "axios";
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import OpenTicket from "./pages/OpenTicket";
+import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from "react-router-dom";
+import {AuthProvider} from "./hooks/auth";
 import Login from "./pages/Login";
+import OpenTicket from "./pages/OpenTicket";
 import Warranty from "./pages/Warranty";
+import {useEffect} from "react";
+import axios from "axios";
 
-
-export const Authentication = createContext(null);
-
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <>
+            <Route path="/login" element={<Login/>}> </Route>
+            <Route path="/signup" element={<Login/>}></Route>
+            <Route path="/open-ticket" element={<OpenTicket/>}></Route>
+            <Route path="/warranty" element={<Warranty/>}></Route>
+            <Route exact path="/" element={<Navigate to="/login" replace={true}/>}></Route>
+        </>
+    )
+)
 function App() {
-
-    const [authentication, setAuthentication] = useState(null);
-
+    useEffect(() => {
+        axios.defaults.headers["Access-Control-Allow-Origin"] = "*"
+    }, [])
     return (
-        <BrowserRouter>
-            <Authentication.Provider value={{authentication, setAuthentication}}>
-                <Routes>
-                    <Route path="/login" element={<Login/>}>
-                    </Route>
-                    <Route path="/signup" element={<Login/>}>
-                    </Route>
-                    <Route path="/open-ticket" element={<OpenTicket/>}>
-                    </Route>
-                    <Route path="/warranty" element={<Warranty/>}>
-                    </Route>
-                    <Route exact path="/" element={<Navigate to="/login" replace={true}/>}>
-                    </Route>
-                </Routes>
-            </Authentication.Provider>
-        </BrowserRouter>
-
+        <AuthProvider>
+            <RouterProvider router={router}/>
+        </AuthProvider>
     );
 }
 

@@ -26,7 +26,7 @@ class SecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf().disable()
-        //http.cors().disable()
+        http.cors()
         http.authorizeHttpRequests()
             .requestMatchers(HttpMethod.PUT, "/api/ticket/*/start/*").hasRole(Role.MANAGER.name)
             .requestMatchers(HttpMethod.POST, "/api/createExpert").hasRole(Role.MANAGER.name)
