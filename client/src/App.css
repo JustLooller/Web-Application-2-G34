@@ -1,0 +1,76 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.myNavbar {
+  background: rgb(253,203,71);
+  background: linear-gradient(113deg, rgba(253,203,71,1) 0%, rgba(254,209,92,1) 55%);
+}
+
+.myNavbarToggle {
+  border: 0;
+  fontSize: 1.2rem;
+  color: #185163;
+}
+
+.myNavbarLogo{
+  height: 60px;
+  width: 100%;
+}
+
+@media (min-width: 600px) { /*choose the width you prefer*/
+  .myNavbarLogo {
+    height: 80px;
+    width: 100%;
+  }
+}
+
+
+a.myHomeLink:link, a.myHomeLink:visited{
+  text-decoration: none;
+}
+
+a.myHomeLink:hover, a.myHomeLink:active{
+  text-decoration: none;
+}
+
+.myHomeCard{
+  border-width: 2px;
+  border-color: rgb(253,203,71);
+}
+

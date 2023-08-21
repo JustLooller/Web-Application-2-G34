@@ -3,6 +3,8 @@ import {AuthProvider} from "./hooks/auth";
 import Login from "./pages/Login";
 import OpenTicket from "./pages/OpenTicket";
 import Warranty from "./pages/Warranty";
+import Home from "./pages/Home";
+import AdminConsole from "./pages/AdminConsole";
 import {useEffect} from "react";
 import axios from "axios";
 
@@ -13,6 +15,8 @@ const router = createBrowserRouter(
             <Route path="/signup" element={<Login/>}></Route>
             <Route path="/open-ticket" element={<OpenTicket/>}></Route>
             <Route path="/warranty" element={<Warranty/>}></Route>
+            <Route path="/home" element={<Home/>}></Route>
+            <Route path="/admin" element={<AdminConsole/>}></Route>
             <Route exact path="/" element={<Navigate to="/login" replace={true}/>}></Route>
         </>
     )
