@@ -145,6 +145,24 @@ export default class API {
     }
 
     static TicketAPI = class {
+
+        /**
+         *
+         * @param {Ticket} ticket
+         * @returns
+         */
+        static async ticketCreation(ticket){
+            try {
+                const response = await axios.post(
+                    `${API.url}/api/ticket/`,
+                    ticket
+                )
+                return //Warranty.fromJson(response.data)
+            } catch (e) {
+                handleError("Error on ticketCreation", e)
+            }
+        }
+
         // TODO: Inserire tutti i vari endpoint che sono dentro TicketController, necesssariamente dichiarare dentro model.js anche i vari model restituiti
     }
 }

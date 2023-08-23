@@ -159,5 +159,26 @@ export class Brand {
 
 }
 
+export class Ticket{
+    /**
+     * @param {Number} id
+     * @param {String} priority
+     * @param {String} state
+     * @param {String} creator_email
+     * @param {String} expert_mail
+     * @param {String} product_ean
+     * @param {String} sale_id
+     */
+    constructor(id = null, priority = null, state = "OPEN", creator_email, expert_mail = null, product_ean, sale_id) {
+        this.id = id;
+        this.priority = priority;
+        this.state = state;
+        this.creator_email = creator_email;
+        this.expert_mail = expert_mail;
+        this.product_ean = product_ean;
+        this.sale_id = sale_id;
+
+    }
+}
 
 // TODO: Add Messages and Ticket classes with respective API on api.js
