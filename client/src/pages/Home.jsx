@@ -1,4 +1,4 @@
-import '../App.css';
+import '../App.scss';
 import {Link} from 'react-router-dom';
 import NavigationBar from './NavigationBar'
 function Home() {
@@ -14,8 +14,8 @@ function Home() {
                 </div>
             </div>
             <div className="row">
-                <div className="col-md-4 d-flex">
-                    <Link className='myHomeLink' to="/admin">
+                <div className="col-md-3 d-flex">
+                    <Link className='myHomeLink' to="/create-ticket">
                         <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor"
                                  className="mx-auto my-4 bi bi-clipboard2-plus" viewBox="0 0 16 16">
@@ -33,7 +33,7 @@ function Home() {
                         </div>
                     </Link>
                 </div>
-                <div className="col-md-4 d-flex">
+                <div className="col-md-3 d-flex">
                     <Link className='myHomeLink' to="/">
                         <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor"
@@ -51,7 +51,7 @@ function Home() {
                         </div>
                     </Link>
                 </div>
-                <div className="col-md-4 d-flex">
+                <div className="col-md-3 d-flex">
                     <Link className='myHomeLink' to="/">
                         <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor"
@@ -65,6 +65,24 @@ function Home() {
                             <div className="card-body mx-4">
                                 <h5 className="card-title">Closed Tickets</h5>
                                 <p className="card-text">Review past resolutions, appreciate our dedicated service, and experience the peace of mind we deliver.</p>
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+                <div className="col-md-3 d-flex">
+                    <Link className='myHomeLink' to="/warranty">
+                        <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor"
+                                 className="mx-auto my-4 bi bi-clipboard2-minus" viewBox="0 0 16 16">
+                                <path
+                                    d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5h3Z"/>
+                                <path
+                                    d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-12Z"/>
+                                <path d="M6 8a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1H6Z"/>
+                            </svg>
+                            <div className="card-body mx-4">
+                                <h5 className="card-title">Add Warranties</h5>
+                                <p className="card-text">Associate your warranty to your account.</p>
                             </div>
                         </div>
                     </Link>

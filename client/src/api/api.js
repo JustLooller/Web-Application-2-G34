@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-import {Product, Profile, Token, Warranty} from "../models"; // eslint-disable-line no-unused-vars
+import {Message, Product, Profile, Ticket, Token, Warranty} from "../models"; // eslint-disable-line no-unused-vars
 
 /**
  *
@@ -157,12 +157,60 @@ export default class API {
                     `${API.url}/api/ticket/`,
                     ticket
                 )
-                return //Warranty.fromJson(response.data)
+                return Ticket.fromJson(response.data)//Warranty.fromJson(response.data)
             } catch (e) {
                 handleError("Error on ticketCreation", e)
             }
         }
 
-        // TODO: Inserire tutti i vari endpoint che sono dentro TicketController, necesssariamente dichiarare dentro model.js anche i vari model restituiti
+        static async getTicketById(id){
+            try {
+                const response = await axios.get(
+                    `${API.url}/api/ticket/${id}`
+                )
+                return Ticket.fromJson(response.data)//Warranty.fromJson(response.data)
+            } catch (e) {
+                handleError("Error on getTicketById", e)
+            }
+        }
     }
+
+    static MessageAPI = class {
+
+        /**
+         *
+         * @param {Message} message
+         * @returns
+         */
+        static async sendMessage(message){
+            try {
+                const response = await axios.post(
+                    `${API.url}/api/ticket/${message.ticket_id}/message`,
+                    message
+                )
+                return //Warranty.fromJson(response.data)
+            } catch (e) {
+                handleError("Error on sendMessage", e)
+            }
+        }
+
+        /**
+         *
+         * @param {String} ticketID
+         * @returns {Promise<[Message]>}
+         */
+        static async getMessages(ticketID){
+            try{
+                const response = await axios.get(
+                    `${API.url}/api/ticket/${ticketID}/messages`
+                )
+                return response.data.map((m)=>Message.fromJson(m))
+            }
+            catch (e) {
+                handleError("Error on getMessages", e)
+            }
+        }
+    }
+
+    // TODO: Inserire tutti i vari endpoint che sono dentro TicketController, necesssariamente dichiarare dentro model.js anche i vari model restituiti
 }

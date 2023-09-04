@@ -51,7 +51,7 @@ function NavigationBar() {
                 </Dropdown.Menu>
             </Dropdown>
 
-            <Navbar.Brand as={Link} to='/' className="mx-auto">
+            <Navbar.Brand as={Link} to='/home' className="mx-auto">
                 <img src={logo} className='myNavbarLogo'/>
             </Navbar.Brand>
 

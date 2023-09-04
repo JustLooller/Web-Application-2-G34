@@ -1,74 +1,103 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+//import 'bootstrap/dist/css/bootstrap.min.css';
+import {Button, Col, Container, Form, Row, Spinner, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import logo from '../logo.svg'
 import avatar from '../avatar.svg'
 import {useAuth} from "../hooks/auth";
-import {Role} from "../models";
+import {Message, Role, Ticket} from "../models";
 import API from "../api/api";
+import {useParams} from "react-router-dom";
+import NavigationBar from "./NavigationBar";
 
 
 function OpenTicket() {
 
-    const [validated, setValidated] = useState(false);
+    const [messageSending, setMessageSending] = useState(false)
     const [messages, setMessages] = useState([]);
 
     //test useContext
     const {profile} = useAuth();
+
+    const {id} = useParams();
+    const [ticketDetails, setTicketDetails] = useState(null);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
+        setMessageSending(true)
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             console.log("invalid")
             return;
         }
-        const newMessage = event.target.newMessage.value
-        setMessages((oldMessages) => ([...oldMessages, {text: newMessage, expert: profile.role === Role.EXPERT}]))
-        setValidated(true);
+
+        const message = new Message(form.newMessage.value, profile.email, id)
+        API.MessageAPI.sendMessage(message)
+            .then(res => {
+                setMessages((old)=>[...old,message]);
+                form.newMessage.value = "";
+            })
+            .catch(e=>console.log(e))
+        setMessageSending(false)
     };
 
     useEffect(() => {
+        API.TicketAPI.getTicketById(id)
+            .then((res)=>setTicketDetails(Ticket.fromJson(res)))
+            .catch(
+                (e)=>console.log(e)
+            )
 
-        const getProducts = async () => {
-            const response = await API.ProductsAPI.getAll();
-            console.log(response);
-            setMessages(response.map((m) => {
-                return {text: m.description, expert: false}
-            }))
-        }
-        getProducts();
+        API.MessageAPI.getMessages(id)
+            .then(res=>setMessages(res))
+            .catch((e)=>console.log(e))
     }, []);
 
     return (
         <>
-            <Row className={"my-2"}>
-                <img src={logo} height={"80"} width={"100%"}/>
-            </Row>
-            <Container>
-                <Row className="d-flex justify-content-between">
-                    <Col className="d-flex align-items-center">
-                        TICKET <b>#12345</b>
-                    </Col>
-                    <Col className="d-flex align-items-center">
-                        STATUS: <b>OPEN</b>
-                    </Col>
-                    <Col className="d-flex align-items-center">
-                        EXPERT: <b>Pippo Franco</b>
-                    </Col>
-                </Row>
+            <NavigationBar/>
+            <Container className="mt-3">
+                {ticketDetails !== null &&
+                    <Table striped bordered hover>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Status</th>
+                            <th>Expert</th>
+                            <th>Warranty</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{ticketDetails.id}</td>
+                            <td>{ticketDetails.state}</td>
+                            <td>{(ticketDetails.expert_mail===null)? "NOT ASSIGNED" : ticketDetails.expert_mail}</td>
+                            <td>{ticketDetails.sale_id}</td>
+                        </tr>
+                        </tbody>
+                    </Table>
+                }
                 {messages.map((m) => (
-                    <ChatMessage key={m.text} text={m.text} expert={m.expert}></ChatMessage>
+                    <ChatMessage key={m.text} text={m.text} expert={m.user_mail !== profile.email}></ChatMessage>
                 ))}
+
                 <Form className='d-flex fixed-bottom mx-2' onSubmit={handleSubmit}>
                     <Col>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Control type="text" placeholder="New Message" name={"newMessage"}/>
+                            <Form.Control type="text" placeholder="New Message" name={"newMessage"} required/>
                         </Form.Group>
                     </Col>
                     <Col className="mx-2" sm="auto">
                         <Button variant="primary" type="submit">
-                            Send
+                            {
+                                messageSending &&
+                                <Spinner animation="grow" size="sm"></Spinner>
+                            }
+                            {
+                                !messageSending &&
+                                <>Send</>
+                            }
+
                         </Button>
                     </Col>
                 </Form>
