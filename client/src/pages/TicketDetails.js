@@ -10,7 +10,7 @@ import {useParams} from "react-router-dom";
 import NavigationBar from "./NavigationBar";
 
 
-function OpenTicket() {
+function TicketDetails() {
 
     const [messageSending, setMessageSending] = useState(false)
     const [messages, setMessages] = useState([]);
@@ -107,7 +107,7 @@ function OpenTicket() {
     );
 }
 
-export default OpenTicket;
+export default TicketDetails;
 
 function ChatMessage(props) {
     return (

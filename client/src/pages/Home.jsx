@@ -34,7 +34,7 @@ function Home() {
                     </Link>
                 </div>
                 <div className="col-md-3 d-flex">
-                    <Link className='myHomeLink' to="/">
+                    <Link className='myHomeLink' to="/open-tickets">
                         <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor"
                                  className="mx-auto my-4 bi bi-clipboard2-heart" viewBox="0 0 16 16">
@@ -52,7 +52,7 @@ function Home() {
                     </Link>
                 </div>
                 <div className="col-md-3 d-flex">
-                    <Link className='myHomeLink' to="/">
+                    <Link className='myHomeLink' to="/closed-tickets">
                         <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor"
                                  className="mx-auto my-4 bi bi-clipboard2-minus" viewBox="0 0 16 16">

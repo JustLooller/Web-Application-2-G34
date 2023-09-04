@@ -50,7 +50,7 @@ function CreateTicket() {
         const message = new Message(form.message.value, profile.email, createdTicket.id)
         await API.MessageAPI.sendMessage(message);
 
-        navigate(`/open-ticket/${createdTicket.id}`, { replace: false });
+        navigate(`/ticket-details/${createdTicket.id}`, { replace: false });
     }
 
 

@@ -173,6 +173,22 @@ export default class API {
                 handleError("Error on getTicketById", e)
             }
         }
+
+        /**
+         *
+         * @returns {Promise<[<Ticket>]>}
+         */
+        static async getTickets(){
+            try {
+                const response = await axios.get(
+                    `${API.url}/api/tickets`
+                )
+                return response.data.map((it)=>Ticket.fromJson(it))//Warranty.fromJson(response.data)
+            } catch (e) {
+                handleError("Error on getTickets", e)
+            }
+        }
+
     }
 
     static MessageAPI = class {
