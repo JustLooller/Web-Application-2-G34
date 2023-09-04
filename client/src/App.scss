@@ -96,9 +96,17 @@ a.myHomeLink:hover, a.myHomeLink:active {
   outline: 0;
 }
 
-.btn:active {
-  background-color: #ffff;
+.btn-primary:active {
+  background-color: #cba859 !important;
+  color: #14565f !important;
+  border-color: #14565f !important;
+  outline: 0 !important;
 }
+
+.table-striped > tbody > tr:nth-of-type(2n+1) > *{
+  --bs-table-bg-type: #fed15c40;
+}
+
 
 
 
