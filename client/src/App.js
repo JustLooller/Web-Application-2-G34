@@ -11,6 +11,7 @@ import CreateTicket from "./pages/CreateTicket";
 import './App.scss'
 import OpenTickets from "./pages/OpenTickets";
 import ClosedTickets from "./pages/ClosedTickets";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
             <Route path="/create-ticket" element={<CreateTicket/>}></Route>
             <Route path="/open-tickets" element={<OpenTickets/>}></Route>
             <Route path="/closed-tickets" element={<ClosedTickets/>}></Route>
+            <Route path="/profile" element={<Profile/>}></Route>
             <Route exact path="/" element={<Navigate to="/login" replace={true}/>}></Route>
         </>
     )
