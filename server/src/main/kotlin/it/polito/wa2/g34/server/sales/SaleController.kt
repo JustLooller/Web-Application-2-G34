@@ -3,13 +3,6 @@ package it.polito.wa2.g34.server.sales
 import io.micrometer.observation.annotation.Observed
 import it.polito.wa2.g34.server.observability.LogInfo
 import it.polito.wa2.g34.server.profile.ProfileService
-import it.polito.wa2.g34.server.ticketing.dto.TicketDTO
-import it.polito.wa2.g34.server.ticketing.dto.toDTO
-import it.polito.wa2.g34.server.ticketing.service.MessageService
-import it.polito.wa2.g34.server.ticketing.service.StateHistoryService
-import it.polito.wa2.g34.server.ticketing.service.TicketService
-import jakarta.validation.Valid
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -26,7 +19,7 @@ class SaleController(
 ) {
 
     @PostMapping("/api/sale/{id}")
-    fun asssociateSale(@PathVariable("id") id: String): Sale {
+    fun associateSale(@PathVariable("id") id: String): Sale {
         val authentication = SecurityContextHolder.getContext().authentication
         var sale = saleService.getSale(id)
         if(sale.buyer != null)
