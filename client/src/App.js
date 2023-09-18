@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import AdminConsole from "./pages/AdminConsole";
 import {useEffect} from "react";
 import axios from "axios";
+import Profile from "./pages/Profile";
+
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -17,7 +19,8 @@ const router = createBrowserRouter(
             <Route path="/warranty" element={<Warranty/>}></Route>
             <Route path="/home" element={<Home/>}></Route>
             <Route path="/admin" element={<AdminConsole/>}></Route>
-            <Route exact path="/" element={<Navigate to="/login" replace={true}/>}></Route>
+            <Route path="/profile" element={<Profile/>}></Route>
+            <Route exact path="/" element={<Navigate to="/home" replace={true}/>}></Route>
         </>
     )
 )
