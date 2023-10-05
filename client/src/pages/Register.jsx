@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {Alert, Button, Col, Container, Form, InputGroup, Row} from "react-bootstrap";
 import {useState} from "react";
 import logo from "../logo.svg";
-import {Navigate, useNavigate} from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
 import {useAuth} from "../hooks/auth";
 import API from "../api/api";
 
@@ -55,13 +55,18 @@ function Register() {
                 <Row className={"my-2"}>
                     <img src={logo} height={"80"} width={"100%"} alt={"Ticket34 Logo"}/>
                 </Row>
+                <Row className={"text-center"}>
+                    <h1>
+                    Sign Up
+                    </h1>
+                </Row>
                 <Form noValidate className={""} validated={validated} onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email Address</Form.Label>
                         <Form.Control
                             required={true}
                             type="email"
-                            placeholder="Enter email"
+                            placeholder="mario@reds.it"
                             name="email"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -73,7 +78,7 @@ function Register() {
                         <Form.Control
                             required={true}
                             type={showPassword ? "text" : "password"}
-                            placeholder="Password"
+                            placeholder="********"
                             name="password"
                             id="password"
                             pattern={"^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"}
@@ -95,7 +100,7 @@ function Register() {
                         <Form.Control
                             required={true}
                             type="text"
-                            placeholder="Full Name"
+                            placeholder="Mario Reds"
                             name="fullName"
                             minLength={3}
                             pattern={"[a-zA-Z]+ +[a-zA-Z]+"}
@@ -109,7 +114,7 @@ function Register() {
                         <Form.Control
                             required={true}
                             type="number"
-                            placeholder="Age"
+                            placeholder="22"
                             name="age"
                             min={18}
                             max={120}
@@ -123,6 +128,11 @@ function Register() {
                         <Button variant="primary" type="submit">
                             Sign Up
                         </Button>
+                        <Link to={"/login"}>
+                            <Button variant="outline-secondary" type="button">
+                                Go to Sign In
+                            </Button>
+                        </Link>
                     </Col>
                 </Form>
                 {registerError && (

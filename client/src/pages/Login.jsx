@@ -45,13 +45,18 @@ function Login() {
         <Row className={"my-2"}>
           <img src={logo} height={"80"} width={"100%"} alt={"Ticket34 Logo"} />
         </Row>
+        <Row className={"text-center"}>
+          <h1>
+            Sign In
+          </h1>
+        </Row>
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email Address</Form.Label>
             <Form.Control
               required={true}
               type="email"
-              placeholder="Enter email"
+              placeholder="mario@reds.it"
               name="email"
             />
             <Form.Control.Feedback type="invalid">
@@ -63,7 +68,7 @@ function Login() {
             <Form.Control
               required={true}
               type="password"
-              placeholder="Password"
+              placeholder="********"
               name="password"
             />
             <Form.Control.Feedback type="invalid">
