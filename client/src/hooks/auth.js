@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-import {Profile, Token, Role} from '../models'
+import {Profile, Role, Token} from '../models'
 
 const AuthContext = React.createContext()
 
@@ -19,16 +19,18 @@ export const AuthProvider = ({children}) => {
             axios.defaults.headers.common["Authorization"] = "Bearer " + token.access_token;
             localStorage.setItem('token', token.stringify());
             const decoded = jwt_decode(token.access_token);
-            const decoded_profile = new Profile(decoded.name, decoded.email);
-            const decoded_roles = Array.from(decoded.realm_access.roles)
-            if (decoded_roles.includes(Role.CUSTOMER))
-                decoded_profile.role = Role.CUSTOMER;
-            if (decoded_roles.includes(Role.EXPERT))
-                decoded_profile.role = Role.EXPERT
-            if (decoded_roles.includes(Role.MANAGER))
-                decoded_profile.role = Role.MANAGER
-            localStorage.setItem("profile", JSON.stringify(decoded_profile))
-            setProfile(decoded_profile)
+            API.ProfileAPI.get(decoded.email).then((profile) => {
+                const decoded_profile = new Profile(profile.name, decoded.email);
+                const decoded_roles = Array.from(decoded.realm_access.roles)
+                if (decoded_roles.includes(Role.CUSTOMER))
+                    decoded_profile.role = Role.CUSTOMER;
+                if (decoded_roles.includes(Role.EXPERT))
+                    decoded_profile.role = Role.EXPERT
+                if (decoded_roles.includes(Role.MANAGER))
+                    decoded_profile.role = Role.MANAGER
+                localStorage.setItem("profile", JSON.stringify(decoded_profile))
+                setProfile(decoded_profile)
+            })
 
         } else {
             delete axios.defaults.headers.common["Authorization"];

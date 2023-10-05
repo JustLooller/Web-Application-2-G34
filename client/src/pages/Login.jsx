@@ -74,7 +74,7 @@ function Login() {
             <Button variant="primary" type="submit">
               Sign In
             </Button>
-            <Link href={"/signup"}>
+            <Link to={"/signup"}>
               <Button variant="outline-secondary" type="button">
                 Sign Up
               </Button>

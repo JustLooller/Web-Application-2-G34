@@ -5,10 +5,10 @@ import { useAuth } from '../hooks/auth';
 import { Navigate } from 'react-router-dom';
 function Home() {
 
-    // const {profile} = useAuth();
-    // if (!profile) {
-    //     return <Navigate to="/login"></Navigate>
-    // }
+    const {profile} = useAuth();
+    if (!profile) {
+        return <Navigate to="/login"></Navigate>
+    }
 
     return <>
         <NavigationBar/>
