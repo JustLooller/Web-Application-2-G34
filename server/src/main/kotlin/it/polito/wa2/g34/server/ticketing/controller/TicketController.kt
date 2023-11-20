@@ -2,7 +2,8 @@ package it.polito.wa2.g34.server.ticketing.controller
 
  import io.micrometer.observation.annotation.Observed
 import it.polito.wa2.g34.server.observability.LogInfo
-import it.polito.wa2.g34.server.ticketing.dto.*
+ import it.polito.wa2.g34.server.profile.ProfileService
+ import it.polito.wa2.g34.server.ticketing.dto.*
 import it.polito.wa2.g34.server.ticketing.entity.Priority
 import it.polito.wa2.g34.server.ticketing.entity.State
 import it.polito.wa2.g34.server.ticketing.service.MessageService
@@ -12,7 +13,8 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.validation.annotation.Validated
+ import org.springframework.security.core.context.SecurityContextHolder
+ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.time.LocalDateTime
@@ -25,6 +27,7 @@ class TicketController(
     private val ticketService: TicketService,
     private val stateHistoryService: StateHistoryService,
     private val messageService: MessageService,
+    private val profileService: ProfileService,
 ) {
 
     private val logger = LoggerFactory.getLogger(TicketController::class.java);
@@ -32,6 +35,16 @@ class TicketController(
     fun getTicket(@PathVariable("id") id: Long): TicketDTO {
         logger.debug("(MANUAL LOG) Getting ticket with id $id")
         return ticketService.getTicket(id).toDTO()
+    }
+
+    @GetMapping("/api/tickets")
+    fun getUserTicket(): List<TicketDTO> {
+        val authentication = SecurityContextHolder.getContext().authentication
+        val name = authentication.name
+        val profile = profileService.getProfile(name)
+        //TODO: Se sono expert voglio i ticket assegnati a me
+        // Se sono manager li voglio vedere tutti
+        return ticketService.getTicketByEmail(profile!!).map { it.toDTO() }
     }
 
     @PostMapping("/api/ticket/")
@@ -103,7 +116,8 @@ class TicketController(
 
     @GetMapping("/api/ticket/{id}/messages")
     fun getMessagesFromTicket(@PathVariable("id") id: Long): List<MessageDTO> {
-        return messageService.getChatMessages(id).map { it.toDTO() }
+        val messageList = messageService.getChatMessages(id).map { it.toDTO() }
+        return messageList
     }
 
     @GetMapping("/api/ticket/{id}/history")

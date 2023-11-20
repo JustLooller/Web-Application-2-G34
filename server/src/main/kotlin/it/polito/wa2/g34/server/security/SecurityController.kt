@@ -37,6 +37,7 @@ data class UserSignUpData(
     var age: Int
 )
 
+@CrossOrigin(origins = ["http://localhost:3000/"])
 @RestController
 @Validated
 @Observed
@@ -50,6 +51,7 @@ class SecurityController() {
 
     @Autowired
     lateinit var profileRepository: ProfileRepository
+
 
     @PostMapping("/api/login", produces = ["application/json"])
     fun postProfile(@Valid @RequestBody userLoginData: UserLoginData?): String? {
@@ -189,3 +191,4 @@ class SecurityControllerAdvice {
 }
 
 class UnableToCreateUserException(message: String) : Exception(message)
+

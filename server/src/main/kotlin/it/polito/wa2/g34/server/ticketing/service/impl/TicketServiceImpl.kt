@@ -47,6 +47,7 @@ class TicketServiceImpl(
         if (ticketEntity.sale.product.ean != ticketDTO.product_ean) {
             throw TicketBadRequestException("The product ean must match the sale ean")
         }
+        //TODO: Controllare esistenza di ticket associati allo stesso sale NON chiusi -> bloccare creazione
 
         return ticketRepository.save(ticketEntity);
     }
@@ -88,6 +89,10 @@ class TicketServiceImpl(
         }
         ticket.expert_mail = null;
         return ticketRepository.save(ticket.toEntity());
+    }
+
+    override fun getTicketByEmail(profile: Profile): List<Ticket> {
+        return ticketRepository.getByEmail(profile)
     }
 
 }

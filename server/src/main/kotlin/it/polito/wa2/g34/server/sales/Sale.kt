@@ -13,7 +13,7 @@ class Sale(
     @ManyToOne
     var product: Product,
     @ManyToOne
-    var buyer: Profile,
+    var buyer: Profile?,
 
     var warranty_start: LocalDateTime = LocalDateTime.now(),
     var warranty_end: LocalDateTime,
