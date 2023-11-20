@@ -42,6 +42,8 @@ class TicketController(
         val authentication = SecurityContextHolder.getContext().authentication
         val name = authentication.name
         val profile = profileService.getProfile(name)
+        //TODO: Se sono expert voglio i ticket assegnati a me
+        // Se sono manager li voglio vedere tutti
         return ticketService.getTicketByEmail(profile!!).map { it.toDTO() }
     }
 

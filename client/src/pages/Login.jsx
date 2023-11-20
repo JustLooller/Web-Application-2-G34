@@ -17,6 +17,7 @@ function Login() {
   }
 
   const handleSubmit = async (event) => {
+    // TODO: Spinner
     event.preventDefault();
     event.stopPropagation();
     const form = event.currentTarget;

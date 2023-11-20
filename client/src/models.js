@@ -255,6 +255,7 @@ export class StateHistory {
     }
 }
 
+// TODO: Parametrizzare azioni fattibili in base a utenza e stato ticket
 export const TicketActions = {
     START: (expert_mail) => `start/${expert_mail}`,
     CLOSE: () => "close",
@@ -262,5 +263,3 @@ export const TicketActions = {
     RESOLVE: () => "resolve",
     REOPEN: () => "reopen",
 }
-
-// TODO: Add Messages and Ticket classes with respective API on api.js

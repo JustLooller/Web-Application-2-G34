@@ -30,6 +30,7 @@ function OpenTickets() {
     }
 
     useEffect(() => {
+        // TODO: loading spinner
         getTickets();
     }, []);
 

@@ -3,6 +3,8 @@ import NavigationBar from "./NavigationBar";
 import React, { useState } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 
+//TODO: Implementare lato backend cambio email e/o password
+
 export default function Profile() {
   const { profile } = useAuth();
   const [newEmail, setNewEmail] = useState("");

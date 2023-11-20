@@ -64,6 +64,7 @@ function TicketDetails() {
         <>
             <NavigationBar/>
             <Container className="mt-3">
+                {/*TODO: Body scrollabile*/}
                 {ticketDetails !== null &&
                     <Table striped bordered hover>
                         <thead>
@@ -85,7 +86,7 @@ function TicketDetails() {
                     </Table>
                 }
                 {messages.map((m) => (
-                    <ChatMessage key={m.text} text={m.text} expert={m.user_mail !== profile.email}></ChatMessage>
+                    <ChatMessage key={m.id} text={m.text} expert={m.user_mail !== profile.email}></ChatMessage>
                 ))}
 
                 <Form className='d-flex fixed-bottom mx-2' onSubmit={handleSubmit}>
