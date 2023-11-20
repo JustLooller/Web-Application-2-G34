@@ -1,14 +1,8 @@
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {
   Navbar,
-  Nav,
-  Container,
-  Row,
-  Col,
   Dropdown,
-  Badge,
   Button,
-  Text,
 } from "react-bootstrap";
 import { useAuth } from "../hooks/auth";
 import logo from "../logo.svg";
@@ -24,9 +18,11 @@ function NavigationBar() {
    * The number of credits and the course vector are also reset.
    */
   const { profile, logout } = useAuth();
+  const navigator = useNavigate();
   const handleLogout = async (event) => {
     event.preventDefault();
     logout();
+    navigator("/login");
   };
 
   return (

@@ -1,14 +1,14 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Col, Container, Form, Row, Spinner, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import logo from '../logo.svg'
 import avatar from '../avatar.svg'
 import {useAuth} from "../hooks/auth";
-import {Message, Role, Ticket} from "../models";
+import {Message, Ticket} from "../models";
 import API from "../api/api";
 import {useParams} from "react-router-dom";
 import NavigationBar from "./NavigationBar";
 
+const RETRIEVE_MSG_INTERVAL = 1000 * 10; // 10 seconds
 
 function TicketDetails() {
 
@@ -34,23 +34,30 @@ function TicketDetails() {
         const message = new Message(form.newMessage.value, profile.email, id)
         API.MessageAPI.sendMessage(message)
             .then(res => {
-                setMessages((old)=>[...old,message]);
+                setMessages((old) => [...old, message]);
                 form.newMessage.value = "";
             })
-            .catch(e=>console.log(e))
+            .catch(e => console.log(e))
         setMessageSending(false)
     };
 
     useEffect(() => {
         API.TicketAPI.getTicketById(id)
-            .then((res)=>setTicketDetails(Ticket.fromJson(res)))
+            .then((res) => setTicketDetails(Ticket.fromJson(res)))
             .catch(
-                (e)=>console.log(e)
+                (e) => console.log(e)
             )
-
         API.MessageAPI.getMessages(id)
-            .then(res=>setMessages(res))
-            .catch((e)=>console.log(e))
+            .then(res => setMessages(res))
+            .catch((e) => console.log(e));
+
+        const timer_id = setInterval(() => {
+            API.MessageAPI.getMessages(id)
+                .then(res => setMessages(res))
+                .catch((e) => console.log(e));
+        }, RETRIEVE_MSG_INTERVAL);
+
+        return () => clearInterval(timer_id);
     }, []);
 
     return (
@@ -71,7 +78,7 @@ function TicketDetails() {
                         <tr>
                             <td>{ticketDetails.id}</td>
                             <td>{ticketDetails.state}</td>
-                            <td>{(ticketDetails.expert_mail===null)? "NOT ASSIGNED" : ticketDetails.expert_mail}</td>
+                            <td>{(ticketDetails.expert_mail === null) ? "NOT ASSIGNED" : ticketDetails.expert_mail}</td>
                             <td>{ticketDetails.sale_id}</td>
                         </tr>
                         </tbody>

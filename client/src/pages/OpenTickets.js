@@ -1,12 +1,11 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import {Alert, Button, Col, Container, Form, Row, Table} from "react-bootstrap";
-import logo from "../logo.svg";
+import {Button, Container, Row, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import API from "../api/api";
 import {useAuth} from "../hooks/auth";
-import {Message, Ticket} from "../models";
 import NavigationBar from "./NavigationBar";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
+
 //import './../custom.css';
 
 function OpenTickets() {
@@ -20,20 +19,21 @@ function OpenTickets() {
     const getTickets = async () => {
         try {
             const tickets = await API.TicketAPI.getTickets()
-            setTickets(tickets.filter(t=>t.state === "OPEN"))
+            setTickets(tickets.filter(t => t.state !== "CLOSED"))
         } catch (e) {
             console.error(e)
         }
     }
 
-    const openTicketDetails = (ticketID)=>{
-        navigate(`/ticket-details/${ticketID}`, { replace: false });
+    const openTicketDetails = (ticketID) => {
+        navigate(`/ticket-details/${ticketID}`, {replace: false});
     }
 
     useEffect(() => {
         getTickets();
     }, []);
 
+    if (!profile) return (<Navigate to={'/login'}></Navigate>)
 
 
     return (
@@ -56,7 +56,7 @@ function OpenTickets() {
                                 <td>{m.id}</td>
                                 <td>{m.state}</td>
                                 <td>{m.sale_id}</td>
-                                <td><Button onClick={()=>openTicketDetails(m.id)}>DETAILS</Button></td>
+                                <td><Button onClick={() => openTicketDetails(m.id)}>DETAILS</Button></td>
                             </tr>
                         )}
                         </tbody>

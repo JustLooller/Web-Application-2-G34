@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-import {Message, Product, Profile, Ticket, Token, Warranty} from "../models"; // eslint-disable-line no-unused-vars
+import {Message, Product, Profile, Ticket, Token, Warranty, StateHistory} from "../models"; // eslint-disable-line no-unused-vars
 
 /**
  *
@@ -205,6 +205,39 @@ export default class API {
                 return response.data.map((it) => Ticket.fromJson(it))//Warranty.fromJson(response.data)
             } catch (e) {
                 handleError("Error on getTickets", e)
+            }
+        }
+
+        /**
+         *
+         * @param id {Number} Ticket ID
+         * @return {Promise<StateHistory[]>} State History list
+         */
+        static async getTicketHistory(id) {
+            try {
+                const response = await axios.get(
+                    `${API.url}/api/ticket/${id}/history`
+                )
+                return response.data.map((it) => StateHistory.fromJson(it))//Warranty.fromJson(response.data)
+            } catch (e) {
+                handleError("Error on getTicketHistory", e)
+            }
+        }
+
+        /**
+         * Action on ticket
+         * @param id {Number} ticket id
+         * @param action {string} action to perform (use TicketActions)
+         * @return {Promise<boolean>}
+         */
+        static async action(id, action) {
+            try {
+                const response = await axios.put(
+                    `${API.url}/api/ticket/${id}/${action}`
+                )
+                return response.status === 200
+            }   catch (e) {
+                handleError(`Error on action ${action}`, e)
             }
         }
 

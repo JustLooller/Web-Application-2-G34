@@ -159,7 +159,7 @@ export class Brand {
 
 }
 
-export class Ticket{
+export class Ticket {
     /**
      * @param {Number} id
      * @param {String} priority
@@ -187,13 +187,13 @@ export class Ticket{
     static fromJson(json) {
         if (typeof json === "string")
             json = JSON.parse(json)
-        return new Ticket(json.id, json.priority, json.state, json.creator_email,json.expert_mail, json.product_ean, json.sale_id);
+        return new Ticket(json.id, json.priority, json.state, json.creator_email, json.expert_mail, json.product_ean, json.sale_id);
     }
 
 
 }
 
-export class Message{
+export class Message {
     /**
      *
      * @param {String} text
@@ -218,6 +218,49 @@ export class Message{
     }
 }
 
+export class StateHistory {
+    /**
+     * StateHistoryDTO(
+     *     var id: Long?,
+     *     var timestamp: LocalDateTime,
+     *     var status: String,
+     *     var ticket_id: Long,
+     *     var user_mail: String,
+     * )
+     */
 
+    /**
+     * @param {Number} id
+     * @param {String} timestamp
+     * @param {String} status
+     * @param {Number} ticket_id
+     * @param {String} user_mail
+     */
+    constructor(id, timestamp, status, ticket_id, user_mail) {
+        this.id = id;
+        this.timestamp = timestamp;
+        this.status = status;
+        this.ticket_id = ticket_id;
+        this.user_mail = user_mail;
+    }
+
+    /**
+     * @param {object | string} json
+     * @returns {StateHistory}
+     */
+    static fromJson(json) {
+        if (typeof json === "string")
+            json = JSON.parse(json)
+        return new StateHistory(json.id, json.timestamp, json.status, json.ticket_id, json.user_mail);
+    }
+}
+
+export const TicketActions = {
+    START: (expert_mail) => `start/${expert_mail}`,
+    CLOSE: () => "close",
+    STOP: () => "stop",
+    RESOLVE: () => "resolve",
+    REOPEN: () => "reopen",
+}
 
 // TODO: Add Messages and Ticket classes with respective API on api.js
