@@ -1,0 +1,11 @@
+.loading-spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10vh; /*Optional: Set a specific height if needed */
+}
+
+.custom-spinner {
+  width: 3rem; /* Set the desired width */
+  height: 3rem; /* Set the desired height */
+}
