@@ -1,3 +1,6 @@
+@import "~bootstrap/scss/bootstrap";
+
+
 .App {
   text-align: center;
 }
@@ -38,8 +41,8 @@
 }
 
 .myNavbar {
-  background: rgb(253,203,71);
-  background: linear-gradient(113deg, rgba(253,203,71,1) 0%, rgba(254,209,92,1) 55%);
+  background: rgb(253, 203, 71);
+  background: linear-gradient(113deg, rgba(253, 203, 71, 1) 0%, rgba(254, 209, 92, 1) 55%);
 }
 
 .myNavbarToggle {
@@ -48,7 +51,7 @@
   color: #185163;
 }
 
-.myNavbarLogo{
+.myNavbarLogo {
   height: 60px;
   width: 100%;
 }
@@ -61,16 +64,50 @@
 }
 
 
-a.myHomeLink:link, a.myHomeLink:visited{
+a.myHomeLink:link, a.myHomeLink:visited {
   text-decoration: none;
 }
 
-a.myHomeLink:hover, a.myHomeLink:active{
+a.myHomeLink:hover, a.myHomeLink:active {
   text-decoration: none;
 }
 
-.myHomeCard{
+.myHomeCard {
   border-width: 2px;
-  border-color: rgb(253,203,71);
+  border-color: rgb(253, 203, 71);
 }
+
+.btn-primary {
+  background-color: #fed15c;
+  color: #14565f;
+  border-color: #14565f;
+}
+
+.btn-primary:hover {
+  background-color: #ffe29a;
+  color: #14565f;
+  border-color: #14565f;
+}
+
+.btn-primary:focus-visible {
+  background-color: #cba859;
+  color: #14565f;
+  border-color: #14565f;
+  outline: 0;
+}
+
+.btn-primary:active {
+  background-color: #cba859 !important;
+  color: #14565f !important;
+  border-color: #14565f !important;
+  outline: 0 !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(2n+1) > *{
+  --bs-table-bg-type: #fed15c40;
+}
+
+
+
+
 

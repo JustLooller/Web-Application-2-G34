@@ -177,8 +177,47 @@ export class Ticket{
         this.expert_mail = expert_mail;
         this.product_ean = product_ean;
         this.sale_id = sale_id;
+    }
 
+    /**
+     *
+     * @param {object | string} json
+     * @returns {Ticket}
+     */
+    static fromJson(json) {
+        if (typeof json === "string")
+            json = JSON.parse(json)
+        return new Ticket(json.id, json.priority, json.state, json.creator_email,json.expert_mail, json.product_ean, json.sale_id);
+    }
+
+
+}
+
+export class Message{
+    /**
+     *
+     * @param {String} text
+     * @param {String} user_mail
+     * @param {Number} ticket_id
+     */
+    constructor(text, user_mail, ticket_id) {
+        this.text = text;
+        this.user_mail = user_mail;
+        this.ticket_id = ticket_id;
+    }
+
+    /**
+     *
+     * @param {object | string} json
+     * @returns {Message}
+     */
+    static fromJson(json) {
+        if (typeof json === "string")
+            json = JSON.parse(json)
+        return new Message(json.text, json.user_mail, json.ticket_id);
     }
 }
+
+
 
 // TODO: Add Messages and Ticket classes with respective API on api.js

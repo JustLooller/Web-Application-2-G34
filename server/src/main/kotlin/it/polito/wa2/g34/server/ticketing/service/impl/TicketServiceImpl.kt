@@ -90,6 +90,10 @@ class TicketServiceImpl(
         return ticketRepository.save(ticket.toEntity());
     }
 
+    override fun getTicketByEmail(profile: Profile): List<Ticket> {
+        return ticketRepository.getByEmail(profile)
+    }
+
 }
 
 
