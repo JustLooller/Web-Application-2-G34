@@ -4,8 +4,10 @@ import { useState } from "react";
 import logo from "../logo.svg";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/auth";
+import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 function Login() {
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [validated, setValidated] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [succesfulLogin, setSuccesfulLogin] = useState(false);
@@ -22,11 +24,13 @@ function Login() {
     event.stopPropagation();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
+      setLoginError(true)
       return;
     }
     const username = event.target.email.value;
     const password = event.target.password.value;
-
+    setIsLoggingIn(true);
+    setLoginError(false);
     const hasLoggedIn = await login(username, password);
     if (hasLoggedIn) {
       setLoginError(false);
@@ -36,6 +40,7 @@ function Login() {
       setLoginError(true);
     }
     setValidated(true);
+    setIsLoggingIn(false);
   };
 
   if (succesfulLogin) return <Navigate to="/home"></Navigate>;
@@ -47,9 +52,7 @@ function Login() {
           <img src={logo} height={"80"} width={"100%"} alt={"Ticket34 Logo"} />
         </Row>
         <Row className={"text-center"}>
-          <h1>
-            Sign In
-          </h1>
+          <h1>Sign In</h1>
         </Row>
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -87,6 +90,11 @@ function Login() {
             </Link>
           </Col>
         </Form>
+        {isLoggingIn && (
+          <Container className={"mt-2"}>
+            <LoadingSpinner></LoadingSpinner>
+          </Container>
+        )}
         {loginError && (
           <Alert key={"danger"} variant={"danger"} dismissible className="my-2">
             Bad Credentials!
