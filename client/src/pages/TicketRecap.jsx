@@ -1,3 +1,4 @@
+
 import { Navigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { StateHistory, Ticket, TicketActions } from "../models";
@@ -6,6 +7,7 @@ import { Alert, Button, Container, Row, Table } from "react-bootstrap";
 import API from "../api/api";
 import { useAuth } from "../hooks/auth";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
+
 // import dayjs from "dayjs";
 
 /**
@@ -14,10 +16,12 @@ import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
  *  */
 const typeHintTicket = () => null;
 
+
 /**
  * Just for type hinting
  * @return {StateHistory[]}
  */
+
 const typeHintStateHistory = () => [];
 
 export default function TicketRecap() {
@@ -148,4 +152,5 @@ export default function TicketRecap() {
       </Container>
     </>
   );
+
 }

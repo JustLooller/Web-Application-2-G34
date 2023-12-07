@@ -24,7 +24,6 @@ function OpenTickets() {
       console.error(e);
     }
   };
-
   const openTicketDetails = (ticketID) => {
     navigate(`/ticket-details/${ticketID}`, { replace: false });
   };
@@ -37,7 +36,7 @@ function OpenTickets() {
   }, []);
 
   if (!profile) return <Navigate to={"/login"}></Navigate>;
-
+  
   return (
     <>
       <NavigationBar />

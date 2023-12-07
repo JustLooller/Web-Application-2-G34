@@ -19,6 +19,7 @@ function Login() {
   }
 
   const handleSubmit = async (event) => {
+    // TODO: Spinner
     event.preventDefault();
     event.stopPropagation();
     const form = event.currentTarget;
@@ -59,7 +60,7 @@ function Login() {
             <Form.Control
               required={true}
               type="email"
-              placeholder="Enter email"
+              placeholder="mario@reds.it"
               name="email"
             />
             <Form.Control.Feedback type="invalid">
@@ -71,7 +72,7 @@ function Login() {
             <Form.Control
               required={true}
               type="password"
-              placeholder="Password"
+              placeholder="********"
               name="password"
             />
             <Form.Control.Feedback type="invalid">
@@ -82,7 +83,7 @@ function Login() {
             <Button variant="primary" type="submit">
               Sign In
             </Button>
-            <Link href={"/signup"}>
+            <Link to={"/signup"}>
               <Button variant="outline-secondary" type="button">
                 Sign Up
               </Button>
