@@ -59,7 +59,11 @@ class StateHistoryServiceImpl(
                 ticket.priority = null;
                 ticket.expert = null;
             };
-            State.IN_PROGRESS -> {};
+            State.IN_PROGRESS -> {
+                if (ticket.priority == null || ticket.expert == null) {
+                    throw IllegalUpdateException("Cannot set ticket ${update.ticket_id} to IN_PROGRESS without priority and expert (from ${ticket.state} to ${update.newState})");
+                }
+            };
             State.RESOLVED -> {};
             State.REOPENED -> {
                 ticket.priority = null;
