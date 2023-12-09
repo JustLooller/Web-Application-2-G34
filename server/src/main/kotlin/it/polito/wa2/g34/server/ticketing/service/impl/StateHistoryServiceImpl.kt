@@ -52,7 +52,6 @@ class StateHistoryServiceImpl(
             throw IllegalUpdateException("Invalid state update for ticket ${update.ticket_id} (from ${ticket.state} to ${update.newState})");
         }
 
-        // TODO(Post validation actions and checks )
         ticket.state = State.valueOf(update.newState!!);
         when (ticket.state) {
             State.OPEN -> {
