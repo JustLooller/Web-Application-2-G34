@@ -15,7 +15,10 @@ interface TicketService {
 
     fun removeExpert(ticket: TicketDTO, requester: ProfileDTO): Ticket;
 
-    fun getTicketByEmail(profile: Profile): List<Ticket>
+    fun getTicketByEmail(profile: Profile): List<Ticket>;
 
+    fun getTicketByExpert(profile: Profile): List<Ticket>?;
+
+    fun getAllTickets(): List<Ticket>;
 
 }

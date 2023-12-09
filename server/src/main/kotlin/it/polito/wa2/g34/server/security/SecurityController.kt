@@ -37,6 +37,13 @@ data class UserSignUpData(
     var age: Int
 )
 
+data class UpdatePasswordData(
+    var username: String,
+    var oldPassword: String,
+    var newPassword: String,
+    var confirmPassword: String
+)
+
 @CrossOrigin(origins = ["http://localhost:3000/"])
 @RestController
 @Validated
@@ -178,6 +185,35 @@ class SecurityController() {
         }
 
         throw UnableToCreateUserException("Unable to create user in KeyCloak")
+    }
+    @PutMapping("/api/changePassword", produces = ["application/json"])
+    fun updatePassword(@Valid @RequestBody updatePasswordData: UpdatePasswordData?): String? {
+
+        if (updatePasswordData!!.newPassword == updatePasswordData.oldPassword) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "New password must be different from the old one")
+        }
+        if (updatePasswordData.newPassword != updatePasswordData.confirmPassword) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "New password and confirm password must be the same")
+        }
+
+        val credentialRepresentation = CredentialRepresentation()
+
+        credentialRepresentation.type = CredentialRepresentation.PASSWORD
+        credentialRepresentation.value = updatePasswordData!!.newPassword
+        credentialRepresentation.isTemporary = false
+
+        val user = keycloak.realm("WA2_G34")
+            .users()
+            .search(updatePasswordData!!.username)
+            .firstOrNull() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
+
+        keycloak.realm("WA2_G34")
+            .users()
+            .get(user.id)
+            .resetPassword(credentialRepresentation)
+
+        return ""
+
     }
 
 }

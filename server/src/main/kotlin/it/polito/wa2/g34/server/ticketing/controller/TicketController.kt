@@ -3,6 +3,7 @@ package it.polito.wa2.g34.server.ticketing.controller
  import io.micrometer.observation.annotation.Observed
 import it.polito.wa2.g34.server.observability.LogInfo
  import it.polito.wa2.g34.server.profile.ProfileService
+ import it.polito.wa2.g34.server.profile.Role
  import it.polito.wa2.g34.server.ticketing.dto.*
 import it.polito.wa2.g34.server.ticketing.entity.Priority
 import it.polito.wa2.g34.server.ticketing.entity.State
@@ -38,12 +39,20 @@ class TicketController(
     }
 
     @GetMapping("/api/tickets")
-    fun getUserTicket(): List<TicketDTO> {
+    fun getUserTicket(): List<TicketDTO>? {
         val authentication = SecurityContextHolder.getContext().authentication
         val name = authentication.name
         val profile = profileService.getProfile(name)
-        //TODO: Se sono expert voglio i ticket assegnati a me
-        // Se sono manager li voglio vedere tutti
+        if (profile != null) {
+            if (profile.role == Role.EXPERT) {
+                return profile.let { profile1 -> ticketService.getTicketByExpert(profile1)?.map { it.toDTO() } ?: emptyList() }
+            }
+        }
+        if (profile != null) {
+            if (profile.role == Role.MANAGER) {
+                return ticketService.getAllTickets().map { it.toDTO() }
+            }
+        }
         return ticketService.getTicketByEmail(profile!!).map { it.toDTO() }
     }
 

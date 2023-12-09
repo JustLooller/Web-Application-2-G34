@@ -2,6 +2,7 @@ package it.polito.wa2.g34.server.ticketing.service.impl
 
 import io.micrometer.observation.annotation.Observed
 import it.polito.wa2.g34.server.profile.*
+import it.polito.wa2.g34.server.sales.SaleRepository
 import it.polito.wa2.g34.server.ticketing.advice.TicketBadRequestException
 import it.polito.wa2.g34.server.ticketing.advice.TicketNotFoundException
 import it.polito.wa2.g34.server.ticketing.converters.EntityConverter
@@ -47,8 +48,15 @@ class TicketServiceImpl(
         if (ticketEntity.sale.product.ean != ticketDTO.product_ean) {
             throw TicketBadRequestException("The product ean must match the sale ean")
         }
-        //TODO: Controllare esistenza di ticket associati allo stesso sale NON chiusi -> bloccare creazione
-
+        val saleId = ticketEntity.sale.id.toLong();
+        val tickets = ticketRepository.findBySaleId(saleId);
+        if (tickets.isNotEmpty()){
+            for (ticket in tickets) {
+                if (ticket.state != State.CLOSED) {
+                    throw TicketBadRequestException("Cannot create a ticket for a sale with an open ticket")
+                }
+            }
+        }
         return ticketRepository.save(ticketEntity);
     }
 
@@ -93,6 +101,14 @@ class TicketServiceImpl(
 
     override fun getTicketByEmail(profile: Profile): List<Ticket> {
         return ticketRepository.getByEmail(profile)
+    }
+
+    override fun getTicketByExpert(profile: Profile): List<Ticket>? {
+        return ticketRepository.findByExpertId(profile.email)
+    }
+
+    override fun getAllTickets(): List<Ticket> {
+        return ticketRepository.findAll()
     }
 
 }

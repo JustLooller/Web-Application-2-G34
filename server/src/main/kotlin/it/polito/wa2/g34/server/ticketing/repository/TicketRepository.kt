@@ -11,4 +11,10 @@ import org.springframework.stereotype.Repository
 interface TicketRepository: JpaRepository<Ticket, Long> {
     @Query("SELECT t FROM Ticket t WHERE t.creator = ?1")
     fun getByEmail(profile: Profile): List<Ticket>
+
+    @Query("SELECT t FROM Ticket t WHERE t.sale = ?1")
+    fun findBySaleId(saleId: Long): List<Ticket>
+
+    @Query("SELECT t FROM Ticket t WHERE t.expert = ?1")
+    fun findByExpertId(expertId: String): List<Ticket>?;
 }
