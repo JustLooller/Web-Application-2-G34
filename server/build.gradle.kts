@@ -58,6 +58,8 @@ dependencies {
 
     implementation("org.keycloak:keycloak-admin-client:21.0.1")
 
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
+
 
 
 }

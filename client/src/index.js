@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import {Nav} from "react-bootstrap";
-import OpenTicket from "./pages/OpenTicket";
+//import OpenTicket from "./pages/OpenTickets";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
