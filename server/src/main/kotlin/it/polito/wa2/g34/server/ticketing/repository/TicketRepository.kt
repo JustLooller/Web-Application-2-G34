@@ -16,5 +16,5 @@ interface TicketRepository: JpaRepository<Ticket, Long> {
     fun findBySaleId(saleId: Long): List<Ticket>
 
     @Query("SELECT t FROM Ticket t WHERE t.expert = ?1")
-    fun findByExpertId(expertId: String): List<Ticket>?;
+    fun findByExpertId(expertId: Profile): List<Ticket>?;
 }

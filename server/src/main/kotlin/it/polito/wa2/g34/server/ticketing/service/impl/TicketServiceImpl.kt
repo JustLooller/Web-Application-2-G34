@@ -104,7 +104,7 @@ class TicketServiceImpl(
     }
 
     override fun getTicketByExpert(profile: Profile): List<Ticket>? {
-        return ticketRepository.findByExpertId(profile.email)
+        return ticketRepository.findByExpertId(profile)
     }
 
     override fun getAllTickets(): List<Ticket> {
