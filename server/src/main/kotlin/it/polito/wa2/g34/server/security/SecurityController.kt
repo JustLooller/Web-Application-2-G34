@@ -44,7 +44,7 @@ data class UpdatePasswordData(
     var confirmPassword: String
 )
 
-@CrossOrigin(origins = ["http://localhost:3000/"])
+@CrossOrigin(origins = ["http://localhost:3000/", "http://localhost:5500/"])
 @RestController
 @Validated
 @Observed
