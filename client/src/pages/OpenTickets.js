@@ -1,5 +1,5 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Container, Row, Table } from "react-bootstrap";
+import {Button, Container, Row, Stack, Table} from "react-bootstrap";
 import { useEffect, useState } from "react";
 import API from "../api/api";
 import { useAuth } from "../hooks/auth";
@@ -24,8 +24,12 @@ function OpenTickets() {
       console.error(e);
     }
   };
-  const openTicketDetails = (ticketID) => {
+  const openTicketChat = (ticketID) => {
     navigate(`/ticket-details/${ticketID}`, { replace: false });
+  };
+
+  const openTicketRecap = (ticketID) => {
+    navigate(`/ticket-recap/${ticketID}`, { replace: false });
   };
 
   useEffect(() => {
@@ -36,7 +40,9 @@ function OpenTickets() {
   }, []);
 
   if (!profile) return <Navigate to={"/login"}></Navigate>;
-  
+
+  const isCustomer = profile.role === "CUSTOMER";
+
   return (
     <>
       <NavigationBar />
@@ -51,7 +57,7 @@ function OpenTickets() {
                   <th>#</th>
                   <th>State</th>
                   <th>Warranty</th>
-                  <th></th>
+                  <th>Go To</th>
                 </tr>
               </thead>
               <tbody>
@@ -61,9 +67,21 @@ function OpenTickets() {
                     <td>{m.state}</td>
                     <td>{m.sale_id}</td>
                     <td>
-                      <Button onClick={() => openTicketDetails(m.id)}>
-                        DETAILS
+                      {isCustomer ? (
+                      <Button onClick={() => openTicketChat(m.id)}>
+                        Chat
                       </Button>
+                      ) : (
+                      <Stack direction="horizontal">
+                        <Button className="mx-auto" onClick={() => openTicketChat(m.id)}>
+                          Chat
+                        </Button>
+                        <div className={'vr'}></div>
+                      <Button className="mx-auto" onClick={() => openTicketRecap(m.id)}>
+                        Info
+                      </Button>
+                      </Stack>
+                      )}
                     </td>
                   </tr>
                 ))}
