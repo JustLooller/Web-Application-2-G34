@@ -39,6 +39,7 @@ class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/signup").permitAll()
             .requestMatchers("/actuator/**").permitAll()
+            .requestMatchers("/ws**").permitAll() //TODO remove it
             .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
             .anyRequest().authenticated();
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())

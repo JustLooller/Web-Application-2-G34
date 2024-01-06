@@ -199,11 +199,13 @@ export class Message {
      * @param {String} text
      * @param {String} user_mail
      * @param {Number} ticket_id
+     * @param {String} attachment
      */
-    constructor(text, user_mail, ticket_id) {
+    constructor(text, user_mail, ticket_id, attachment) {
         this.text = text;
         this.user_mail = user_mail;
         this.ticket_id = ticket_id;
+        this.attachment = attachment;
     }
 
     /**
@@ -214,7 +216,17 @@ export class Message {
     static fromJson(json) {
         if (typeof json === "string")
             json = JSON.parse(json)
-        return new Message(json.text, json.user_mail, json.ticket_id);
+        return new Message(json.text, json.user_mail, json.ticket_id, json.attachment);
+    }
+
+    static toJson(message){
+        return JSON.stringify(message);
+    }
+
+    static fileName(attachement){
+        let splitted = attachement.split('_');
+        splitted.shift()
+        return splitted.join("_");
     }
 }
 
