@@ -1,14 +1,16 @@
-import "../App.scss";
-import { Link, Navigate } from "react-router-dom";
-import NavigationBar from "./NavigationBar";
-import { useAuth } from "../hooks/auth";
-import { Role } from "../models";
+
+import '../App.scss';
+import {Link, Navigate} from 'react-router-dom';
+import NavigationBar from './NavigationBar'
+import {useAuth} from '../hooks/auth';
+import {Role} from "../models";
 
 function Home() {
-  const { profile } = useAuth();
-  if (!profile) {
-    return <Navigate to="/login"></Navigate>;
-  }
+
+    const {profile} = useAuth();
+    if (!profile) {
+        return <Navigate to="/login"></Navigate>
+    }
 
   return (
     <>

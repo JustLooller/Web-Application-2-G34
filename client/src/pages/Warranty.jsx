@@ -2,7 +2,7 @@
 import {Alert, Button, Container, Form, Row, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import logo from '../logo.svg'
-import {Message, Ticket, Warranty} from '../models'; // eslint-disable-line no-unused-vars
+import {Warranty} from '../models'; // eslint-disable-line no-unused-vars
 import API from "../api/api";
 import {useAuth} from "../hooks/auth";
 import {Link} from "react-router-dom";
@@ -24,9 +24,6 @@ function WarrantyPage() {
 
     const [associationError, setAssociationError] = useState("");
 
-    //TODO remove it!
-    const [messageList, setMessageList] = useState([]);
-
     const {profile} = useAuth();
 
     const getWarranties = async () => {
@@ -38,39 +35,10 @@ function WarrantyPage() {
         }
     }
 
-    const testGetMessages = async () => {
-        try{
-            const messagesRetrieved = await API.MessageAPI.getMessages(55);
-            console.log(messagesRetrieved)
-            setMessageList(messagesRetrieved)
-        }
-        catch (e) {
-
-        }
-    }
-
 
     useEffect(() => {
         getWarranties();
     }, []);
-
-    const testTicketCreation = async () => {
-        try {
-            const ticket = new Ticket(undefined, undefined, undefined, profile.email, undefined, "0194252708002", "1");
-            await API.TicketAPI.ticketCreation(ticket);
-        } catch (e) {
-            console.error(e)
-        }
-    }
-
-    const testSendMessage = async () => {
-        try {
-            const message = new Message(new Date().toString(), "customeruser@gmail.com", 55)
-            await API.MessageAPI.sendMessage(message);
-        } catch (e) {
-            console.error(e)
-        }
-    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -145,7 +113,6 @@ function WarrantyPage() {
                             Associate Warranty
                         </Button>
                     </Form>
-                    {messageList.length != 0 && <Row>{messageList.map((m)=>m.text)}</Row>}
                 </Row>
             </Container>
         </>
