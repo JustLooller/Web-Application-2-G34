@@ -42,7 +42,6 @@ function TicketDetails() {
         const file = form.attachment.files[0]
         API.MessageAPI.sendMessage(message, file)
             .then(res => {
-                setMessages((old) => [...old, message]);
                 form.newMessage.value = "";
                 form.attachment.value = null;
             })
@@ -72,8 +71,8 @@ function TicketDetails() {
                 const newMessage = Message.fromJson(greeting.body)
                 if(newMessage.user_mail !== profile.email){
                     audio.play()
-                    setMessages((old) => [...old, newMessage]);
                 }
+                setMessages((old) => [...old, newMessage]);
             });
         };
         stompClient.activate()
