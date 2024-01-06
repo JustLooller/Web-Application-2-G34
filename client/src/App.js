@@ -13,6 +13,7 @@ import OpenTickets from "./pages/OpenTickets";
 import ClosedTickets from "./pages/ClosedTickets";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
+import RegisterExpert from "./pages/RegisterExpert";
 import TicketRecap from "./pages/TicketRecap";
 
 const router = createBrowserRouter(
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
         <>
             <Route path="/login" element={<Login/>}> </Route>
             <Route path="/signup" element={<Register/>}></Route>
+            <Route path="/register-expert" element={<RegisterExpert/>}></Route>
             <Route path="/ticket-details/:id" element={<TicketDetails/>}></Route>
             <Route path="/ticket-recap/:id" element={<TicketRecap/>}></Route>
             <Route path="/warranty" element={<Warranty/>}></Route>

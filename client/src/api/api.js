@@ -75,6 +75,25 @@ export default class API {
             return response.status === 200;
         }
 
+        /**
+         * RegisterExpert
+         * @param username {string}
+         * @param password {string}
+         * @param fullName {string}
+         * @param age {number}
+         * @returns {Promise<boolean>}
+         */
+        static async registerExpert(username, password, fullName, age) {
+            const body = {
+                email: username,
+                password,
+                fullName,
+                age
+            };
+            const response = await axios.post(API.url + '/api/createExpert', body);
+            return response.status === 200;
+        }
+
     }
 
     static ProfileAPI = class {

@@ -29,6 +29,32 @@ function Home() {
           </div>
         </div>
         <div className="row">
+          {profile.role === Role.MANAGER && (
+              <div className="col d-flex">
+                <Link className="myHomeLink" to="/register-expert">
+                  <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="50"
+                        height="60"
+                        fill="currentColor"
+                        className="mx-auto my-4 bi bi-person-square"
+                        viewBox="0 0 16 16"
+                    >
+                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
+                    </svg>
+                    <div className="card-body mx-4">
+                      <h5 className="card-title">Create Expert</h5>
+                      <p className="card-text">
+                        Set up your expert profile effortlessly,
+                        making sure you have credentials and expert details at hand.
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+          )}
           {profile.role === Role.CUSTOMER && (
             <div className="col d-flex">
               <Link className="myHomeLink" to="/create-ticket">
