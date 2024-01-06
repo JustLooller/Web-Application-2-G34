@@ -3,6 +3,7 @@ package it.polito.wa2.g34.server.ticketing.controller
  import io.micrometer.observation.annotation.Observed
  import it.polito.wa2.g34.server.observability.LogInfo
  import it.polito.wa2.g34.server.profile.ProfileService
+ import it.polito.wa2.g34.server.profile.Role
  import it.polito.wa2.g34.server.ticketing.dto.*
  import it.polito.wa2.g34.server.ticketing.entity.Priority
  import it.polito.wa2.g34.server.ticketing.entity.State
@@ -28,6 +29,7 @@ package it.polito.wa2.g34.server.ticketing.controller
  import kotlin.io.path.Path
 
 
+@CrossOrigin(origins = ["http://localhost:3000/", "http://localhost:5500/"])
 @RestController
 @Validated
 @Observed
@@ -51,10 +53,20 @@ class TicketController(
     }
 
     @GetMapping("/api/tickets")
-    fun getUserTicket(): List<TicketDTO> {
+    fun getUserTicket(): List<TicketDTO>? {
         val authentication = SecurityContextHolder.getContext().authentication
         val name = authentication.name
         val profile = profileService.getProfile(name)
+        if (profile != null) {
+            if (profile.role == Role.EXPERT) {
+                return profile.let { profile1 -> ticketService.getTicketByExpert(profile1)?.map { it.toDTO() } ?: emptyList() }
+            }
+        }
+        if (profile != null) {
+            if (profile.role == Role.MANAGER) {
+                return ticketService.getAllTickets().map { it.toDTO() }
+            }
+        }
         return ticketService.getTicketByEmail(profile!!).map { it.toDTO() }
     }
 

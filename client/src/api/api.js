@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-import {Message, Product, Profile, Ticket, Token, Warranty} from "../models"; // eslint-disable-line no-unused-vars
+import {Message, Product, Profile, Ticket, Token, Warranty, StateHistory} from "../models"; // eslint-disable-line no-unused-vars
 
 /**
  *
@@ -54,8 +54,27 @@ export default class API {
                 return Token.fromJson(response.data);
             }
             throw new Error("Login failed")
-
         }
+
+        /**
+         * Register user
+         * @param username {string}
+         * @param password {string}
+         * @param fullName {string}
+         * @param age {number}
+         * @returns {Promise<boolean>}
+         */
+        static async register(username, password, fullName, age) {
+            const body = {
+                email: username,
+                password,
+                fullName,
+                age
+            };
+            const response = await axios.post(API.url + '/api/signup', body);
+            return response.status === 200;
+        }
+
     }
 
     static ProfileAPI = class {
@@ -67,7 +86,7 @@ export default class API {
          */
         static async get(email) {
             const response = await axios.get(
-                `${API.url}/profiles/${email}`
+                `${API.url}/api/profiles/${email}`
             )
             if (response.status === 200) {
                 return Profile.fromJson(response.data)
@@ -151,7 +170,7 @@ export default class API {
          * @param {Ticket} ticket
          * @returns
          */
-        static async ticketCreation(ticket){
+        static async ticketCreation(ticket) {
             try {
                 const response = await axios.post(
                     `${API.url}/api/ticket/`,
@@ -163,7 +182,7 @@ export default class API {
             }
         }
 
-        static async getTicketById(id){
+        static async getTicketById(id) {
             try {
                 const response = await axios.get(
                     `${API.url}/api/ticket/${id}`
@@ -176,16 +195,49 @@ export default class API {
 
         /**
          *
-         * @returns {Promise<[<Ticket>]>}
+         * @returns {Promise<Ticket[]>}
          */
-        static async getTickets(){
+        static async getTickets() {
             try {
                 const response = await axios.get(
                     `${API.url}/api/tickets`
                 )
-                return response.data.map((it)=>Ticket.fromJson(it))//Warranty.fromJson(response.data)
+                return response.data.map((it) => Ticket.fromJson(it))//Warranty.fromJson(response.data)
             } catch (e) {
                 handleError("Error on getTickets", e)
+            }
+        }
+
+        /**
+         *
+         * @param id {Number} Ticket ID
+         * @return {Promise<StateHistory[]>} State History list
+         */
+        static async getTicketHistory(id) {
+            try {
+                const response = await axios.get(
+                    `${API.url}/api/ticket/${id}/history`
+                )
+                return response.data.map((it) => StateHistory.fromJson(it))//Warranty.fromJson(response.data)
+            } catch (e) {
+                handleError("Error on getTicketHistory", e)
+            }
+        }
+
+        /**
+         * Action on ticket
+         * @param id {Number} ticket id
+         * @param action {string} action to perform (use TicketActions)
+         * @return {Promise<boolean>}
+         */
+        static async action(id, action) {
+            try {
+                const response = await axios.put(
+                    `${API.url}/api/ticket/${id}/${action}`
+                )
+                return response.status === 200
+            }   catch (e) {
+                handleError(`Error on action ${action}`, e)
             }
         }
 
@@ -221,14 +273,13 @@ export default class API {
          * @param {String} ticketID
          * @returns {Promise<[Message]>}
          */
-        static async getMessages(ticketID){
-            try{
+        static async getMessages(ticketID) {
+            try {
                 const response = await axios.get(
                     `${API.url}/api/ticket/${ticketID}/messages`
                 )
-                return response.data.map((m)=>Message.fromJson(m))
-            }
-            catch (e) {
+                return response.data.map((m) => Message.fromJson(m))
+            } catch (e) {
                 handleError("Error on getMessages", e)
             }
         }

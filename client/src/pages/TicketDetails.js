@@ -1,16 +1,16 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Col, Container, Form, Row, Spinner, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
-import logo from '../logo.svg'
 import avatar from '../avatar.svg'
 import {useAuth} from "../hooks/auth";
-import {Message, Role, Ticket} from "../models";
+import {Message, Ticket} from "../models";
 import API from "../api/api";
 import {Link, useParams} from "react-router-dom";
 import NavigationBar from "./NavigationBar";
 import {Client} from '@stomp/stompjs'
 import notificationSound from './../iphone_14_notification.mp3';
 
+const RETRIEVE_MSG_INTERVAL = 1000 * 10; // 10 seconds
 
 function TicketDetails() {
 
@@ -92,7 +92,6 @@ function TicketDetails() {
             .catch(
                 (e) => console.log(e)
             )
-
         API.MessageAPI.getMessages(id)
             .then(res => setMessages(res))
             .catch((e) => console.log(e))
@@ -102,6 +101,7 @@ function TicketDetails() {
         <>
             <NavigationBar/>
             <Container className="mt-3">
+                {/*TODO: Body scrollabile*/}
                 {ticketDetails !== null &&
                     <Table striped bordered hover>
                         <thead>

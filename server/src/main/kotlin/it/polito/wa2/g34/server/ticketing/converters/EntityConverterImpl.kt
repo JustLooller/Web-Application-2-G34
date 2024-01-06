@@ -26,7 +26,7 @@ class EntityConverterImpl(
             id = ticketDTO.id,
             priority = if (ticketDTO.priority == null) null else Priority.valueOf(ticketDTO.priority!!),
             state = State.valueOf(ticketDTO.state),
-            creator = profileService.getProfile(ticketDTO.creator_email)!!, // TODO: throw error in service if no profile found
+            creator = profileService.getProfile(ticketDTO.creator_email)!!,
             expert = ticketDTO.expert_mail?.let { profileService.getProfile(it) },
             product = saleService.getSale(ticketDTO.sale_id).product,
             sale = saleService.getSale(ticketDTO.sale_id),
