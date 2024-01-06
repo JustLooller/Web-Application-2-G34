@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.time.LocalDateTime
 
+@CrossOrigin(origins = ["http://localhost:3000/", "http://localhost:5500/"])
 @RestController
 @Validated
 @Observed

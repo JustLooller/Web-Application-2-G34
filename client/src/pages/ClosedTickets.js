@@ -38,8 +38,6 @@ function ClosedTickets() {
 
     if (!profile) return <Navigate to={"/login"}></Navigate>;
 
-    const isCustomer = profile.role === "CUSTOMER";
-
     return (
         <>
             <NavigationBar/>
@@ -61,21 +59,15 @@ function ClosedTickets() {
                                 <td>{m.state}</td>
                                 <td>{m.sale_id}</td>
                                 <td>
-                                    {isCustomer ? (
-                                        <Button onClick={() => openTicketChat(m.id)}>
+                                    <Stack direction="horizontal">
+                                        <Button className="mx-auto" onClick={() => openTicketChat(m.id)}>
                                             Chat
                                         </Button>
-                                    ) : (
-                                        <Stack direction="horizontal">
-                                            <Button className="mx-auto" onClick={() => openTicketChat(m.id)}>
-                                                Chat
-                                            </Button>
-                                            <div className={'vr'}></div>
-                                            <Button className="mx-auto" onClick={() => openTicketRecap(m.id)}>
-                                                Info
-                                            </Button>
-                                        </Stack>
-                                    )}
+                                        <div className={'vr'}></div>
+                                        <Button className="mx-auto" onClick={() => openTicketRecap(m.id)}>
+                                            Info
+                                        </Button>
+                                    </Stack>
                                 </td>
                             </tr>
                         )}

@@ -257,9 +257,14 @@ export class StateHistory {
 
 // TODO: Parametrizzare azioni fattibili in base a utenza e stato ticket
 export const TicketActions = {
-    START: (expert_mail) => `start/${expert_mail}`,
-    CLOSE: () => "close",
+    START: (expert_mail, priority) => {
+        if (!priority) {
+            priority = "LOW"
+        }
+        return `start/${expert_mail}?priority=${priority}`
+    },
     STOP: () => "stop",
     RESOLVE: () => "resolve",
     REOPEN: () => "reopen",
+    CLOSE: () => "close",
 }
