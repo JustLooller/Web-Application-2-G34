@@ -1,6 +1,6 @@
 import {Navigate, useParams} from "react-router-dom";
 import {useEffect, useMemo, useState} from "react";
-import {StateHistory, Ticket, TicketActions} from "../models";
+import {StateHistory, Ticket, Product, TicketActions} from "../models";
 import NavigationBar from "./NavigationBar";
 import {Alert, Button, Col, Container, FloatingLabel, Form, Row, Table} from "react-bootstrap";
 import API from "../api/api";
@@ -58,6 +58,12 @@ const ActionButton = ({label, onClick}) => {
  *  */
 const typeHintTicket = () => null;
 
+/**
+ *  Just for type hinting
+ *  @return {Product}
+ *  */
+const typeHintProduct = () => null;
+
 
 /**
  * Just for type hinting
@@ -71,6 +77,7 @@ export default function TicketRecap() {
     const {id} = useParams();
     const [ticketDetails, setTicketDetails] = useState(typeHintTicket());
     const [ticketHistory, setTicketHistory] = useState(typeHintStateHistory());
+    const [product, setProduct] = useState(typeHintProduct());
     const [isLoading, setIsLoading] = useState(true);
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -122,8 +129,10 @@ export default function TicketRecap() {
                 API.TicketAPI.getTicketHistory(id),
             ]);
             stateHistory.reverse();
+            const product = await API.ProductsAPI.get(ticket.product_ean);
             setTicketDetails(ticket);
             setTicketHistory(stateHistory);
+            setProduct(product);
             setIsLoading(false);
         } catch (e) {
             console.error(e);
@@ -210,6 +219,27 @@ export default function TicketRecap() {
                         </td>
                         <td>{ticketDetails.priority}</td>
                         <td>{ticketDetails.sale_id}</td>
+                    </tr>
+                    </tbody>
+                    <thead>
+                    <tr>
+                        <th colSpan={5} className={"text-center"}>
+                            Product Details
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>EAN</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th colSpan={2}>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{product.ean}</td>
+                        <td>{product.brand.name}</td>
+                        <td>{product.model}</td>
+                        <td colSpan={2}>{product.description}</td>
                     </tr>
                     </tbody>
                 </Table>
