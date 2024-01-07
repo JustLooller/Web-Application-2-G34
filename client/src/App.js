@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 import RegisterExpert from "./pages/RegisterExpert";
 import TicketRecap from "./pages/TicketRecap";
+import WorkersList from "./pages/WorkersList";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
             <Route path="/login" element={<Login/>}> </Route>
             <Route path="/signup" element={<Register/>}></Route>
             <Route path="/register-expert" element={<RegisterExpert/>}></Route>
+            <Route path="/workers" element={<WorkersList/>}></Route>
             <Route path="/ticket-details/:id" element={<TicketDetails/>}></Route>
             <Route path="/ticket-recap/:id" element={<TicketRecap/>}></Route>
             <Route path="/warranty" element={<Warranty/>}></Route>

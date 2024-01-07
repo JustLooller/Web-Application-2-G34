@@ -113,230 +113,249 @@ export default class API {
             console.error(response)
             throw new Error("Couldn't get profile")
         }
+
         /**
-         * 
-         * @param {string} email 
-         * @param {string} oldPassword 
-         * @param {string} newPassword 
-         * @param {string} confirmPassword 
+         *
+         * @returns {Promise<Profile[]>}
          */
-        static async changePassword(email, oldPassword, newPassword, confirmPassword) {
-            const body = {
-                email,
-                oldPassword,
-                newPassword,
-                confirmPassword
+        static async getWorkers() {
+            try {
+                const response = await axios.get(
+                    `${API.url}/api/workers`
+                )
+                return response.data.map((it) => Profile.fromJson(it))
+            } catch (e) {
+                handleError("Error on getWorkers", e)
             }
-            const response = await axios.put(
-                `${API.url}/api/changePassword`,
-                body
+        }
+
+    /**
+     *
+     * @param {string} email
+     * @param {string} oldPassword
+     * @param {string} newPassword
+     * @param {string} confirmPassword
+     */
+    static async changePassword(email, oldPassword, newPassword, confirmPassword) {
+        const body = {
+            email,
+            oldPassword,
+            newPassword,
+            confirmPassword
+        }
+        const response = await axios.put(
+            `${API.url}/api/changePassword`,
+            body
+        )
+        return response
+    }
+}
+static
+ProductsAPI = class {
+    /**
+     *
+     * @returns {Promise<Product[]>}
+     * @throws {Error} whenever response status != 200
+     */
+    static async getAll() {
+        try {
+            const response = await axios.get(
+                `${API.url}/api/products/`
             )
-            return response
-        }
-    }
-    static ProductsAPI = class {
-        /**
-         *
-         * @returns {Promise<Product[]>}
-         * @throws {Error} whenever response status != 200
-         */
-        static async getAll() {
-            try {
-                const response = await axios.get(
-                    `${API.url}/api/products/`
-                )
-                return Array.from(response.data).map(Product.fromJson)
-            } catch (e) {
-                handleError("Couldn't get products", e)
-            }
-        }
-
-        /**
-         *
-         * @param {string} ean
-         * @returns {Promise<Product>}
-         * @throws {Error} whenever response status != 200
-         */
-        static async get(ean) {
-            try {
-                const response = await axios.get(
-                    `${API.url}/api/products/${ean}`
-                )
-                return Product.fromJson(response.data)
-            } catch (e) {
-                handleError("Couldn't get product with ean: " + ean, e)
-            }
+            return Array.from(response.data).map(Product.fromJson)
+        } catch (e) {
+            handleError("Couldn't get products", e)
         }
     }
 
-    static WarrantyAPI = class {
-
-        /**
-         * Retrieves all warranties of the logged-in user
-         * @returns {Promise<Warranty[]>}
-         */
-        static async getWarranties() {
-            try {
-                const response = await axios.get(`${API.url}/api/sale`)
-                return Array.from(response.data).map(Warranty.fromJson)
-            } catch (e) {
-                handleError("Couldn't get warranties", e)
-            }
+    /**
+     *
+     * @param {string} ean
+     * @returns {Promise<Product>}
+     * @throws {Error} whenever response status != 200
+     */
+    static async get(ean) {
+        try {
+            const response = await axios.get(
+                `${API.url}/api/products/${ean}`
+            )
+            return Product.fromJson(response.data)
+        } catch (e) {
+            handleError("Couldn't get product with ean: " + ean, e)
         }
+    }
+}
 
-        /**
-         * Associates a sale to the logged-in user
-         * @param {string} saleId
-         * @returns {Promise<Warranty>}
-         */
-        static async associateSale(saleId) {
-            try {
-                const response = await axios.post(
-                    `${API.url}/api/sale/${saleId}`
-                )
-                return Warranty.fromJson(response.data)
-            } catch (e) {
-                handleError("Error on associateSale", e)
-            }
+static
+WarrantyAPI = class {
+
+    /**
+     * Retrieves all warranties of the logged-in user
+     * @returns {Promise<Warranty[]>}
+     */
+    static async getWarranties() {
+        try {
+            const response = await axios.get(`${API.url}/api/sale`)
+            return Array.from(response.data).map(Warranty.fromJson)
+        } catch (e) {
+            handleError("Couldn't get warranties", e)
         }
     }
 
-    static TicketAPI = class {
-
-        /**
-         *
-         * @param {Ticket} ticket
-         * @returns
-         */
-        static async ticketCreation(ticket) {
-            try {
-                const response = await axios.post(
-                    `${API.url}/api/ticket/`,
-                    ticket
-                )
-                return Ticket.fromJson(response.data)//Warranty.fromJson(response.data)
-            } catch (e) {
-                handleError("Error on ticketCreation", e)
-            }
+    /**
+     * Associates a sale to the logged-in user
+     * @param {string} saleId
+     * @returns {Promise<Warranty>}
+     */
+    static async associateSale(saleId) {
+        try {
+            const response = await axios.post(
+                `${API.url}/api/sale/${saleId}`
+            )
+            return Warranty.fromJson(response.data)
+        } catch (e) {
+            handleError("Error on associateSale", e)
         }
+    }
+}
 
-        static async getTicketById(id) {
-            try {
-                const response = await axios.get(
-                    `${API.url}/api/ticket/${id}`
-                )
-                return Ticket.fromJson(response.data)//Warranty.fromJson(response.data)
-            } catch (e) {
-                handleError("Error on getTicketById", e)
-            }
+static
+TicketAPI = class {
+
+    /**
+     *
+     * @param {Ticket} ticket
+     * @returns
+     */
+    static async ticketCreation(ticket) {
+        try {
+            const response = await axios.post(
+                `${API.url}/api/ticket/`,
+                ticket
+            )
+            return Ticket.fromJson(response.data)//Warranty.fromJson(response.data)
+        } catch (e) {
+            handleError("Error on ticketCreation", e)
         }
-
-        /**
-         *
-         * @returns {Promise<Ticket[]>}
-         */
-        static async getTickets() {
-            try {
-                const response = await axios.get(
-                    `${API.url}/api/tickets`
-                )
-                return response.data.map((it) => Ticket.fromJson(it))//Warranty.fromJson(response.data)
-            } catch (e) {
-                handleError("Error on getTickets", e)
-            }
-        }
-
-        /**
-         *
-         * @param id {Number} Ticket ID
-         * @return {Promise<StateHistory[]>} State History list
-         */
-        static async getTicketHistory(id) {
-            try {
-                const response = await axios.get(
-                    `${API.url}/api/ticket/${id}/history`
-                )
-                return response.data.map((it) => StateHistory.fromJson(it))//Warranty.fromJson(response.data)
-            } catch (e) {
-                handleError("Error on getTicketHistory", e)
-            }
-        }
-
-        /**
-         * Action on ticket
-         * @param id {Number} ticket id
-         * @param action {string} action to perform (use TicketActions)
-         * @return {Promise<boolean>}
-         */
-        static async action(id, action) {
-            try {
-                const response = await axios.put(
-                    `${API.url}/api/ticket/${id}/${action}`
-                )
-                return response.status === 200
-            }   catch (e) {
-                handleError(`Error on action ${action}`, e)
-            }
-        }
-
     }
 
-    static MessageAPI = class {
-
-        /**
-         *
-         * @param {Message} message
-         * @returns
-         */
-        static async sendMessage(message, attachment){
-            try {
-                var form = new FormData();
-                //form.append("document", fileInput.files[0], "/C:/Users/Giacomo/Desktop/stock_dog.jpeg");
-                form.append("messageDTO", new Blob([Message.toJson(message)], {type: "application/json"}));
-                if(attachment !== undefined){
-                    form.append("document", attachment)
-                }
-                const response = await axios.post(
-                    `${API.url}/api/ticket/${message.ticket_id}/message`,
-                    form
-                )
-                return //Warranty.fromJson(response.data)
-            } catch (e) {
-                handleError("Error on sendMessage", e)
-            }
+    static async getTicketById(id) {
+        try {
+            const response = await axios.get(
+                `${API.url}/api/ticket/${id}`
+            )
+            return Ticket.fromJson(response.data)//Warranty.fromJson(response.data)
+        } catch (e) {
+            handleError("Error on getTicketById", e)
         }
-
-        /**
-         *
-         * @param {String} ticketID
-         * @returns {Promise<[Message]>}
-         */
-        static async getMessages(ticketID) {
-            try {
-                const response = await axios.get(
-                    `${API.url}/api/ticket/${ticketID}/messages`
-                )
-                return response.data.map((m) => Message.fromJson(m))
-            } catch (e) {
-                handleError("Error on getMessages", e)
-            }
-        }
-
-        static async getAttachment(ticketID, attachment){
-            try{
-                const response = await axios.get(
-                    `${API.url}/api/ticket/${ticketID}/message/${attachment}`,
-                    { responseType: "blob" }
-                )
-                return response.data
-            }
-            catch (e) {
-                handleError("Error on getAttachment", e)
-            }
-        }
-
-
     }
 
-    // TODO: Inserire tutti i vari endpoint che sono dentro TicketController, necesssariamente dichiarare dentro model.js anche i vari model restituiti
+    /**
+     *
+     * @returns {Promise<Ticket[]>}
+     */
+    static async getTickets() {
+        try {
+            const response = await axios.get(
+                `${API.url}/api/tickets`
+            )
+            return response.data.map((it) => Ticket.fromJson(it))//Warranty.fromJson(response.data)
+        } catch (e) {
+            handleError("Error on getTickets", e)
+        }
+    }
+
+    /**
+     *
+     * @param id {Number} Ticket ID
+     * @return {Promise<StateHistory[]>} State History list
+     */
+    static async getTicketHistory(id) {
+        try {
+            const response = await axios.get(
+                `${API.url}/api/ticket/${id}/history`
+            )
+            return response.data.map((it) => StateHistory.fromJson(it))//Warranty.fromJson(response.data)
+        } catch (e) {
+            handleError("Error on getTicketHistory", e)
+        }
+    }
+
+    /**
+     * Action on ticket
+     * @param id {Number} ticket id
+     * @param action {string} action to perform (use TicketActions)
+     * @return {Promise<boolean>}
+     */
+    static async action(id, action) {
+        try {
+            const response = await axios.put(
+                `${API.url}/api/ticket/${id}/${action}`
+            )
+            return response.status === 200
+        } catch (e) {
+            handleError(`Error on action ${action}`, e)
+        }
+    }
+
+}
+
+static
+MessageAPI = class {
+
+    /**
+     *
+     * @param {Message} message
+     * @returns
+     */
+    static async sendMessage(message, attachment) {
+        try {
+            var form = new FormData();
+            //form.append("document", fileInput.files[0], "/C:/Users/Giacomo/Desktop/stock_dog.jpeg");
+            form.append("messageDTO", new Blob([Message.toJson(message)], {type: "application/json"}));
+            if (attachment !== undefined) {
+                form.append("document", attachment)
+            }
+            const response = await axios.post(
+                `${API.url}/api/ticket/${message.ticket_id}/message`,
+                form
+            )
+            return //Warranty.fromJson(response.data)
+        } catch (e) {
+            handleError("Error on sendMessage", e)
+        }
+    }
+
+    /**
+     *
+     * @param {String} ticketID
+     * @returns {Promise<[Message]>}
+     */
+    static async getMessages(ticketID) {
+        try {
+            const response = await axios.get(
+                `${API.url}/api/ticket/${ticketID}/messages`
+            )
+            return response.data.map((m) => Message.fromJson(m))
+        } catch (e) {
+            handleError("Error on getMessages", e)
+        }
+    }
+
+    static async getAttachment(ticketID, attachment) {
+        try {
+            const response = await axios.get(
+                `${API.url}/api/ticket/${ticketID}/message/${attachment}`,
+                {responseType: "blob"}
+            )
+            return response.data
+        } catch (e) {
+            handleError("Error on getAttachment", e)
+        }
+    }
+
+
+}
+
+// TODO: Inserire tutti i vari endpoint che sono dentro TicketController, necesssariamente dichiarare dentro model.js anche i vari model restituiti
 }
