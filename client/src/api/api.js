@@ -94,8 +94,27 @@ export default class API {
             console.error(response)
             throw new Error("Couldn't get profile")
         }
+        /**
+         * 
+         * @param {string} email 
+         * @param {string} oldPassword 
+         * @param {string} newPassword 
+         * @param {string} confirmPassword 
+         */
+        static async changePassword(email, oldPassword, newPassword, confirmPassword) {
+            const body = {
+                email,
+                oldPassword,
+                newPassword,
+                confirmPassword
+            }
+            const response = await axios.put(
+                `${API.url}/api/changePassword`,
+                body
+            )
+            return response
+        }
     }
-
     static ProductsAPI = class {
         /**
          *

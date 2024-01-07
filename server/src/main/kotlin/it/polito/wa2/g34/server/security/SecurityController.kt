@@ -38,7 +38,7 @@ data class UserSignUpData(
 )
 
 data class UpdatePasswordData(
-    var username: String,
+    var email: String,
     var oldPassword: String,
     var newPassword: String,
     var confirmPassword: String
@@ -204,19 +204,36 @@ class SecurityController() {
 
         val user = keycloak.realm("WA2_G34")
             .users()
-            .search(updatePasswordData!!.username)
+            .searchByEmail(updatePasswordData!!.email, false)
             .firstOrNull() ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
 
+        //check if old password is correct by trying to login
+        val userLoginData = UserLoginData(user.username, updatePasswordData.oldPassword)
+        try {
+            postProfile(userLoginData)
+        } catch (e: ResponseStatusException) {
+            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Old password is not correct")
+        }
+
+        // update password
         keycloak.realm("WA2_G34")
             .users()
             .get(user.id)
             .resetPassword(credentialRepresentation)
+
+        // delete all user sessions
+        keycloak.realm("WA2_G34")
+            .users()
+            .get(user.id)
+            .logout()
+
 
         return ""
 
     }
 
 }
+
 
 @RestControllerAdvice
 class SecurityControllerAdvice {
