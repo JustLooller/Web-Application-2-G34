@@ -75,6 +75,25 @@ export default class API {
             return response.status === 200;
         }
 
+        /**
+         * RegisterExpert
+         * @param username {string}
+         * @param password {string}
+         * @param fullName {string}
+         * @param age {number}
+         * @returns {Promise<boolean>}
+         */
+        static async registerExpert(username, password, fullName, age) {
+            const body = {
+                email: username,
+                password,
+                fullName,
+                age
+            };
+            const response = await axios.post(API.url + '/api/createExpert', body);
+            return response.status === 200;
+        }
+
     }
 
     static ProfileAPI = class {
@@ -94,8 +113,27 @@ export default class API {
             console.error(response)
             throw new Error("Couldn't get profile")
         }
+        /**
+         * 
+         * @param {string} email 
+         * @param {string} oldPassword 
+         * @param {string} newPassword 
+         * @param {string} confirmPassword 
+         */
+        static async changePassword(email, oldPassword, newPassword, confirmPassword) {
+            const body = {
+                email,
+                oldPassword,
+                newPassword,
+                confirmPassword
+            }
+            const response = await axios.put(
+                `${API.url}/api/changePassword`,
+                body
+            )
+            return response
+        }
     }
-
     static ProductsAPI = class {
         /**
          *
