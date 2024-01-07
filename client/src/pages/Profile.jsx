@@ -1,20 +1,17 @@
 import { useAuth } from "../hooks/auth";
+import { useNavigate } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
-import React, { useState } from "react";
-import { Container, Form, Button, Row, Col } from "react-bootstrap";
-
-//TODO: Implementare lato backend cambio email e/o password
+import React, { useEffect, useState } from "react";
+import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
+import API from "../api/api";
 
 export default function Profile() {
-  const { profile } = useAuth();
-  const [newEmail, setNewEmail] = useState("");
+  const { profile, logout } = useAuth();
+  const navigator = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-
-  const handleEmailChange = (e) => {
-    setNewEmail(e.target.value);
-  };
+  const [changePasswordStatus, setChangePasswordStatus] = useState({});
 
   const handleOldPasswordChange = (e) => {
     setOldPassword(e.target.value);
@@ -25,17 +22,48 @@ export default function Profile() {
   const handleConfirmNewPasswordChange = (e) => {
     setConfirmNewPassword(e.target.value);
   };
-  const handleChangeEmailConfirmation = (e) => {
-    e.preventDefault();
-    console.log("Email changed to: " + newEmail);
-  };
   const handleChangePasswordConfirmation = (e) => {
     e.preventDefault();
-    console.log("Old password: " + oldPassword);
-    console.log("New password: " + newPassword);
-    console.log("Confirm new password: " + confirmNewPassword);
+    if (newPassword !== confirmNewPassword) {
+      setChangePasswordStatus({
+        type: "danger",
+        message: "New password and confirm new password do not match",
+      });
+      return;
+    }
+    API.ProfileAPI.changePassword(
+      profile.email,
+      oldPassword,
+      newPassword,
+      confirmNewPassword
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          setChangePasswordStatus({
+            type: "success",
+            message:
+              "Password changed successfully - redirecting to login in 3 seconds",
+          });
+        } else {
+          setChangePasswordStatus({ type: "danger", message: res.detail });
+        }
+      })
+      .catch((err) => {
+        setChangePasswordStatus({
+          type: "danger",
+          message: err.response.data.detail,
+        });
+      });
   };
-  
+  useEffect(() => {
+    if (changePasswordStatus.type === "success") {
+      // start a 3 second timer, logout and redirect to login
+      setTimeout(() => {
+        logout();
+        navigator("/login");
+      }, 3000);
+    }
+  }, [changePasswordStatus]);
 
   return (
     <>
@@ -47,21 +75,6 @@ export default function Profile() {
           <h5 className="text-start mt-2">Email: {profile.email}</h5>
         </Row>
         <Row>
-          <Col>
-            <Form onSubmit={handleChangeEmailConfirmation}>
-              <Form.Group controlId="changeEmail">
-                <Form.Label>Change Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="New Email"
-                  onChange={handleEmailChange}
-                />
-                <Button variant="primary" type="submit" className="mt-2">
-                  Save
-                </Button>
-              </Form.Group>
-            </Form>
-          </Col>
           <Col>
             <Form onSubmit={handleChangePasswordConfirmation}>
               <Form.Group controlId="changePassword">
@@ -87,9 +100,30 @@ export default function Profile() {
                 <Button variant="primary" type="submit" className="mt-2">
                   Save
                 </Button>
+                {changePasswordStatus.type === "danger" && (
+                  <Alert
+                    key={"danger"}
+                    variant={"danger"}
+                    dismissible
+                    className="my-2"
+                  >
+                    {changePasswordStatus.message}
+                  </Alert>
+                )}
+                {changePasswordStatus.type === "success" && (
+                  <Alert
+                    key={"success"}
+                    variant={"success"}
+                    dismissible
+                    className="my-2"
+                  >
+                    {changePasswordStatus.message}
+                  </Alert>
+                )}
               </Form.Group>
             </Form>
           </Col>
+          <Col></Col>
         </Row>
       </Container>
     </>
