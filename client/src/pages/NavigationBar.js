@@ -114,7 +114,7 @@ function NavigationBar() {
         </Navbar.Brand>
         {profile && (
           <Navbar.Text>
-            Welcome, {profile.name}
+            {profile.name}
           </Navbar.Text>
         )}
         <Button
