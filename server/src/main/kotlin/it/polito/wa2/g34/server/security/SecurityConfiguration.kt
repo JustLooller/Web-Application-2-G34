@@ -28,6 +28,7 @@ class SecurityConfig {
         http.csrf().disable()
         http.cors()
         http.authorizeHttpRequests()
+            .requestMatchers(HttpMethod.PUT, "/api/changePassword").hasAnyRole(Role.CUSTOMER.name, Role.EXPERT.name, Role.MANAGER.name)
             .requestMatchers(HttpMethod.PUT, "/api/ticket/*/start/*").hasRole(Role.MANAGER.name)
             .requestMatchers(HttpMethod.POST, "/api/createExpert").hasRole(Role.MANAGER.name)
             .requestMatchers(HttpMethod.PUT, "/api/ticket/*/stop").hasRole(Role.EXPERT.name)
@@ -38,6 +39,7 @@ class SecurityConfig {
             .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/signup").permitAll()
             .requestMatchers("/actuator/**").permitAll()
+            .requestMatchers("/ws**").permitAll() //TODO remove it
             .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
             .anyRequest().authenticated();
         http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())

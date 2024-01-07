@@ -250,11 +250,17 @@ export default class API {
          * @param {Message} message
          * @returns
          */
-        static async sendMessage(message) {
+        static async sendMessage(message, attachment){
             try {
+                var form = new FormData();
+                //form.append("document", fileInput.files[0], "/C:/Users/Giacomo/Desktop/stock_dog.jpeg");
+                form.append("messageDTO", new Blob([Message.toJson(message)], {type: "application/json"}));
+                if(attachment !== undefined){
+                    form.append("document", attachment)
+                }
                 const response = await axios.post(
                     `${API.url}/api/ticket/${message.ticket_id}/message`,
-                    message
+                    form
                 )
                 return //Warranty.fromJson(response.data)
             } catch (e) {
@@ -277,6 +283,21 @@ export default class API {
                 handleError("Error on getMessages", e)
             }
         }
+
+        static async getAttachment(ticketID, attachment){
+            try{
+                const response = await axios.get(
+                    `${API.url}/api/ticket/${ticketID}/message/${attachment}`,
+                    { responseType: "blob" }
+                )
+                return response.data
+            }
+            catch (e) {
+                handleError("Error on getAttachment", e)
+            }
+        }
+
+
     }
 
     // TODO: Inserire tutti i vari endpoint che sono dentro TicketController, necesssariamente dichiarare dentro model.js anche i vari model restituiti
