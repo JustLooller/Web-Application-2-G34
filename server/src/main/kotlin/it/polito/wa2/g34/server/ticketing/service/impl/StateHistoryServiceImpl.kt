@@ -73,4 +73,13 @@ class StateHistoryServiceImpl(
         ticketRepository.save(ticket);
         stateHistoryRepository.save(newState);
     }
+
+    override fun sortTicketsByMostRecentState(tickets: List<TicketDTO>): List<TicketDTO> {
+        val ticketsWithHistory: List<List<Any>> = tickets.map { ticket ->
+            val history = getHistory(ticket);
+            val mostRecentState = history.maxByOrNull { it.timestamp }?.timestamp ?: LocalDateTime.MIN;
+            listOf(mostRecentState, ticket)
+        }
+        return ticketsWithHistory.sortedByDescending { it[0] as LocalDateTime }.map { it[1] as TicketDTO };
+    }
 }
