@@ -13,7 +13,14 @@ class ProfileController(
 ) {
     @GetMapping("/api/profiles/{email}")
     fun getProfile(@PathVariable @Email email: String): ProfileDTO? {
+        println("PROFILO\n"+profileService.getProfile(email).toString())
         return profileService.getProfile(email)?.toDTO() ?: throw ProfileNotFoundException("Profile not found")
+    }
+
+
+    @GetMapping("/api/workers")
+    fun getWorkers(): List<ProfileDTO>? {
+        return profileService.getWorkers().map{it.toDTO()}
     }
 
     @PostMapping("/api/profiles")

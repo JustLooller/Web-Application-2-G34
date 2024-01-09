@@ -15,6 +15,9 @@ class ProfileServiceImpl(
         }
     }
 
+    override fun getWorkers() : List<Profile> {
+        return profileRepository.getWorkers()
+    }
     override fun postProfile(newProfile: ProfileDTO) : Profile? {
         return profileRepository.save(newProfile.toEntity());
     }
