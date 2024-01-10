@@ -42,7 +42,8 @@ function RegisterExpert() {
         if (successful) {
             setRegisterError(false);
             console.log("Expert registered successfully")
-            navigate("/login")
+            alert('Expert registered successfully!')
+            navigate('/workers');
         } else {
             console.log("Could not register");
             setRegisterError(true);
