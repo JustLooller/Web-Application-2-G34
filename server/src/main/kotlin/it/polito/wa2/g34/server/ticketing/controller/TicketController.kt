@@ -7,6 +7,7 @@ package it.polito.wa2.g34.server.ticketing.controller
  import it.polito.wa2.g34.server.ticketing.dto.*
  import it.polito.wa2.g34.server.ticketing.entity.Priority
  import it.polito.wa2.g34.server.ticketing.entity.State
+ import it.polito.wa2.g34.server.ticketing.entity.Ticket
  import it.polito.wa2.g34.server.ticketing.service.MessageService
  import it.polito.wa2.g34.server.ticketing.service.StateHistoryService
  import it.polito.wa2.g34.server.ticketing.service.TicketService
@@ -56,18 +57,13 @@ class TicketController(
     fun getUserTicket(): List<TicketDTO>? {
         val authentication = SecurityContextHolder.getContext().authentication
         val name = authentication.name
-        val profile = profileService.getProfile(name)
-        if (profile != null) {
-            if (profile.role == Role.EXPERT) {
-                return profile.let { profile1 -> ticketService.getTicketByExpert(profile1)?.map { it.toDTO() } ?: emptyList() }
-            }
+        val profile = profileService.getProfile(name)!!
+        val tickets = when(profile.role) {
+            Role.EXPERT -> ticketService.getTicketByExpert(profile) ?: emptyList()
+            Role.MANAGER -> ticketService.getAllTickets()
+            Role.CUSTOMER -> ticketService.getTicketByEmail(profile)
         }
-        if (profile != null) {
-            if (profile.role == Role.MANAGER) {
-                return ticketService.getAllTickets().map { it.toDTO() }
-            }
-        }
-        return ticketService.getTicketByEmail(profile!!).map { it.toDTO() }
+        return stateHistoryService.sortTicketsByMostRecentState(tickets.map { it.toDTO() })
     }
 
     @PostMapping("/api/ticket/")

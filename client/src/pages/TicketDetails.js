@@ -3,14 +3,13 @@ import {Button, Col, Container, Form, Row, Spinner, Table} from "react-bootstrap
 import {useEffect, useRef, useState} from "react";
 import avatar from '../avatar.svg'
 import {useAuth} from "../hooks/auth";
-import {Message, Ticket} from "../models";
+import {Message, Role, Ticket} from "../models";
 import API from "../api/api";
 import {Link, useParams} from "react-router-dom";
 import NavigationBar from "./NavigationBar";
 import {Client} from '@stomp/stompjs'
 import notificationSound from './../iphone_14_notification.mp3';
 
-const RETRIEVE_MSG_INTERVAL = 1000 * 10; // 10 seconds
 
 function TicketDetails() {
 
@@ -27,7 +26,16 @@ function TicketDetails() {
     let socketActivated = false;
     let audio = new Audio(notificationSound)
 
-    const bottomDiv = useRef(null);
+
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
+    }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [messages]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -76,18 +84,10 @@ function TicketDetails() {
                     audio.play()
                 }
                 setMessages((old) => [...old, newMessage]);
-                scrollToTheBottom()
             });
         };
         stompClient.activate()
     }
-
-    const scrollToTheBottom = () => {
-        setTimeout(() => {
-            console.log("I'm scrolling to the bottom!");
-            bottomDiv.current.scrollIntoView({behavior: 'smooth'});
-        }, 1000)
-    };
 
 
     useEffect(() => {
@@ -127,11 +127,15 @@ function TicketDetails() {
                 </tr>
                 </tbody>
             </Table>}
-            {messages.map((m, index) => (
-                <ChatMessage key={m.text + index} text={m.text} expert={m.user_mail !== profile.email} message={m}
-                             ticket_id={ticketDetails.id} download_function={handleDownloadImage}></ChatMessage>))}
+            {messages.map((m, index) => (<ChatMessage key={m.text + index} text={m.text}
+                                                      myMessage={m.user_mail == profile.email || (profile.role != Role.CUSTOMER && m.user_mail != ticketDetails.creator_email)}
+                                                      message={m}
+                                                      ticket_id={ticketDetails.id}
+                                                      download_function={handleDownloadImage}></ChatMessage>))}
 
-            <div ref={bottomDiv}></div>
+            <div style={{float: "left", clear: "both"}}
+                 ref={messagesEndRef}>
+            </div>
         </Container>
         <Container className={'mt-1'}>
             <Form className='d-flex' onSubmit={handleSubmit}>
@@ -158,20 +162,37 @@ export default TicketDetails;
 
 function ChatMessage(props) {
     return (<>
-        <Row className="py-3" style={{flexDirection: (props.expert) ? "row-reverse" : "row"}}>
+        <Row className="py-3" style={{flexDirection: (props.myMessage) ? "row" : "row-reverse"}}>
             <Col style={{
-                backgroundColor: (props.expert) ? "#6AAEBA" : "#105662",
+                backgroundColor: (props.myMessage) ? "#105662" : "#6AAEBA",
                 color: "white",
                 padding: "10px",
+                marginLeft: (props.myMessage) ? '70px' : '0px',
+                marginRight: (props.myMessage) ? '0px' : '70px',
                 borderRadius: "10px"
             }}>
                 {props.text}
             </Col>
-            <Col sm="auto" className="d-flex align-items-center mx-3">
+            <Col sm="auto" className="d-flex align-items-center">
                 <img src={avatar} height="50px" width="50px" alt={"Avatar"}/>
             </Col>
+            {(!props.myMessage) && <Row className={"mx-0 mt-1"} style={{flexDirection: "row"}}>
+                <h6 className={"text-muted"}>{props.message.user_mail}</h6>
+            </Row>}
         </Row>
-        {(props.message.attachment != null) && <Button
-            onClick={() => props.download_function(props.ticket_id, props.message.attachment)}>{Message.fileName(props.message.attachment)}</Button>}
+
+        {(props.message.attachment != null) &&
+            <Col style={{
+                marginLeft: (props.myMessage) ? '60px' : '0px',
+                marginRight: (props.myMessage) ? '0px' : '60px'
+            }}>
+                Attachment:
+                <Button style={{
+                    marginLeft: '10px'
+                }}
+                        onClick={() => props.download_function(props.ticket_id, props.message.attachment)}>{Message.fileName(props.message.attachment)}
+                </Button>
+            </Col>
+        }
     </>);
 }
