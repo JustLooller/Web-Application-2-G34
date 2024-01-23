@@ -12,14 +12,16 @@ data class ProfileDTO(
     var name: String,
     @field:Min(value = 0, message = "The value must be positive")
     @field:Max(value= 100, message = "The value must be under 100")
-    var age: Int
+    var age: Int,
+    var role: Role
 )
 
 fun Profile.toDTO(): ProfileDTO {
     return ProfileDTO(
         email = this.email,
         name = this.name,
-        age = this.age
+        age = this.age,
+        role = this.role
     )
 }
 
@@ -27,6 +29,7 @@ fun ProfileDTO.toEntity(): Profile {
     return Profile(
         email = this.email,
         name = this.name,
-        age = this.age
+        age = this.age,
+        role = this.role
     )
 }
