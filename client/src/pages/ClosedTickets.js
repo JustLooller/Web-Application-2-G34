@@ -20,6 +20,7 @@ function ClosedTickets() {
     const getTickets = async () => {
         try {
             const tickets = await API.TicketAPI.getTickets()
+            console.log(tickets)
             setTickets(tickets.filter(t=>t.state === "CLOSED"))
         } catch (e) {
             console.error(e)

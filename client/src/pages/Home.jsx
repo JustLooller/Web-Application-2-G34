@@ -1,16 +1,14 @@
-
-import '../App.scss';
-import {Link, Navigate} from 'react-router-dom';
-import NavigationBar from './NavigationBar'
-import {useAuth} from '../hooks/auth';
-import {Role} from "../models";
+import "../App.scss";
+import { Link, Navigate } from "react-router-dom";
+import NavigationBar from "./NavigationBar";
+import { useAuth } from "../hooks/auth";
+import { Role } from "../models";
 
 function Home() {
-
-    const {profile} = useAuth();
-    if (!profile) {
-        return <Navigate to="/login"></Navigate>
-    }
+  const { profile } = useAuth();
+  if (!profile) {
+    return <Navigate to="/login"></Navigate>;
+  }
 
   return (
     <>
@@ -30,55 +28,56 @@ function Home() {
         </div>
         <div className="row">
           {profile.role === Role.MANAGER && (
-              <div className="col d-flex">
-                <Link className="myHomeLink" to="/register-expert">
-                  <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="50"
-                        height="60"
-                        fill="currentColor"
-                        className="mx-auto my-4 bi bi-person-square"
-                        viewBox="0 0 16 16"
-                    >
-                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
-                    </svg>
-                    <div className="card-body mx-4">
-                      <h5 className="card-title">Create Expert</h5>
-                      <p className="card-text">
-                        Set up your expert profile effortlessly,
-                        making sure you have credentials and expert details at hand.
-                      </p>
-                    </div>
+            <div className="col d-flex">
+              <Link className="myHomeLink" to="/register-expert">
+                <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="50"
+                    height="60"
+                    fill="currentColor"
+                    className="mx-auto my-4 bi bi-person-square"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
+                  </svg>
+                  <div className="card-body mx-4">
+                    <h5 className="card-title">Create Expert</h5>
+                    <p className="card-text">
+                      Set up your expert profile effortlessly, making sure you
+                      have credentials and expert details at hand.
+                    </p>
                   </div>
-                </Link>
-              </div>
+                </div>
+              </Link>
+            </div>
           )}
           {profile.role === Role.MANAGER && (
-              <div className="col d-flex">
-                <Link className="myHomeLink" to="/workers">
-                  <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="50"
-                        height="60"
-                        fill="currentColor"
-                        className="mx-auto my-4 bi bi-person-square"
-                        viewBox="0 0 16 16"
-                    >
-                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
-                    </svg>
-                    <div className="card-body mx-4">
-                      <h5 className="card-title">Workers List</h5>
-                      <p className="card-text">
-                        Enter to view the comprehensive list containing details of both managers and experts.
-                      </p>
-                    </div>
+            <div className="col d-flex">
+              <Link className="myHomeLink" to="/workers">
+                <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="50"
+                    height="60"
+                    fill="currentColor"
+                    className="mx-auto my-4 bi bi-person-square"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
+                  </svg>
+                  <div className="card-body mx-4">
+                    <h5 className="card-title">Workers List</h5>
+                    <p className="card-text">
+                      Enter to view the comprehensive list containing details of
+                      both managers and experts.
+                    </p>
                   </div>
-                </Link>
-              </div>
+                </div>
+              </Link>
+            </div>
           )}
           {profile.role === Role.CUSTOMER && (
             <div className="col d-flex">
@@ -132,31 +131,33 @@ function Home() {
               </div>
             </Link>
           </div>
-          <div className="col d-flex">
-            <Link className="myHomeLink" to="/closed-tickets">
-              <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="60"
-                  height="60"
-                  fill="currentColor"
-                  className="mx-auto my-4 bi bi-clipboard2-minus"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5h3Z" />
-                  <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-12Z" />
-                  <path d="M6 8a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1H6Z" />
-                </svg>
-                <div className="card-body mx-4">
-                  <h5 className="card-title">Closed Tickets</h5>
-                  <p className="card-text">
-                    Review past resolutions, appreciate our dedicated service,
-                    and experience the peace of mind we deliver.
-                  </p>
+          {profile.role !== Role.EXPERT && (
+            <div className="col d-flex">
+              <Link className="myHomeLink" to="/closed-tickets">
+                <div className="card shadow-sm mb-4 text-center d-flex flex-column myHomeCard">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="60"
+                    height="60"
+                    fill="currentColor"
+                    className="mx-auto my-4 bi bi-clipboard2-minus"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5h3Z" />
+                    <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-12Z" />
+                    <path d="M6 8a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1H6Z" />
+                  </svg>
+                  <div className="card-body mx-4">
+                    <h5 className="card-title">Closed Tickets</h5>
+                    <p className="card-text">
+                      Review past resolutions, appreciate our dedicated service,
+                      and experience the peace of mind we deliver.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </div>
+              </Link>
+            </div>
+          )}
           {profile.role === Role.CUSTOMER && (
             <div className="col d-flex">
               <Link className="myHomeLink" to="/warranty">
@@ -176,7 +177,8 @@ function Home() {
                   <div className="card-body mx-4">
                     <h5 className="card-title">Add Warranties</h5>
                     <p className="card-text">
-                      Connect your warranty to your account, ensuring seamless access and personalized management.
+                      Connect your warranty to your account, ensuring seamless
+                      access and personalized management.
                     </p>
                   </div>
                 </div>
