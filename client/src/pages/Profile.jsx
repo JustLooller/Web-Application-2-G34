@@ -24,6 +24,13 @@ export default function Profile() {
   };
   const handleChangePasswordConfirmation = (e) => {
     e.preventDefault();
+    if (oldPassword === "" || newPassword === "" || confirmNewPassword === "") {
+      setChangePasswordStatus({
+        type: "danger",
+        message: "Please fill in all fields",
+      });
+      return;
+    }
     if (newPassword !== confirmNewPassword) {
       setChangePasswordStatus({
         type: "danger",
