@@ -22,6 +22,7 @@ class TicketServiceImpl(
     private val profileRepository: ProfileRepository,
     private val stateHistoryService: StateHistoryService,
     private val entityConverter: EntityConverter,
+    private val saleRepository: SaleRepository,
 ) : TicketService {
 
     fun TicketDTO.toEntity() : Ticket {
@@ -48,8 +49,9 @@ class TicketServiceImpl(
         if (ticketEntity.sale.product.ean != ticketDTO.product_ean) {
             throw TicketBadRequestException("The product ean must match the sale ean")
         }
-        val saleId = ticketEntity.sale.id.toLong();
-        val tickets = ticketRepository.findBySaleId(saleId);
+        val saleId = ticketDTO.sale_id
+        val sale = saleRepository.findById(saleId);
+        val tickets = ticketRepository.findBySaleId(sale.get());
         if (tickets.isNotEmpty()){
             for (ticket in tickets) {
                 if (ticket.state != State.CLOSED) {
