@@ -52,17 +52,16 @@
 }
 
 .myNavbarLogo {
-  height: 60px;
-  width: 100%;
+  height: 50px;
+  width: 300px;
 }
 
-@media (min-width: 600px) { /*choose the width you prefer*/
+@media (min-width: 600px) {
   .myNavbarLogo {
     height: 80px;
     width: 100%;
   }
 }
-
 
 a.myHomeLink:link, a.myHomeLink:visited {
   text-decoration: none;
@@ -73,8 +72,14 @@ a.myHomeLink:hover, a.myHomeLink:active {
 }
 
 .myHomeCard {
+  min-height: 400px;
+  min-width: 200px;
   border-width: 2px;
   border-color: rgb(253, 203, 71);
+}
+
+.myHomeCard:hover{
+  background-color: rgba(253, 203, 71, 0.4);
 }
 
 .btn-primary {

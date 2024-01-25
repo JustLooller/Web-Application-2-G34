@@ -13,7 +13,7 @@ interface TicketRepository: JpaRepository<Ticket, Long> {
     fun getByEmail(profile: Profile): List<Ticket>
 
     @Query("SELECT t FROM Ticket t WHERE t.sale = ?1")
-    fun findBySaleId(saleId: Long): List<Ticket>
+    fun findBySaleId(sale: Sale): List<Ticket>
 
     @Query("SELECT t FROM Ticket t WHERE t.expert = ?1")
     fun findByExpertId(expertId: Profile): List<Ticket>?;

@@ -357,5 +357,4 @@ MessageAPI = class {
 
 }
 
-// TODO: Inserire tutti i vari endpoint che sono dentro TicketController, necesssariamente dichiarare dentro model.js anche i vari model restituiti
 }
