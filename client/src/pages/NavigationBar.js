@@ -31,7 +31,7 @@ function NavigationBar() {
                 variant="light"
                 expand="md"
                 sticky="top"
-                className="navbar-padding py-0 py-sm-3 myNavbar"
+                className="navbar-padding py-1 py-sm-3 myNavbar"
             >
                 <div className="col-3">
                     <Dropdown className="ms-1">
@@ -117,7 +117,7 @@ function NavigationBar() {
                     <img src={logo} alt="Logo" className="myNavbarLogo"/>
                 </Navbar.Brand>
 
-                <div className="col-3 d-flex justify-content-end">
+                <div className="col-3 justify-content-end d-none d-sm-flex">
                     {profile && (
                         <Navbar.Text>
                             {profile.name}
