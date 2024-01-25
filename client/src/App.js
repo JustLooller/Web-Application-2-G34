@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import RegisterExpert from "./pages/RegisterExpert";
 import TicketRecap from "./pages/TicketRecap";
 import WorkersList from "./pages/WorkersList";
+import ErrorPage from "./pages/ErrorPage";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
             <Route path="/closed-tickets" element={<ClosedTickets/>}></Route>
             <Route path="/profile" element={<Profile/>}></Route>
             <Route exact path="/" element={<Navigate to="/login" replace={true}/>}></Route>
+            <Route path='*' element={ <ErrorPage/>} />
         </>
     )
 )
