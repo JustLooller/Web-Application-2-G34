@@ -1,10 +1,10 @@
-import {Navigate, useParams} from "react-router-dom";
-import {useEffect, useMemo, useState} from "react";
-import {StateHistory, Ticket, Product, TicketActions} from "../models";
+import { Navigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { TicketActions } from "../models";
 import NavigationBar from "./NavigationBar";
-import {Alert, Button, Col, Container, FloatingLabel, Form, Row, Table} from "react-bootstrap";
+import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Table } from "react-bootstrap";
 import API from "../api/api";
-import {useAuth} from "../hooks/auth";
+import { useAuth } from "../hooks/auth";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 
@@ -104,6 +104,9 @@ export default function TicketRecap() {
                 break;
             case "CLOSED":
                 actions =  ["REOPEN"];
+                break;
+            default:
+                actions =  [];
                 break;
         }
         if (profile.role === "EXPERT") {
@@ -211,7 +214,7 @@ export default function TicketRecap() {
                     <tbody>
                     <tr>
                         <td>{ticketDetails.id}</td>
-                        <td>{ticketDetails.state}</td>
+                        <td>{ticketDetails.state.replace("_"," ")}</td>
                         <td>
                             {ticketDetails.expert_mail === null
                                 ? "NOT ASSIGNED"

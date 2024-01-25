@@ -4,7 +4,6 @@ import Login from "./pages/Login";
 import TicketDetails from "./pages/TicketDetails";
 import Warranty from "./pages/Warranty";
 import Home from "./pages/Home";
-import AdminConsole from "./pages/AdminConsole";
 import {useEffect} from "react";
 import axios from "axios";
 import CreateTicket from "./pages/CreateTicket";
@@ -28,7 +27,6 @@ const router = createBrowserRouter(
             <Route path="/ticket-recap/:id" element={<TicketRecap/>}></Route>
             <Route path="/warranty" element={<Warranty/>}></Route>
             <Route path="/home" element={<Home/>}></Route>
-            <Route path="/admin" element={<AdminConsole/>}></Route>
             <Route path="/create-ticket" element={<CreateTicket/>}></Route>
             <Route path="/open-tickets" element={<OpenTickets/>}></Route>
             <Route path="/closed-tickets" element={<ClosedTickets/>}></Route>

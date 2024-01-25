@@ -131,7 +131,7 @@ function TicketDetails() {
             <tbody>
               <tr>
                 <td>{ticketDetails.id}</td>
-                <td>{ticketDetails.state}</td>
+                <td>{ticketDetails.state.replace("_"," ")}</td>
                 <td>
                   {ticketDetails.expert_mail === null
                     ? "NOT ASSIGNED"

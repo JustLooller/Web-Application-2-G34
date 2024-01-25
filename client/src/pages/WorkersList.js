@@ -21,7 +21,6 @@ function WorkersList() {
         {name: 'Expert', value: 'EXPERT'},
     ];
 
-    const navigate = useNavigate();
 
     const getWorkers = async () => {
         try {
