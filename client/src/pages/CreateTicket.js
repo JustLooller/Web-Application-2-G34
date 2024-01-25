@@ -19,6 +19,7 @@ function CreateTicket() {
     const {profile} = useAuth();
 
     const [warranties, setWarranties] = useState(initialWarranties());
+    const [creationError, setCreationError] = useState(false);
 
     const navigate = useNavigate();
 
@@ -44,13 +45,19 @@ function CreateTicket() {
         console.log(selectedWarranty.id)
 
         const ticket = new Ticket(undefined, undefined, undefined, profile.email, undefined, selectedWarranty.product.ean, selectedWarranty.id);
-        const ticketResponse = await API.TicketAPI.ticketCreation(ticket)
-        const createdTicket = Ticket.fromJson(ticketResponse)
+        try {
+            const ticketResponse = await API.TicketAPI.ticketCreation(ticket)
+            const createdTicket = Ticket.fromJson(ticketResponse)
 
-        const message = new Message(form.message.value, profile.email, createdTicket.id)
-        await API.MessageAPI.sendMessage(message);
-
-        navigate(`/ticket-details/${createdTicket.id}`, { replace: false });
+            const message = new Message(form.message.value, profile.email, createdTicket.id)
+            await API.MessageAPI.sendMessage(message);
+    
+            navigate(`/ticket-details/${createdTicket.id}`, { replace: false });
+        }
+        catch (e) {
+            console.error(e)
+            setCreationError(true)
+        }
     }
 
 
@@ -59,6 +66,7 @@ function CreateTicket() {
             <NavigationBar/>
             <Container>
                 <Row className="mt-3">
+                    {creationError && <Alert variant="danger">An open ticket associated with this warranty already exists</Alert>}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>Select the warranty:</Form.Label>
