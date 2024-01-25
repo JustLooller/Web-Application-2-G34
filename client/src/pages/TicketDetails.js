@@ -9,11 +9,12 @@ import {
   Table,
 } from "react-bootstrap";
 import { useEffect, useRef, useState } from "react";
-import avatar from "../avatar.svg";
+import avatarCustomer from "../avatarCustomer.svg";
+import avatarExpert from "../avatarExpert.svg";
 import { useAuth } from "../hooks/auth";
 import { Message, Role, Ticket } from "../models";
 import API from "../api/api";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
 import { Client } from "@stomp/stompjs";
 import notificationSound from "./../iphone_14_notification.mp3";
@@ -146,13 +147,14 @@ function TicketDetails() {
             key={m.text + index}
             text={m.text}
             myMessage={
-              m.user_mail == profile.email ||
-              (profile.role != Role.CUSTOMER &&
-                m.user_mail != ticketDetails.creator_email)
+              (profile.role === Role.CUSTOMER && m.user_mail === ticketDetails.creator_email) ||
+              (profile.role === Role.MANAGER && m.user_mail === ticketDetails.creator_email) ||
+              (profile.role === Role.EXPERT && m.user_mail !== ticketDetails.creator_email)
             }
             message={m}
             ticket_id={ticketDetails.id}
             download_function={handleDownloadImage}
+            isCustomer = {m.user_mail === ticketDetails.creator_email}
           ></ChatMessage>
         ))}
 
@@ -212,13 +214,13 @@ function ChatMessage(props) {
           {props.text}
         </Col>
         <Col sm="auto" className="d-flex align-items-center">
-          <img src={avatar} height="50px" width="50px" alt={"Avatar"} />
+          <img src={props.isCustomer ? avatarCustomer : avatarExpert} height="50px" width="50px" alt={"AvatarCustomer"} />
         </Col>
-        {!props.myMessage && (
-          <Row className={"mx-0 mt-1"} style={{ flexDirection: "row" }}>
-            <h6 className={"text-muted"}>{props.message.user_mail}</h6>
+        
+          <Row className={"mx-0 mt-1"} style={{ flexDirection: "row" , textAlign: props.myMessage ? "end" : "start"}}>
+            <h6 className={"text-muted" }>{props.message.user_mail}</h6>
           </Row>
-        )}
+        
       </Row>
 
       {props.message.attachment != null && (
