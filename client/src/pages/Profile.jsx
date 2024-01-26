@@ -17,7 +17,6 @@ export default function Profile() {
   const { profile, logout } = useAuth();
   const navigator = useNavigate();
   const [oldPassword, setOldPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [changePasswordStatus, setChangePasswordStatus] = useState({});
@@ -98,13 +97,11 @@ export default function Profile() {
                 <Form.Label>Change Password</Form.Label>
                   <Form.Control
                     required={true}
-                    type={showPassword ? "text" : "password"}
                     placeholder="Old Password"
                     name="password"
                     id="password"
                     aria-describedby="passwordHelpBlock"
                     onChange={handleOldPasswordChange}
-
                   />
                 <Form.Control
                   type="password"
