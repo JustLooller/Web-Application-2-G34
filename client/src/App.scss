@@ -117,6 +117,11 @@ a.myHomeLink:hover, a.myHomeLink:active {
   background: linear-gradient(to right, #cba859 0%,  #ffe29a 100%);
 }
 
+.myImage {
+  height: 10rem;
+  width: 10rem;
+  object-fit: contain;
+}
 
 
 
