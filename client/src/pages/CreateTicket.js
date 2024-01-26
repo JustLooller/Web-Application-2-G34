@@ -1,6 +1,5 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import {Alert, Button, Col, Container, Form, Row} from "react-bootstrap";
-import logo from "../logo.svg";
+import {Alert, Button, Container, Form, Row} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import API from "../api/api";
 import {useAuth} from "../hooks/auth";

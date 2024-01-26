@@ -99,7 +99,7 @@ function Home() {
                     <h5 className="card-title">New Ticket</h5>
                     <p className="card-text">
                       Create your ticket with ease, ensuring you have your
-                      warranty code and all your product specifics ready
+                      warranty code at hand.
                     </p>
                   </div>
                 </div>

@@ -10,8 +10,9 @@ function Register() {
     const [validated, setValidated] = useState(false);
     const [registerError, setRegisterError] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [success, setSuccess] = useState(false);
     const {profile} = useAuth();
-    const navigate = useNavigate();
+    const navigator = useNavigate();
 
     if (!!profile) {
         return <Navigate to="/home"></Navigate>;
@@ -21,8 +22,9 @@ function Register() {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
+        if (success) return;
         if (form.checkValidity() === false) {
-            setValidated(true)
+            setValidated(true);
             return;
         }
         const username = event.target.email.value;
@@ -40,10 +42,11 @@ function Register() {
         const successful = await API.Security.register(username, password, fullName, age);
         if (successful) {
             setRegisterError(false);
-            console.log("Registered successfully")
-            navigate("/login")
+            setSuccess(true);
+            setTimeout(() => {
+                navigator("/login");
+              }, 3000);
         } else {
-            console.log("Could not register");
             setRegisterError(true);
         }
         setValidated(true);
@@ -138,6 +141,11 @@ function Register() {
                 {registerError && (
                     <Alert key={"danger"} variant={"danger"} dismissible className="my-2">
                         Bad Credentials!
+                    </Alert>
+                )}
+                {success && (
+                    <Alert key={"success"} variant={"success"} dismissible className="my-2">
+                        User registered successfully! Redirecting to login page...
                     </Alert>
                 )}
             </Container>

@@ -1,12 +1,10 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import {Alert, Button, Col, Container, Form, Row, Stack, Table} from "react-bootstrap";
-import logo from "../logo.svg";
-import {useEffect, useState} from "react";
+import { Button, Container, Row, Stack, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import API from "../api/api";
-import {useAuth} from "../hooks/auth";
-import {Message, Ticket} from "../models";
+import { useAuth } from "../hooks/auth";
 import NavigationBar from "./NavigationBar";
-import {Navigate, useNavigate} from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 //import './../custom.css';
 
 function ClosedTickets() {
@@ -57,7 +55,7 @@ function ClosedTickets() {
                         {tickets.map(
                             (m) => <tr>
                                 <td>{m.id}</td>
-                                <td>{m.state}</td>
+                                <td>{m.state.replace("_", " ")}</td>
                                 <td>{m.sale_id}</td>
                                 <td>
                                     <Stack direction="horizontal">

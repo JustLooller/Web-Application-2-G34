@@ -1,10 +1,10 @@
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Container, Row, Stack, Table} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import { Button, Container, Row, Stack, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import API from "../api/api";
-import {useAuth} from "../hooks/auth";
+import { useAuth } from "../hooks/auth";
 import NavigationBar from "./NavigationBar";
-import {Navigate, useNavigate} from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 //import './../custom.css';
@@ -64,7 +64,7 @@ function OpenTickets() {
                             {tickets.map((m) => (
                                 <tr>
                                     <td>{m.id}</td>
-                                    <td>{m.state}</td>
+                                    <td>{m.state.replace("_", " ")}</td>
                                     <td>{m.sale_id}</td>
                                     <td>
                                         <Stack direction="horizontal">
