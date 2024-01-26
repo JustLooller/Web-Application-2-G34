@@ -32,6 +32,11 @@ function TicketDetails() {
   let socketActivated = false;
   let audio = new Audio(notificationSound);
 
+  let subscription;
+  const stompClient = new Client({
+    brokerURL: "ws://localhost:8081/ws",
+  });
+
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -76,13 +81,16 @@ function TicketDetails() {
   };
 
   const notificationWebSocket = () => {
+    /*
     const stompClient = new Client({
       brokerURL: "ws://localhost:8081/ws",
     });
 
+     */
+
     stompClient.onConnect = (frame) => {
       console.log("Connected: " + frame);
-      let subscription = stompClient.subscribe(
+      subscription = stompClient.subscribe(
         "/chat/" + id.toString(),
         (greeting) => {
           console.log("Subscribed: " + greeting.body);
@@ -98,10 +106,13 @@ function TicketDetails() {
   };
 
   useEffect(() => {
-    if (!socketActivated) {
-      socketActivated = true;
-      notificationWebSocket();
-    }
+    notificationWebSocket();
+
+
+    //if (!socketActivated) {
+    //  socketActivated = true;
+      //notificationWebSocket();
+    //}
 
     API.TicketAPI.getTicketById(id)
       .then((res) => setTicketDetails(Ticket.fromJson(res)))
@@ -109,6 +120,15 @@ function TicketDetails() {
     API.MessageAPI.getMessages(id)
       .then((res) => setMessages(res))
       .catch((e) => console.log(e));
+
+    // Cleanup function to close socket on unmount
+    return () => {
+      if(subscription){
+        subscription.unsubscribe();
+      }
+      stompClient.deactivate();
+    };
+
   }, []);
 
   return (
