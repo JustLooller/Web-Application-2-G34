@@ -146,5 +146,8 @@ INSERT INTO sale (id, warranty_end, warranty_start, buyer_email, product_ean) VA
 INSERT INTO sale (id, warranty_end, warranty_start, buyer_email, product_ean) VALUES ('fe2677f3-99ba-4248-8303-160dfdfa0ddf', '2026-10-10 00:00:00', '2021-10-10 00:00:00', 'customeruser@gmail.com', '0194253401070');
 INSERT INTO sale (id, warranty_end, warranty_start, buyer_email, product_ean) VALUES ('537e38f6-bd39-4472-b020-ade4a7593356', '2026-10-10 00:00:00', '2021-10-10 00:00:00', 'customeruser@gmail.com', '0194252708002');
 INSERT INTO sale (id, warranty_end, warranty_start, product_ean) VALUES ('8d81948c-1268-4637-a22d-22b2db662153', '2026-10-10 00:00:00', '2021-10-10 00:00:00', '0194252708002');
+INSERT INTO sale (id, warranty_end, warranty_start, product_ean) VALUES ('w-uuid-1', '2026-10-10 00:00:00', '2021-10-10 00:00:00', '0194252708002');
+INSERT INTO sale (id, warranty_end, warranty_start, product_ean) VALUES ('w-uuid-2', '2026-10-10 00:00:00', '2021-10-10 00:00:00', '0194252708002');
+
 
 
