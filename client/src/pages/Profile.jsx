@@ -2,7 +2,15 @@ import { useAuth } from "../hooks/auth";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from "./NavigationBar";
 import React, { useEffect, useState } from "react";
-import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
+import {
+  Container,
+  Form,
+  Button,
+  Row,
+  Col,
+  Alert,
+  InputGroup,
+} from "react-bootstrap";
 import API from "../api/api";
 
 export default function Profile() {
@@ -24,6 +32,7 @@ export default function Profile() {
   };
   const handleChangePasswordConfirmation = (e) => {
     e.preventDefault();
+    if (changePasswordStatus.type === "success") return;
     if (oldPassword === "" || newPassword === "" || confirmNewPassword === "") {
       setChangePasswordStatus({
         type: "danger",
@@ -49,7 +58,7 @@ export default function Profile() {
           setChangePasswordStatus({
             type: "success",
             message:
-              "Password changed successfully - redirecting to login in 3 seconds",
+              "Password changed successfully - redirecting to login",
           });
         } else {
           setChangePasswordStatus({ type: "danger", message: res.detail });
@@ -77,34 +86,48 @@ export default function Profile() {
       <NavigationBar />
       <Container>
         <Row>
-          <h1 className="text-center">{profile.name}'s profile</h1>
-          <h5 className="text-center">Role: {profile.role}</h5>
-          <h5 className="text-start mt-2">Email: {profile.email}</h5>
+          <h1 className="text-center mt-2">{profile.name}'s profile</h1>
+          <h5 className="text-center mt-2">Role: {profile.role}</h5>
+          <h5 className="text-center mt-2">Email: {profile.email}</h5>
         </Row>
-        <Row>
+        <Row style={{width: "75%" , margin: "2rem auto",}}>
           <Col>
             <Form onSubmit={handleChangePasswordConfirmation}>
               <Form.Group controlId="changePassword">
                 <Form.Label>Change Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Old Password"
-                  onChange={handleOldPasswordChange}
-                />
+                  <Form.Control
+                    required={true}
+                    placeholder="Old Password"
+                    name="password"
+                    id="password"
+                    aria-describedby="passwordHelpBlock"
+                    onChange={handleOldPasswordChange}
+                  />
                 <Form.Control
                   type="password"
                   placeholder="New Password"
                   onChange={handleNewPasswordChange}
+                  pattern={
+                    "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
+                  }
                   className="mt-2"
                 />
                 <Form.Control
                   type="password"
                   placeholder="Confirm New Password"
                   onChange={handleConfirmNewPasswordChange}
+                  pattern={
+                    "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
+                  }
                   className="mt-2"
                 />
-
-                <Button variant="primary" type="submit" className="mt-2">
+                <Form.Text id="passwordHelpBlock" muted>
+                  Your password must be at least 8 characters long, contain
+                  capital and lowecase letters and numbers, and must not contain
+                  spaces, special characters, or emoji.
+                </Form.Text>
+                <br></br>
+                <Button variant="primary" type="submit" className="mt-2 d-block mx-auto">
                   Save
                 </Button>
                 {changePasswordStatus.type === "danger" && (
@@ -112,6 +135,7 @@ export default function Profile() {
                     key={"danger"}
                     variant={"danger"}
                     dismissible
+                    onClose={() => setChangePasswordStatus({})}
                     className="my-2"
                   >
                     {changePasswordStatus.message}
@@ -122,6 +146,7 @@ export default function Profile() {
                     key={"success"}
                     variant={"success"}
                     dismissible
+                    onClose={() => setChangePasswordStatus({})}
                     className="my-2"
                   >
                     {changePasswordStatus.message}
@@ -130,7 +155,6 @@ export default function Profile() {
               </Form.Group>
             </Form>
           </Col>
-          <Col></Col>
         </Row>
       </Container>
     </>

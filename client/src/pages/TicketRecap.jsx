@@ -2,7 +2,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { TicketActions } from "../models";
 import NavigationBar from "./NavigationBar";
-import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Table } from "react-bootstrap";
+import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Table, Image } from "react-bootstrap";
 import API from "../api/api";
 import { useAuth } from "../hooks/auth";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
@@ -231,6 +231,7 @@ export default function TicketRecap() {
                         </th>
                     </tr>
                     <tr>
+                        <th></th>
                         <th>EAN</th>
                         <th>Brand</th>
                         <th>Model</th>
@@ -239,6 +240,7 @@ export default function TicketRecap() {
                     </thead>
                     <tbody>
                     <tr>
+                        <td><Image className={"myImage"} src={product.image} fluid/></td>
                         <td>{product.ean}</td>
                         <td>{product.brand.name}</td>
                         <td>{product.model}</td>
